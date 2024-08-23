@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./NewRx.css";
 
 interface RxDetails {
@@ -15,6 +16,9 @@ interface RxDetails {
 }
 
 const NewRx: React.FC = () => {
+  const navigate = useNavigate();
+
+  const [editMode, setEditMode] = useState(false); // Start in view mode (not editable)
   const [rxDetails, setRxDetails] = useState<RxDetails>({
     ptName: "",
     dob: "",
@@ -28,6 +32,13 @@ const NewRx: React.FC = () => {
     techInitials: "",
   });
 
+  useEffect(() => {
+    const savedRxDetails = localStorage.getItem("rxDetails");
+    if (savedRxDetails) {
+      setRxDetails(JSON.parse(savedRxDetails));
+    }
+  }, []);
+
   const handleRxChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -38,6 +49,23 @@ const NewRx: React.FC = () => {
         ? value === "" ? 0 : Number(value) 
         : value,
     }));
+  };
+
+  const handleSave = () => {
+    try {
+      // Save to localStorage
+      localStorage.setItem("rxDetails", JSON.stringify(rxDetails));
+      alert("Rx details saved successfully!");
+      setEditMode(false); // Disable edit mode after saving
+      navigate("/newrx"); // Redirect to the NewRx page after saving
+    } catch (error) {
+      console.error("Error saving rx details:", error);
+      alert("Failed to save rx details.");
+    }
+  };
+
+  const toggleEditMode = () => {
+    setEditMode(!editMode); // Toggle edit mode
   };
 
   return (
@@ -51,6 +79,7 @@ const NewRx: React.FC = () => {
             id="rx-pt-name"
             value={rxDetails.ptName}
             onChange={handleRxChange}
+            readOnly={!editMode} // Make input read-only if not in edit mode
           />
         </div>
         <div>
@@ -61,6 +90,7 @@ const NewRx: React.FC = () => {
             id="rx-dob"
             value={rxDetails.dob}
             onChange={handleRxChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -71,6 +101,7 @@ const NewRx: React.FC = () => {
             id="rx-dr-name"
             value={rxDetails.drName}
             onChange={handleRxChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -81,6 +112,7 @@ const NewRx: React.FC = () => {
             id="rx-date-of-rx"
             value={rxDetails.dateOfRx}
             onChange={handleRxChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -91,6 +123,7 @@ const NewRx: React.FC = () => {
             id="rx-medication"
             value={rxDetails.medication}
             onChange={handleRxChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -101,6 +134,7 @@ const NewRx: React.FC = () => {
             value={rxDetails.directions}
             onChange={handleRxChange}
             className="directions-textarea"
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -111,6 +145,7 @@ const NewRx: React.FC = () => {
             id="rx-quantity-written"
             value={rxDetails.quantityWritten === 0 ? "" : rxDetails.quantityWritten}
             onChange={handleRxChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -121,6 +156,7 @@ const NewRx: React.FC = () => {
             id="rx-quantity-dispensed"
             value={rxDetails.quantityDispensed === 0 ? "" : rxDetails.quantityDispensed}
             onChange={handleRxChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -131,6 +167,7 @@ const NewRx: React.FC = () => {
             id="rx-refills"
             value={rxDetails.refills === 0 ? "" : rxDetails.refills}
             onChange={handleRxChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -141,6 +178,7 @@ const NewRx: React.FC = () => {
             id="rx-tech-initials"
             value={rxDetails.techInitials}
             onChange={handleRxChange}
+            readOnly={!editMode}
           />
         </div>
       </div>
@@ -149,6 +187,14 @@ const NewRx: React.FC = () => {
 
       <div className="scan-image">
         <h3>Scan Image</h3>
+      </div>
+      <div className="button-group">
+        <button type="button" onClick={toggleEditMode}>
+          {editMode ? "Cancel" : "Edit"}
+        </button>
+        <button type="button" onClick={handleSave} disabled={!editMode}>
+          Save
+        </button>
       </div>
     </div>
   );
