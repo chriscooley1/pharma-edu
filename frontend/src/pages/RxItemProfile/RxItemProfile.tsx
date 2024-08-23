@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./RxItemProfile.css";
 
@@ -28,12 +28,31 @@ const RxItemProfile: React.FC = () => {
     drugClass: "",
   });
 
+  useEffect(() => {
+    const savedRxDetails = localStorage.getItem("rxDetails");
+    if (savedRxDetails) {
+      setRxDetails(JSON.parse(savedRxDetails));
+    }
+  }, []);
+
   const handleRxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setRxDetails((prevDetails) => ({
       ...prevDetails,
       [name]: value,
     }));
+  };
+
+  const handleSave = () => {
+    try {
+      //Save to localStorage
+      localStorage.setItem("rxDetails", JSON.stringify(rxDetails));
+      alert("Rx details saved successfully!");
+      navigate("/rxitemprofile");
+    } catch (error) {
+      console.error("Error saving rx details:", error);
+      alert("Failed to save rx details.");
+    }
   };
 
   return (
@@ -112,6 +131,7 @@ const RxItemProfile: React.FC = () => {
           />
         </div>
       </div>
+      <button type="button" onClick={handleSave}>Save</button>
     </div>
   );
 };

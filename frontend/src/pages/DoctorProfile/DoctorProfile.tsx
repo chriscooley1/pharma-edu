@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./DoctorProfile.css";
 
@@ -16,8 +16,6 @@ const DoctorProfile: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const searchQuery = location.state?.query || "";
-
   const [doctorDetails, setDoctorDetails] = useState<DoctorDetails>({
     last: "",
     first: "",
@@ -28,7 +26,14 @@ const DoctorProfile: React.FC = () => {
     npi: "",
   });
 
-  const handleDoctorChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    const savedDetails = localStorage.getItem("doctorDetails");
+    if (savedDetails) {
+      setDoctorDetails(JSON.parse(savedDetails));
+    }
+  }, []);
+
+  const handleDoctorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setDoctorDetails((prevDetails) => ({
       ...prevDetails,
@@ -36,9 +41,20 @@ const DoctorProfile: React.FC = () => {
     }));
   };
 
+  const handleSave = () => {
+    try {
+      // Save to localStorage
+      localStorage.setItem("doctorDetails", JSON.stringify(doctorDetails));
+      alert("Doctor details saved successfully!");
+      navigate("/doctorprofile");
+    } catch (error) {
+      console.error("Error saving doctor details:", error);
+      alert("Failed to save doctor details.");
+    }
+  };
+
   return (
     <div className="doctor-profile-container">
-      {/* <h2>Search Query: {searchQuery}</h2> */}
       <div className="dr-main">
         <h3>Doctor Name First/Last</h3>
         <div>
@@ -111,10 +127,10 @@ const DoctorProfile: React.FC = () => {
             onChange={handleDoctorChange}
           />
         </div>
+        <button type="button" onClick={handleSave}>Save</button>
       </div>
     </div>
-  )
-
+  );
 };
 
 export default DoctorProfile;

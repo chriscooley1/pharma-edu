@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./PatientProfile.css";
 
@@ -48,6 +48,18 @@ const PatientProfile: React.FC = () => {
     group: 0,
   });
 
+  useEffect(() => {
+    const savedPatientDetails = localStorage.getItem("patientDetails");
+    if (savedPatientDetails) {
+      setPatientDetails(JSON.parse(savedPatientDetails));
+    }
+
+    const savedInsuranceInfo = localStorage.getItem("insuranceInfo");
+    if (savedInsuranceInfo) {
+      setInsuranceInfo(JSON.parse(savedInsuranceInfo));
+    }
+  }, []);
+
   const handlePatientChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setPatientDetails((prevDetails) => ({
@@ -66,6 +78,19 @@ const PatientProfile: React.FC = () => {
         ? value === "" ? 0 : Number(value) 
         : value,
     }));
+  };
+
+  const handleSave = () => {
+    try {
+      // Save to localStorage
+      localStorage.setItem("patientDetails", JSON.stringify(patientDetails));
+      localStorage.setItem("insuranceInfo", JSON.stringify(insuranceInfo));
+      alert("Patient and insurance details saved successfully!");
+      navigate("/patientprofile");
+    } catch (error) {
+      console.error("Error saving patient and insurance details:", error);
+      alert("Failed to save patient and insurance details.");
+    }
   };
 
   const goToNewRx = () => {
@@ -225,6 +250,7 @@ const PatientProfile: React.FC = () => {
           />
         </div>
       </div>
+      <button type="button" onClick={handleSave}>Save</button>
       <button 
         type="button"
         onClick={goToNewRx}
