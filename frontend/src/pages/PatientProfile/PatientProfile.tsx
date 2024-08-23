@@ -26,8 +26,7 @@ const PatientProfile: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const searchQuery = location.state?.query || "";
-
+  const [editMode, setEditMode] = useState(false); // Start in view mode (not editable)
   const [patientDetails, setPatientDetails] = useState<PatientDetails>({
     last: "",
     first: "",
@@ -75,7 +74,7 @@ const PatientProfile: React.FC = () => {
     setInsuranceInfo((prevDetails) => ({
       ...prevDetails,
       [name]: name === "id" || name === "group"
-        ? value === "" ? 0 : Number(value) 
+        ? value === "" ? 0 : Number(value)
         : value,
     }));
   };
@@ -86,11 +85,15 @@ const PatientProfile: React.FC = () => {
       localStorage.setItem("patientDetails", JSON.stringify(patientDetails));
       localStorage.setItem("insuranceInfo", JSON.stringify(insuranceInfo));
       alert("Patient and insurance details saved successfully!");
-      navigate("/patientprofile");
+      setEditMode(false); // Disable edit mode after saving
     } catch (error) {
       console.error("Error saving patient and insurance details:", error);
       alert("Failed to save patient and insurance details.");
     }
+  };
+
+  const toggleEditMode = () => {
+    setEditMode(!editMode); // Toggle edit mode
   };
 
   const goToNewRx = () => {
@@ -111,6 +114,7 @@ const PatientProfile: React.FC = () => {
             id="patient-last-name"
             value={patientDetails.last}
             onChange={handlePatientChange}
+            readOnly={!editMode} // Make input read-only if not in edit mode
           />
         </div>
         <div>
@@ -121,6 +125,7 @@ const PatientProfile: React.FC = () => {
             id="patient-first-name"
             value={patientDetails.first}
             onChange={handlePatientChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -131,6 +136,7 @@ const PatientProfile: React.FC = () => {
             id="patient-dob"
             value={patientDetails.dob}
             onChange={handlePatientChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -141,6 +147,7 @@ const PatientProfile: React.FC = () => {
             id="patient-address"
             value={patientDetails.address}
             onChange={handlePatientChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -151,6 +158,7 @@ const PatientProfile: React.FC = () => {
             id="patient-primary-dr"
             value={patientDetails.primaryDr}
             onChange={handlePatientChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -161,6 +169,7 @@ const PatientProfile: React.FC = () => {
             id="patient-allergies"
             value={patientDetails.allergies}
             onChange={handlePatientChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -171,6 +180,7 @@ const PatientProfile: React.FC = () => {
             id="patient-rx-printed"
             value={patientDetails.rxPrinted}
             onChange={handlePatientChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -181,6 +191,7 @@ const PatientProfile: React.FC = () => {
             id="patient-rx-completed"
             value={patientDetails.rxCompleted}
             onChange={handlePatientChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -191,6 +202,7 @@ const PatientProfile: React.FC = () => {
             id="patient-rx-sold"
             value={patientDetails.rxSold}
             onChange={handlePatientChange}
+            readOnly={!editMode}
           />
         </div>
       </div>
@@ -207,6 +219,7 @@ const PatientProfile: React.FC = () => {
             id="patient-bin"
             value={insuranceInfo.bin}
             onChange={handleInsuranceChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -217,6 +230,7 @@ const PatientProfile: React.FC = () => {
             id="patient-pcn"
             value={insuranceInfo.pcn}
             onChange={handleInsuranceChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -227,6 +241,7 @@ const PatientProfile: React.FC = () => {
             id="patient-person-code"
             value={insuranceInfo.personCode}
             onChange={handleInsuranceChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -237,6 +252,7 @@ const PatientProfile: React.FC = () => {
             id="patient-id"
             value={insuranceInfo.id === 0 ? "" : insuranceInfo.id}
             onChange={handleInsuranceChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -247,10 +263,18 @@ const PatientProfile: React.FC = () => {
             id="patient-group"
             value={insuranceInfo.group === 0 ? "" : insuranceInfo.group}
             onChange={handleInsuranceChange}
+            readOnly={!editMode}
           />
         </div>
       </div>
-      <button type="button" onClick={handleSave}>Save</button>
+      <div className="button-group">
+        <button type="button" onClick={toggleEditMode}>
+          {editMode ? "Cancel" : "Edit"}
+        </button>
+        <button type="button" onClick={handleSave} disabled={!editMode}>
+          Save
+        </button>
+      </div>
       <button 
         type="button"
         onClick={goToNewRx}

@@ -18,6 +18,7 @@ const RxItemProfile: React.FC = () => {
 
   const searchQuery = location.state?.query || "";
 
+  const [editMode, setEditMode] = useState(false); // Start in view mode (not editable)
   const [rxDetails, setRxDetails] = useState<RxDetails>({
     medicationName: "",
     medicationStrength: "",
@@ -48,11 +49,16 @@ const RxItemProfile: React.FC = () => {
       //Save to localStorage
       localStorage.setItem("rxDetails", JSON.stringify(rxDetails));
       alert("Rx details saved successfully!");
+      setEditMode(false); // Disable edit mode after saving
       navigate("/rxitemprofile");
     } catch (error) {
       console.error("Error saving rx details:", error);
       alert("Failed to save rx details.");
     }
+  };
+
+  const toggleEditMode = () => {
+    setEditMode(!editMode); // Toggle edit mode
   };
 
   return (
@@ -68,6 +74,7 @@ const RxItemProfile: React.FC = () => {
             id="rx-medication-name"
             value={rxDetails.medicationName}
             onChange={handleRxChange}
+            readOnly={!editMode} // Make input read-only if not in edit mode
           />
         </div>
         <div>
@@ -78,6 +85,7 @@ const RxItemProfile: React.FC = () => {
             id="rx-medication-strength"
             value={rxDetails.medicationStrength}
             onChange={handleRxChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -88,6 +96,7 @@ const RxItemProfile: React.FC = () => {
             id="rx-ndc"
             value={rxDetails.ndc}
             onChange={handleRxChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -98,6 +107,7 @@ const RxItemProfile: React.FC = () => {
             id="rx-expiration"
             value={rxDetails.expiration}
             onChange={handleRxChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -108,6 +118,7 @@ const RxItemProfile: React.FC = () => {
             id="rx-lot-number"
             value={rxDetails.lotNumber}
             onChange={handleRxChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -118,6 +129,7 @@ const RxItemProfile: React.FC = () => {
             id="rx-dea-schedule"
             value={rxDetails.deaSchedule}
             onChange={handleRxChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -128,10 +140,18 @@ const RxItemProfile: React.FC = () => {
             id="rx-drug-class"
             value={rxDetails.drugClass}
             onChange={handleRxChange}
+            readOnly={!editMode}
           />
         </div>
       </div>
-      <button type="button" onClick={handleSave}>Save</button>
+      <div className="button-group">
+        <button type="button" onClick={toggleEditMode}>
+          {editMode ? "Cancel" : "Edit"}
+        </button>
+        <button type="button" onClick={handleSave} disabled={!editMode}>
+          Save
+        </button>
+      </div>
     </div>
   );
 };

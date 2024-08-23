@@ -16,6 +16,7 @@ const DoctorProfile: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const [editMode, setEditMode] = useState(false); // Start in view mode (not editable)
   const [doctorDetails, setDoctorDetails] = useState<DoctorDetails>({
     last: "",
     first: "",
@@ -46,11 +47,16 @@ const DoctorProfile: React.FC = () => {
       // Save to localStorage
       localStorage.setItem("doctorDetails", JSON.stringify(doctorDetails));
       alert("Doctor details saved successfully!");
+      setEditMode(false); // Disable edit mode after saving
       navigate("/doctorprofile");
     } catch (error) {
       console.error("Error saving doctor details:", error);
       alert("Failed to save doctor details.");
     }
+  };
+
+  const toggleEditMode = () => {
+    setEditMode(!editMode); // Toggle edit mode
   };
 
   return (
@@ -65,6 +71,7 @@ const DoctorProfile: React.FC = () => {
             id="doctor-last-name"
             value={doctorDetails.last}
             onChange={handleDoctorChange}
+            readOnly={!editMode} // Make input read-only if not in edit mode
           />
         </div>
         <div>
@@ -75,6 +82,7 @@ const DoctorProfile: React.FC = () => {
             id="doctor-first-name"
             value={doctorDetails.first}
             onChange={handleDoctorChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -85,6 +93,7 @@ const DoctorProfile: React.FC = () => {
             id="doctor-dr-type"
             value={doctorDetails.drType}
             onChange={handleDoctorChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -95,6 +104,7 @@ const DoctorProfile: React.FC = () => {
             id="doctor-address"
             value={doctorDetails.address}
             onChange={handleDoctorChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -105,6 +115,7 @@ const DoctorProfile: React.FC = () => {
             id="doctor-dea"
             value={doctorDetails.dea}
             onChange={handleDoctorChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -115,6 +126,7 @@ const DoctorProfile: React.FC = () => {
             id="doctor-phone"
             value={doctorDetails.phone}
             onChange={handleDoctorChange}
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -125,9 +137,18 @@ const DoctorProfile: React.FC = () => {
             id="doctor-npi"
             value={doctorDetails.npi}
             onChange={handleDoctorChange}
+            readOnly={!editMode}
           />
         </div>
-        <button type="button" onClick={handleSave}>Save</button>
+        
+        <div className="button-group">
+          <button type="button" onClick={toggleEditMode}>
+            {editMode ? "Cancel" : "Edit"}
+          </button>
+          <button type="button" onClick={handleSave} disabled={!editMode}>
+            Save
+          </button>
+        </div>
       </div>
     </div>
   );
