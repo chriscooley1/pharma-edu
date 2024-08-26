@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./RxItemProfile.css";
 
 interface RxDetails {
+  id: number | null;
   name: string;
   strength: string;
   ndc: string;
@@ -18,8 +20,9 @@ const RxItemProfile: React.FC = () => {
 
   const searchQuery = location.state?.query || "";
 
-  const [editMode, setEditMode] = useState(false); // Start in view mode (not editable)
+  const [editMode, setEditMode] = useState(false);
   const [rxDetails, setRxDetails] = useState<RxDetails>({
+    id: null,
     name: "",
     strength: "",
     ndc: "",
@@ -30,10 +33,8 @@ const RxItemProfile: React.FC = () => {
   });
 
   useEffect(() => {
-    const savedRxDetails = localStorage.getItem("rxDetails");
-    if (savedRxDetails) {
-      setRxDetails(JSON.parse(savedRxDetails));
-    }
+    // Fetch existing RxItem details from backend (if needed)
+    // Example: axios.get(`/rx-items/${id}`).then(response => setRxDetails(response.data));
   }, []);
 
   const handleRxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,12 +45,22 @@ const RxItemProfile: React.FC = () => {
     }));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     try {
-      // Save to localStorage
-      localStorage.setItem("rxDetails", JSON.stringify(rxDetails));
-      alert("Rx details saved successfully!");
-      setEditMode(false); // Disable edit mode after saving
+      if (rxDetails.id === null) {
+        // If id is null, create a new RxItem
+        const response = await axios.post('http://localhost:8000/rx-items', rxDetails);
+        setRxDetails((prevDetails) => ({
+          ...prevDetails,
+          id: response.data.rx_item_id, // Set the id returned from the backend
+        }));
+        alert("Rx details saved successfully!");
+      } else {
+        // If id is set, update the existing RxItem
+        await axios.patch(`http://localhost:8000/rx-items/${rxDetails.id}`, rxDetails);
+        alert("Rx details updated successfully!");
+      }
+      setEditMode(false);
       navigate("/rxitemprofile");
     } catch (error) {
       console.error("Error saving rx details:", error);
@@ -58,12 +69,11 @@ const RxItemProfile: React.FC = () => {
   };
 
   const toggleEditMode = () => {
-    setEditMode(!editMode); // Toggle edit mode
+    setEditMode(!editMode);
   };
 
   return (
     <div className="rx-item-profile-container">
-      {/* {searchQuery && <h2>Search Query: {searchQuery}</h2>} */}
       <h3>Doctor Name First/Last</h3>
       <div className="rx-main">
         <div>
@@ -74,7 +84,7 @@ const RxItemProfile: React.FC = () => {
             id="rx-name"
             value={rxDetails.name || ""}
             onChange={handleRxChange}
-            readOnly={!editMode} // Make input read-only if not in edit mode
+            readOnly={!editMode}
           />
         </div>
         <div>
@@ -102,7 +112,7 @@ const RxItemProfile: React.FC = () => {
         <div>
           <label htmlFor="rx-expiration">Expiration</label>
           <input
-            type="text"
+            type="date"
             name="expiration"
             id="rx-expiration"
             value={rxDetails.expiration || ""}
