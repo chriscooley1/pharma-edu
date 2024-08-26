@@ -3,13 +3,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "./RxItemProfile.css";
 
 interface RxDetails {
-  medicationName: string;
-  medicationStrength: string;
+  name: string;
+  strength: string;
   ndc: string;
   expiration: string;
-  lotNumber: string;
-  deaSchedule: string;
-  drugClass: string;
+  lot_number: string;
+  dea_schedule: string;
+  drug_class: string;
 }
 
 const RxItemProfile: React.FC = () => {
@@ -20,13 +20,13 @@ const RxItemProfile: React.FC = () => {
 
   const [editMode, setEditMode] = useState(false); // Start in view mode (not editable)
   const [rxDetails, setRxDetails] = useState<RxDetails>({
-    medicationName: "",
-    medicationStrength: "",
+    name: "",
+    strength: "",
     ndc: "",
     expiration: "",
-    lotNumber: "",
-    deaSchedule: "",
-    drugClass: "",
+    lot_number: "",
+    dea_schedule: "",
+    drug_class: "",
   });
 
   useEffect(() => {
@@ -40,13 +40,13 @@ const RxItemProfile: React.FC = () => {
     const { name, value } = event.target;
     setRxDetails((prevDetails) => ({
       ...prevDetails,
-      [name]: value,
+      [name]: value || "", // Ensure no undefined values
     }));
   };
 
   const handleSave = () => {
     try {
-      //Save to localStorage
+      // Save to localStorage
       localStorage.setItem("rxDetails", JSON.stringify(rxDetails));
       alert("Rx details saved successfully!");
       setEditMode(false); // Disable edit mode after saving
@@ -67,23 +67,23 @@ const RxItemProfile: React.FC = () => {
       <h3>Doctor Name First/Last</h3>
       <div className="rx-main">
         <div>
-          <label htmlFor="rx-medication-name">Name</label>
+          <label htmlFor="rx-name">Name</label>
           <input
             type="text"
-            name="medicationName"
-            id="rx-medication-name"
-            value={rxDetails.medicationName}
+            name="name"
+            id="rx-name"
+            value={rxDetails.name || ""}
             onChange={handleRxChange}
             readOnly={!editMode} // Make input read-only if not in edit mode
           />
         </div>
         <div>
-          <label htmlFor="rx-medication-strength">Strength</label>
+          <label htmlFor="rx-strength">Strength</label>
           <input
             type="text"
-            name="medicationStrength"
-            id="rx-medication-strength"
-            value={rxDetails.medicationStrength}
+            name="strength"
+            id="rx-strength"
+            value={rxDetails.strength || ""}
             onChange={handleRxChange}
             readOnly={!editMode}
           />
@@ -94,7 +94,7 @@ const RxItemProfile: React.FC = () => {
             type="text"
             name="ndc"
             id="rx-ndc"
-            value={rxDetails.ndc}
+            value={rxDetails.ndc || ""}
             onChange={handleRxChange}
             readOnly={!editMode}
           />
@@ -105,7 +105,7 @@ const RxItemProfile: React.FC = () => {
             type="text"
             name="expiration"
             id="rx-expiration"
-            value={rxDetails.expiration}
+            value={rxDetails.expiration || ""}
             onChange={handleRxChange}
             readOnly={!editMode}
           />
@@ -114,9 +114,9 @@ const RxItemProfile: React.FC = () => {
           <label htmlFor="rx-lot-number">Lot Number</label>
           <input
             type="text"
-            name="lotNumber"
+            name="lot_number"
             id="rx-lot-number"
-            value={rxDetails.lotNumber}
+            value={rxDetails.lot_number || ""}
             onChange={handleRxChange}
             readOnly={!editMode}
           />
@@ -125,9 +125,9 @@ const RxItemProfile: React.FC = () => {
           <label htmlFor="rx-dea-schedule">DEA Schedule</label>
           <input
             type="text"
-            name="deaSchedule"
+            name="dea_schedule"
             id="rx-dea-schedule"
-            value={rxDetails.deaSchedule}
+            value={rxDetails.dea_schedule || ""}
             onChange={handleRxChange}
             readOnly={!editMode}
           />
@@ -136,9 +136,9 @@ const RxItemProfile: React.FC = () => {
           <label htmlFor="rx-drug-class">Drug Class</label>
           <input
             type="text"
-            name="drugClass"
+            name="drug_class"
             id="rx-drug-class"
-            value={rxDetails.drugClass}
+            value={rxDetails.drug_class || ""}
             onChange={handleRxChange}
             readOnly={!editMode}
           />
