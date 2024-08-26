@@ -3,6 +3,7 @@
 TODO: Verify parameters and paths
 TODO: Fix any of the datetimes to be actual examples
 TODO: Fix any ?'s
+TODO: Fix the patient and prescriber APIs to match the new models
 
 ## Overview
 
@@ -298,8 +299,9 @@ Get a list of all prescriptions.
 ```json
 [
   {
-    "patient_id": 123,
-    "name": "Tony Stark",
+    "rx_number": 123,
+    "fisrt_name": "Tony Stark",
+    "last_name": "Tony Stark",
     "date_of_birth": datetime
   }
 ]
@@ -579,6 +581,14 @@ Creates an Rx item.
   - 201 Created: Rx item successfully created.
   - 400 Bad Request: Malformed body sent to the API.
   - 401 Unauthorized: Missing the required `X-User-Id` header
+
+##### Response Example
+
+```json
+{
+  "rx_item_id": 123
+}
+```
 
 #### PATCH /rx-items/:rx_item_id
 
