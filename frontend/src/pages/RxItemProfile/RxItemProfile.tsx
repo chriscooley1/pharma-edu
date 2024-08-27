@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./RxItemProfile.css";
 
 interface RxDetails {
@@ -18,8 +18,6 @@ const RxItemProfile: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const searchQuery = location.state?.query || "";
-
   const [editMode, setEditMode] = useState(false);
   const [rxDetails, setRxDetails] = useState<RxDetails>({
     id: null,
@@ -33,9 +31,12 @@ const RxItemProfile: React.FC = () => {
   });
 
   useEffect(() => {
-    // Fetch existing RxItem details from backend (if needed)
-    // Example: axios.get(`/rx-items/${id}`).then(response => setRxDetails(response.data));
-  }, []);
+    if (location.state?.rxData) {
+      setRxDetails(location.state.rxData);
+    } else {
+      // Handle case where no data was passed, potentially fetch from backend by ID
+    }
+  }, [location.state]);
 
   const handleRxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;

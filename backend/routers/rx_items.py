@@ -15,6 +15,15 @@ async def get_rx_items(session: Session = Depends(get_db)) -> list[RxItem]:
     return session.exec(select(RxItem)).all()
 
 
+@router.get("/rx-items/search")
+async def search_rx_items(query: str, session: Session = Depends(get_db)):
+    rx_item = session.query(RxItem).filter(RxItem.name.ilike(f"%{query}%")).first()
+    if rx_item:
+        return rx_item
+    else:
+        raise RxItemNotFound(id=0)
+
+
 @router.post("/rx-items")
 async def create_rx_item(rx_item: RxItem, session: Session = Depends(get_db)) -> RxItemCreateResponse:
     session.add(rx_item)
