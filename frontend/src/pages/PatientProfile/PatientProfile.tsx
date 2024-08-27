@@ -3,23 +3,25 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "./PatientProfile.css";
 
 interface PatientDetails {
-  last: string;
-  first: string;
-  dob: string;
-  address: string;
-  primaryDr: string;
+  first_name: string;
+  last_name: string;
+  date_of_birth: string; // This can be stored as a string and converted to a date when sending to the backend
+  street: string;
+  city: string;
+  state: string;
+  zipcode: string;
   allergies: string;
-  rxPrinted: string;
-  rxCompleted: string;
-  rxSold: string;
+  rx_printed: string;
+  rx_completed: string;
+  rx_sold: string;
 }
 
 interface InsuranceInfo {
-  bin: string;
-  pcn: string;
-  personCode: string;
-  id: number;
-  group: number;
+  insurance_name: string;
+  insurance_member_id: string;
+  insurance_group_number: string;
+  insurance_rx_bin: string;
+  insurance_rx_pcn: string;
 }
 
 const PatientProfile: React.FC = () => {
@@ -28,23 +30,25 @@ const PatientProfile: React.FC = () => {
 
   const [editMode, setEditMode] = useState(false); // Start in view mode (not editable)
   const [patientDetails, setPatientDetails] = useState<PatientDetails>({
-    last: "",
-    first: "",
-    dob: "",
-    address: "",
-    primaryDr: "",
+    first_name: "",
+    last_name: "",
+    date_of_birth: "",
+    street: "",
+    city: "",
+    state: "",
+    zipcode: "",
     allergies: "",
-    rxPrinted: "",
-    rxCompleted: "",
-    rxSold: "",
+    rx_printed: "",
+    rx_completed: "",
+    rx_sold: "",
   });
 
   const [insuranceInfo, setInsuranceInfo] = useState<InsuranceInfo>({
-    bin: "",
-    pcn: "",
-    personCode: "",
-    id: 0,
-    group: 0,
+    insurance_name: "",
+    insurance_member_id: "",
+    insurance_group_number: "",
+    insurance_rx_bin: "",
+    insurance_rx_pcn: "",
   });
 
   useEffect(() => {
@@ -73,9 +77,7 @@ const PatientProfile: React.FC = () => {
     const { name, value } = event.target;
     setInsuranceInfo((prevDetails) => ({
       ...prevDetails,
-      [name]: name === "id" || name === "group"
-        ? value === "" ? 0 : Number(value)
-        : value,
+      [name]: value,
     }));
   };
 
@@ -107,56 +109,78 @@ const PatientProfile: React.FC = () => {
         <h3>Patient Name</h3>
         <h3>General Information</h3>
         <div>
-          <label htmlFor="patient-last-name">Last Name</label>
-          <input
-            type="text"
-            name="last"
-            id="patient-last-name"
-            value={patientDetails.last}
-            onChange={handlePatientChange}
-            readOnly={!editMode} // Make input read-only if not in edit mode
-          />
-        </div>
-        <div>
           <label htmlFor="patient-first-name">First Name</label>
           <input
             type="text"
-            name="first"
+            name="first_name"
             id="patient-first-name"
-            value={patientDetails.first}
+            value={patientDetails.first_name  || ""}
             onChange={handlePatientChange}
             readOnly={!editMode}
           />
         </div>
         <div>
-          <label htmlFor="patient-dob">DOB</label>
+          <label htmlFor="patient-last-name">Last Name</label>
           <input
             type="text"
-            name="dob"
-            id="patient-dob"
-            value={patientDetails.dob}
+            name="last_name"
+            id="patient-last-name"
+            value={patientDetails.last_name  || ""}
             onChange={handlePatientChange}
             readOnly={!editMode}
           />
         </div>
         <div>
-          <label htmlFor="patient-address">Address</label>
+          <label htmlFor="patient-date-of-birth">Date Of Birth</label>
           <input
             type="text"
-            name="address"
-            id="patient-address"
-            value={patientDetails.address}
+            name="date_of_birth"
+            id="patient-date-of-birth"
+            value={patientDetails.date_of_birth  || ""}
             onChange={handlePatientChange}
             readOnly={!editMode}
           />
         </div>
         <div>
-          <label htmlFor="patient-primary-dr">Primary Dr</label>
+          <label htmlFor="patient-street">Street</label>
           <input
             type="text"
-            name="primaryDr"
-            id="patient-primary-dr"
-            value={patientDetails.primaryDr}
+            name="street"
+            id="patient-street"
+            value={patientDetails.street  || ""}
+            onChange={handlePatientChange}
+            readOnly={!editMode}
+          />
+        </div>
+        <div>
+          <label htmlFor="patient-city">City</label>
+          <input
+            type="text"
+            name="city"
+            id="patient-city"
+            value={patientDetails.city  || ""}
+            onChange={handlePatientChange}
+            readOnly={!editMode}
+          />
+        </div>
+        <div>
+          <label htmlFor="patient-state">State</label>
+          <input
+            type="text"
+            name="state"
+            id="patient-state"
+            value={patientDetails.state  || ""}
+            onChange={handlePatientChange}
+            readOnly={!editMode}
+          />
+        </div>
+        <div>
+          <label htmlFor="patient-zipcode">Zipcode</label>
+          <input
+            type="text"
+            name="zipcode"
+            id="patient-zipcode"
+            value={patientDetails.zipcode  || ""}
             onChange={handlePatientChange}
             readOnly={!editMode}
           />
@@ -167,7 +191,7 @@ const PatientProfile: React.FC = () => {
             type="text"
             name="allergies"
             id="patient-allergies"
-            value={patientDetails.allergies}
+            value={patientDetails.allergies  || ""}
             onChange={handlePatientChange}
             readOnly={!editMode}
           />
@@ -176,9 +200,9 @@ const PatientProfile: React.FC = () => {
           <label htmlFor="patient-rx-printed">Rx Printed</label>
           <input
             type="text"
-            name="rxPrinted"
+            name="rx_printed"
             id="patient-rx-printed"
-            value={patientDetails.rxPrinted}
+            value={patientDetails.rx_printed  || ""}
             onChange={handlePatientChange}
             readOnly={!editMode}
           />
@@ -187,9 +211,9 @@ const PatientProfile: React.FC = () => {
           <label htmlFor="patient-rx-completed">Rx Completed</label>
           <input
             type="text"
-            name="rxCompleted"
+            name="rx_completed"
             id="patient-rx-completed"
-            value={patientDetails.rxCompleted}
+            value={patientDetails.rx_completed  || ""}
             onChange={handlePatientChange}
             readOnly={!editMode}
           />
@@ -198,9 +222,9 @@ const PatientProfile: React.FC = () => {
           <label htmlFor="patient-rx-sold">Rx Sold</label>
           <input
             type="text"
-            name="rxSold"
+            name="rx_sold"
             id="patient-rx-sold"
-            value={patientDetails.rxSold}
+            value={patientDetails.rx_sold  || ""}
             onChange={handlePatientChange}
             readOnly={!editMode}
           />
@@ -212,56 +236,56 @@ const PatientProfile: React.FC = () => {
       <div className="pt-profile-right-side">
         <h3>Insurance Info</h3>
         <div>
-          <label htmlFor="patient-bin">Bin</label>
+          <label htmlFor="patient-insurance-name">Insurance Name</label>
           <input
             type="text"
-            name="bin"
-            id="patient-bin"
-            value={insuranceInfo.bin}
+            name="insurance_name"
+            id="patient-insurance-name"
+            value={insuranceInfo.insurance_name  || ""}
             onChange={handleInsuranceChange}
             readOnly={!editMode}
           />
         </div>
         <div>
-          <label htmlFor="patient-pcn">PCN</label>
+          <label htmlFor="patient-insurance-member-id">Insurance Member ID</label>
           <input
             type="text"
-            name="pcn"
-            id="patient-pcn"
-            value={insuranceInfo.pcn}
+            name="insurance_member_id"
+            id="patient-insurance-member-id"
+            value={insuranceInfo.insurance_member_id  || ""}
             onChange={handleInsuranceChange}
             readOnly={!editMode}
           />
         </div>
         <div>
-          <label htmlFor="patient-person-code">Person Code</label>
+          <label htmlFor="patient-insurance-group-number">Insurance Group Number</label>
           <input
             type="text"
-            name="personCode"
-            id="patient-person-code"
-            value={insuranceInfo.personCode}
+            name="insurance_group_number"
+            id="patient-insurance-group-number"
+            value={insuranceInfo.insurance_group_number  || ""}
             onChange={handleInsuranceChange}
             readOnly={!editMode}
           />
         </div>
         <div>
-          <label htmlFor="patient-id">ID #</label>
+          <label htmlFor="patient-insurance-rx-bin">Insurance Rx Bin</label>
           <input
-            type="number"
-            name="id"
-            id="patient-id"
-            value={insuranceInfo.id === 0 ? "" : insuranceInfo.id}
+            type="text"
+            name="insurance_rx_bin"
+            id="patient-insurance-rx-bin"
+            value={insuranceInfo.insurance_rx_bin  || ""}
             onChange={handleInsuranceChange}
             readOnly={!editMode}
           />
         </div>
         <div>
-          <label htmlFor="patient-group">Group #</label>
+          <label htmlFor="patient-insurance-rx-pcn">Insurance Rx Pcn</label>
           <input
-            type="number"
-            name="group"
-            id="patient-group"
-            value={insuranceInfo.group === 0 ? "" : insuranceInfo.group}
+            type="text"
+            name="insurance_rx_pcn"
+            id="patient-insurance-rx-pcn"
+            value={insuranceInfo.insurance_rx_pcn  || ""}
             onChange={handleInsuranceChange}
             readOnly={!editMode}
           />

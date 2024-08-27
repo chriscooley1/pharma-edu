@@ -3,12 +3,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "./DoctorProfile.css";
 
 interface DoctorDetails {
-  last: string;
-  first: string;
-  drType: string;
-  address: string;
+  first_name: string;
+  last_name: string;
+  prescriber_type: string;
+  street: string;
+  city: string;
+  state: string;
+  zipcode: string;
+  contact_number: string;
   dea: string;
-  phone: string;
   npi: string;
 }
 
@@ -18,12 +21,15 @@ const DoctorProfile: React.FC = () => {
 
   const [editMode, setEditMode] = useState(false); // Start in view mode (not editable)
   const [doctorDetails, setDoctorDetails] = useState<DoctorDetails>({
-    last: "",
-    first: "",
-    drType: "",
-    address: "",
+    first_name: "",
+    last_name: "",
+    prescriber_type: "",
+    street: "",
+    city: "",
+    state: "",
+    zipcode: "",
+    contact_number: "",
     dea: "",
-    phone: "",
     npi: "",
   });
 
@@ -42,7 +48,7 @@ const DoctorProfile: React.FC = () => {
     }));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     try {
       // Save to localStorage
       localStorage.setItem("doctorDetails", JSON.stringify(doctorDetails));
@@ -64,45 +70,89 @@ const DoctorProfile: React.FC = () => {
       <div className="dr-main">
         <h3>Doctor Name First/Last</h3>
         <div>
-          <label htmlFor="doctor-last-name">Last Name</label>
-          <input
-            type="text"
-            name="last"
-            id="doctor-last-name"
-            value={doctorDetails.last}
-            onChange={handleDoctorChange}
-            readOnly={!editMode} // Make input read-only if not in edit mode
-          />
-        </div>
-        <div>
           <label htmlFor="doctor-first-name">First Name</label>
           <input
             type="text"
-            name="first"
+            name="first_name"
             id="doctor-first-name"
-            value={doctorDetails.first}
+            value={doctorDetails.first_name  || ""}
             onChange={handleDoctorChange}
             readOnly={!editMode}
           />
         </div>
         <div>
-          <label htmlFor="doctor-dr-type">Dr Type</label>
+          <label htmlFor="doctor-last-name">Last Name</label>
           <input
             type="text"
-            name="drType"
-            id="doctor-dr-type"
-            value={doctorDetails.drType}
+            name="last_name"
+            id="doctor-last-name"
+            value={doctorDetails.last_name  || ""}
             onChange={handleDoctorChange}
             readOnly={!editMode}
           />
         </div>
         <div>
-          <label htmlFor="doctor-address">Address</label>
+          <label htmlFor="doctor-prescriber-type">Prescriber Type</label>
           <input
             type="text"
-            name="address"
-            id="doctor-address"
-            value={doctorDetails.address}
+            name="prescriber_type"
+            id="doctor-prescriber-type"
+            value={doctorDetails.prescriber_type  || ""}
+            onChange={handleDoctorChange}
+            readOnly={!editMode}
+          />
+        </div>
+        <div>
+          <label htmlFor="doctor-street">Street</label>
+          <input
+            type="text"
+            name="street"
+            id="doctor-street"
+            value={doctorDetails.street  || ""}
+            onChange={handleDoctorChange}
+            readOnly={!editMode}
+          />
+        </div>
+        <div>
+          <label htmlFor="doctor-city">City</label>
+          <input
+            type="text"
+            name="city"
+            id="doctor-city"
+            value={doctorDetails.city  || ""}
+            onChange={handleDoctorChange}
+            readOnly={!editMode}
+          />
+        </div>
+        <div>
+          <label htmlFor="doctor-state">State</label>
+          <input
+            type="text"
+            name="state"
+            id="doctor-state"
+            value={doctorDetails.state  || ""}
+            onChange={handleDoctorChange}
+            readOnly={!editMode}
+          />
+        </div>
+        <div>
+          <label htmlFor="doctor-zipcode">Zipcode</label>
+          <input
+            type="text"
+            name="zipcode"
+            id="doctor-zipcode"
+            value={doctorDetails.zipcode  || ""}
+            onChange={handleDoctorChange}
+            readOnly={!editMode}
+          />
+        </div>
+        <div>
+          <label htmlFor="doctor-contact-number">Contact Number</label>
+          <input
+            type="text"
+            name="contact_number"
+            id="doctor-contact-number"
+            value={doctorDetails.contact_number  || ""}
             onChange={handleDoctorChange}
             readOnly={!editMode}
           />
@@ -113,18 +163,7 @@ const DoctorProfile: React.FC = () => {
             type="text"
             name="dea"
             id="doctor-dea"
-            value={doctorDetails.dea}
-            onChange={handleDoctorChange}
-            readOnly={!editMode}
-          />
-        </div>
-        <div>
-          <label htmlFor="doctor-phone">Phone</label>
-          <input
-            type="text"
-            name="phone"
-            id="doctor-phone"
-            value={doctorDetails.phone}
+            value={doctorDetails.dea  || ""}
             onChange={handleDoctorChange}
             readOnly={!editMode}
           />
@@ -135,7 +174,7 @@ const DoctorProfile: React.FC = () => {
             type="text"
             name="npi"
             id="doctor-npi"
-            value={doctorDetails.npi}
+            value={doctorDetails.npi  || ""}
             onChange={handleDoctorChange}
             readOnly={!editMode}
           />

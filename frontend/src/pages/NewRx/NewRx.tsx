@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./NewRx.css";
 
 interface RxDetails {
-  ptName: string;
-  dob: string;
-  drName: string;
-  dateOfRx: string;
-  medication: string;
+  rx_number: number | null;
+  patient_id: number | null;
+  prescriber_id: number | null;
+  prescribed_date: string;
+  rx_item_id: number;
   directions: string;
-  quantityWritten: number;
-  quantityDispensed: number;
+  quantity: number;
+  quantity_dispensed: number;
   refills: number;
-  techInitials: string;
+  status: string;
+  tech_initials: string;
 }
 
 const NewRx: React.FC = () => {
@@ -20,23 +22,22 @@ const NewRx: React.FC = () => {
 
   const [editMode, setEditMode] = useState(false); // Start in view mode (not editable)
   const [rxDetails, setRxDetails] = useState<RxDetails>({
-    ptName: "",
-    dob: "",
-    drName: "",
-    dateOfRx: "",
-    medication: "",
+    rx_number: null,
+    patient_id: null,
+    prescriber_id: null,
+    prescribed_date: "",
+    rx_item_id: 0,
     directions: "",
-    quantityWritten: 0,
-    quantityDispensed: 0,
+    quantity: 0,
+    quantity_dispensed: 0,
     refills: 0,
-    techInitials: "",
+    status: "pending",  // Default status to pending
+    tech_initials: "",
   });
 
   useEffect(() => {
-    const savedRxDetails = localStorage.getItem("rxDetails");
-    if (savedRxDetails) {
-      setRxDetails(JSON.parse(savedRxDetails));
-    }
+    // Fetch existing RxItem details from backend (if needed)
+    // Example: axios.get(`/prescriptions/${rx_number}`).then(response => setRxDetails(response.data));
   }, []);
 
   const handleRxChange = (
@@ -45,22 +46,57 @@ const NewRx: React.FC = () => {
     const { name, value } = event.target;
     setRxDetails((prevDetails) => ({
       ...prevDetails,
-      [name]: name === "quantityWritten" || name === "quantityDispensed" || name === "refills" 
+      [name]: name === "rx_number" || 
+              name === "patient_id" || 
+              name === "rx_item_id" || 
+              name === "quantity" || 
+              name === "quantity_dispensed" || 
+              name === "refills" 
         ? value === "" ? 0 : Number(value) 
-        : value,
+        : name === "status"
+        ? value.toLowerCase() // Ensure status is in lowercase
+        : value || "",
     }));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     try {
-      // Save to localStorage
-      localStorage.setItem("rxDetails", JSON.stringify(rxDetails));
-      alert("Rx details saved successfully!");
-      setEditMode(false); // Disable edit mode after saving
-      navigate("/newrx"); // Redirect to the NewRx page after saving
-    } catch (error) {
-      console.error("Error saving rx details:", error);
-      alert("Failed to save rx details.");
+      // Ensure the patient exists
+      const patientResponse = await axios.get(`http://localhost:8000/patients/${rxDetails.patient_id}`);
+      if (!patientResponse.data) {
+        alert("Patient does not exist. Please create the patient first.");
+        return;
+      }
+  
+      if (rxDetails.rx_number === null) {
+        // If rx_number is null, create a new Prescription
+        const response = await axios.post('http://localhost:8000/prescriptions', rxDetails);
+        setRxDetails((prevDetails) => ({
+          ...prevDetails,
+          rx_number: response.data.rx_number, // Set the rx_number returned from the backend
+        }));
+        alert("Prescription details saved successfully!");
+      } else {
+        // If rx_number is set, update the existing Prescription
+        await axios.patch(`http://localhost:8000/prescriptions/${rxDetails.rx_number}`, rxDetails);
+        alert("Prescription details updated successfully!");
+      }
+      setEditMode(false);
+      navigate("/newrx");
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.error("Error saving prescription details:", err.message);
+        if (err.response) {
+          console.error("Response status:", err.response.status);
+          console.error("Response data:", err.response.data); // Log the error response
+          if (err.response.data.detail) {
+            console.error("Validation details:", err.response.data.detail);
+          }
+        }
+      } else {
+        console.error("Unexpected error:", err);
+      }
+      alert("Failed to save prescription details.");
     }
   };
 
@@ -72,56 +108,45 @@ const NewRx: React.FC = () => {
     <div className="new-rx-container">
       <div className="new-rx-left-side">
         <div>
-          <label htmlFor="rx-pt-name">Patient Last Name</label>
+          <label htmlFor="rx-patient-id">Patient ID</label>
           <input
-            type="text"
-            name="ptName"
-            id="rx-pt-name"
-            value={rxDetails.ptName}
-            onChange={handleRxChange}
-            readOnly={!editMode} // Make input read-only if not in edit mode
-          />
-        </div>
-        <div>
-          <label htmlFor="rx-dob">DOB</label>
-          <input
-            type="text"
-            name="dob"
-            id="rx-dob"
-            value={rxDetails.dob}
+            type="number"
+            name="patient_id"
+            id="rx-patient-id"
+            value={rxDetails.patient_id !== null ? rxDetails.patient_id : ""}
             onChange={handleRxChange}
             readOnly={!editMode}
           />
         </div>
         <div>
-          <label htmlFor="rx-dr-name">Dr Name</label>
+          <label htmlFor="rx-prescriber-id">Prescriber ID</label>
           <input
-            type="text"
-            name="drName"
-            id="rx-dr-name"
-            value={rxDetails.drName}
+            type="number"
+            name="prescriber_id"
+            id="rx-prescriber-id"
+            value={rxDetails.prescriber_id !== null ? rxDetails.prescriber_id : ""}
             onChange={handleRxChange}
             readOnly={!editMode}
           />
         </div>
         <div>
-          <label htmlFor="rx-date-of-rx">Date of Rx</label>
+          <label htmlFor="rx-prescribed-date">Prescribed Date</label>
           <input
-            type="text"
-            name="dateOfRx"
-            id="rx-date-of-rx"
-            value={rxDetails.dateOfRx}
+            type="date"
+            name="prescribed_date"
+            id="rx-prescribed-date"
+            value={rxDetails.prescribed_date}
             onChange={handleRxChange}
             readOnly={!editMode}
           />
         </div>
         <div>
-          <label htmlFor="rx-medication">Medication</label>
+          <label htmlFor="rx-item-id">Rx Item ID</label>
           <input
-            type="text"
-            name="medication"
-            id="rx-medication"
-            value={rxDetails.medication}
+            type="number"
+            name="rx_item_id"
+            id="rx-item-id"
+            value={rxDetails.rx_item_id !== 0 ? rxDetails.rx_item_id : ""}
             onChange={handleRxChange}
             readOnly={!editMode}
           />
@@ -131,19 +156,19 @@ const NewRx: React.FC = () => {
           <textarea
             name="directions"
             id="rx-directions"
-            value={rxDetails.directions}
+            value={rxDetails.directions || ""}
             onChange={handleRxChange}
             className="directions-textarea"
             readOnly={!editMode}
           />
         </div>
         <div>
-          <label htmlFor="rx-quantity-written">Quantity Written</label>
+          <label htmlFor="rx-quantity">Quantity</label>
           <input
             type="number"
-            name="quantityWritten"
-            id="rx-quantity-written"
-            value={rxDetails.quantityWritten === 0 ? "" : rxDetails.quantityWritten}
+            name="quantity"
+            id="rx-quantity"
+            value={rxDetails.quantity !== 0 ? rxDetails.quantity : ""}
             onChange={handleRxChange}
             readOnly={!editMode}
           />
@@ -152,9 +177,9 @@ const NewRx: React.FC = () => {
           <label htmlFor="rx-quantity-dispensed">Quantity Dispensed</label>
           <input
             type="number"
-            name="quantityDispensed"
+            name="quantity_dispensed"
             id="rx-quantity-dispensed"
-            value={rxDetails.quantityDispensed === 0 ? "" : rxDetails.quantityDispensed}
+            value={rxDetails.quantity_dispensed !== 0 ? rxDetails.quantity_dispensed : ""}
             onChange={handleRxChange}
             readOnly={!editMode}
           />
@@ -165,7 +190,18 @@ const NewRx: React.FC = () => {
             type="number"
             name="refills"
             id="rx-refills"
-            value={rxDetails.refills === 0 ? "" : rxDetails.refills}
+            value={rxDetails.refills !== 0 ? rxDetails.refills : ""}
+            onChange={handleRxChange}
+            readOnly={!editMode}
+          />
+        </div>
+        <div>
+          <label htmlFor="rx-status">Status</label>
+          <input
+            type="text"
+            name="status"
+            id="rx-status"
+            value={rxDetails.status || ""}
             onChange={handleRxChange}
             readOnly={!editMode}
           />
@@ -174,9 +210,9 @@ const NewRx: React.FC = () => {
           <label htmlFor="rx-tech-initials">Tech Initials</label>
           <input
             type="text"
-            name="techInitials"
+            name="tech_initials"
             id="rx-tech-initials"
-            value={rxDetails.techInitials}
+            value={rxDetails.tech_initials || ""}
             onChange={handleRxChange}
             readOnly={!editMode}
           />
