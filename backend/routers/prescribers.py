@@ -16,6 +16,15 @@ async def get_prescribers(session: Session = Depends(get_db)):
     return session.exec(select(Prescriber)).all()
 
 
+@router.get("/prescribers/search")
+async def search_prescribers(query: str, session: Session = Depends(get_db)):
+    prescriber = session.query(Prescriber).filter(Prescriber.last_name.ilike(f"%{query}%")).first()
+    if prescriber:
+        return prescriber
+    else:
+        raise PrescriberNotFound(id=0)
+
+
 @router.post("/prescribers")
 async def create_prescriber(prescriber: Prescriber, session: Session = Depends(get_db)) -> PrescriberCreateResponse:
     session.add(prescriber)

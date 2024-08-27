@@ -20,7 +20,7 @@ const DoctorProfile: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [editMode, setEditMode] = useState(false); // Start in view mode (not editable)
+  const [editMode, setEditMode] = useState(false);
   const [doctorDetails, setDoctorDetails] = useState<DoctorDetails>({
     first_name: "",
     last_name: "",
@@ -35,18 +35,14 @@ const DoctorProfile: React.FC = () => {
   });
 
   useEffect(() => {
-    const fetchDoctorDetails = async () => {
-      try {
-        const doctorId = 1; // Replace with actual doctor ID
-        const response = await axios.get(`http://localhost:8000/prescribers/${doctorId}`);
-        setDoctorDetails(response.data);
-      } catch (error) {
-        console.error("Error fetching doctor details:", error);
-      }
-    };
-  
-    fetchDoctorDetails();
-  }, []);
+    if (location.state?.doctorData) {
+      const doctorData = location.state.doctorData;
+      setDoctorDetails(doctorData);
+    } else {
+      // Handle case when no doctor data is passed (e.g., direct access to profile page)
+      // Perhaps redirect back to the search page or show a message.
+    }
+  }, [location.state]);
 
   const handleDoctorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -61,8 +57,8 @@ const DoctorProfile: React.FC = () => {
       if (doctorDetails.first_name && doctorDetails.last_name) {
         await axios.post("http://localhost:8000/prescribers", doctorDetails);
         alert("Doctor details saved successfully!");
-        setEditMode(false); // Disable edit mode after saving
-        navigate("/doctorprofile"); // Redirect to the DoctorProfile page after saving
+        setEditMode(false);
+        navigate("/doctorprofile");
       } else {
         alert("Please fill out the required fields.");
       }
