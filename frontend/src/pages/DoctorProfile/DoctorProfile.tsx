@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./DoctorProfile.css";
+import axios from "axios";
 
 interface DoctorDetails {
   first_name: string;
@@ -34,10 +35,17 @@ const DoctorProfile: React.FC = () => {
   });
 
   useEffect(() => {
-    const savedDetails = localStorage.getItem("doctorDetails");
-    if (savedDetails) {
-      setDoctorDetails(JSON.parse(savedDetails));
-    }
+    const fetchDoctorDetails = async () => {
+      try {
+        const doctorId = 1; // Replace with actual doctor ID
+        const response = await axios.get(`http://localhost:8000/prescribers/${doctorId}`);
+        setDoctorDetails(response.data);
+      } catch (error) {
+        console.error("Error fetching doctor details:", error);
+      }
+    };
+  
+    fetchDoctorDetails();
   }, []);
 
   const handleDoctorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,11 +58,14 @@ const DoctorProfile: React.FC = () => {
 
   const handleSave = async () => {
     try {
-      // Save to localStorage
-      localStorage.setItem("doctorDetails", JSON.stringify(doctorDetails));
-      alert("Doctor details saved successfully!");
-      setEditMode(false); // Disable edit mode after saving
-      navigate("/doctorprofile");
+      if (doctorDetails.first_name && doctorDetails.last_name) {
+        await axios.post("http://localhost:8000/prescribers", doctorDetails);
+        alert("Doctor details saved successfully!");
+        setEditMode(false); // Disable edit mode after saving
+        navigate("/doctorprofile"); // Redirect to the DoctorProfile page after saving
+      } else {
+        alert("Please fill out the required fields.");
+      }
     } catch (error) {
       console.error("Error saving doctor details:", error);
       alert("Failed to save doctor details.");

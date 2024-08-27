@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AddPatient.css";
+import axios from "axios";
 
 interface PatientDetails {
   first_name: string;
   last_name: string;
-  date_of_birth: string; // This can be stored as a string and converted to a date when sending to the backend
+  date_of_birth: string;
   street: string;
   city: string;
   state: string;
@@ -45,15 +46,7 @@ const AddPatient: React.FC = () => {
   });
 
   useEffect(() => {
-    const savedPatientDetails = localStorage.getItem("patientDetails");
-    if (savedPatientDetails) {
-      setPatientDetails(JSON.parse(savedPatientDetails));
-    }
-
-    const savedInsuranceInfo = localStorage.getItem("insuranceInfo");
-    if (savedInsuranceInfo) {
-      setInsuranceInfo(JSON.parse(savedInsuranceInfo));
-    }
+    // Fetch existing AddPatient details from backend (if needed)
   }, []);
 
   const handlePatientChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,9 +69,18 @@ const AddPatient: React.FC = () => {
 
   const handleSave = async () => {
     try {
-      // Save to localStorage
-      localStorage.setItem("patientDetails", JSON.stringify(patientDetails));
-      localStorage.setItem("insuranceInfo", JSON.stringify(insuranceInfo));
+      const patientResponse = await axios.post("http://localhost:8000/patients", patientDetails);
+      const insuranceResponse = await axios.patch(
+        `http://localhost:8000/patients/${patientResponse.data.patient_id}`,
+        {
+          insurance_name: insuranceInfo.insurance_name,
+          insurance_member_id: insuranceInfo.insurance_member_id,
+          insurance_group_number: insuranceInfo.insurance_group_number,
+          insurance_rx_bin: insuranceInfo.insurance_rx_bin,
+          insurance_rx_pcn: insuranceInfo.insurance_rx_pcn,
+        }
+      );
+      
       alert("Patient and insurance details saved successfully!");
       setEditMode(false); // Disable edit mode after saving
       navigate("/patientprofile"); // Redirect to the PatientProfile page after saving
@@ -120,7 +122,7 @@ const AddPatient: React.FC = () => {
         <div>
           <label htmlFor="patient-date-of-birth">Date Of Birth</label>
           <input
-            type="text"
+            type="date"
             name="date_of_birth"
             id="patient-date-of-birth"
             value={patientDetails.date_of_birth  || ""}

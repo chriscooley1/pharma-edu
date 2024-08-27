@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./PatientProfile.css";
+import axios from "axios";
 
 interface PatientDetails {
   first_name: string;
   last_name: string;
-  date_of_birth: string; // This can be stored as a string and converted to a date when sending to the backend
+  date_of_birth: string;
   street: string;
   city: string;
   state: string;
@@ -52,15 +53,27 @@ const PatientProfile: React.FC = () => {
   });
 
   useEffect(() => {
-    const savedPatientDetails = localStorage.getItem("patientDetails");
-    if (savedPatientDetails) {
-      setPatientDetails(JSON.parse(savedPatientDetails));
-    }
-
-    const savedInsuranceInfo = localStorage.getItem("insuranceInfo");
-    if (savedInsuranceInfo) {
-      setInsuranceInfo(JSON.parse(savedInsuranceInfo));
-    }
+    const fetchPatientDetails = async () => {
+      try {
+        const patientId = 1; // Replace with actual patient ID
+        const patientResponse = await axios.get(`http://localhost:8000/patients/${patientId}`);
+        const patientData = patientResponse.data;
+        setPatientDetails(patientData);
+  
+        // If insurance details are part of the patient data, set them as well
+        setInsuranceInfo({
+          insurance_name: patientData.insurance_name || "",
+          insurance_member_id: patientData.insurance_member_id || "",
+          insurance_group_number: patientData.insurance_group_number || "",
+          insurance_rx_bin: patientData.insurance_rx_bin || "",
+          insurance_rx_pcn: patientData.insurance_rx_pcn || "",
+        });
+      } catch (error) {
+        console.error("Error fetching patient details:", error);
+      }
+    };
+  
+    fetchPatientDetails();
   }, []);
 
   const handlePatientChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,16 +94,17 @@ const PatientProfile: React.FC = () => {
     }));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     try {
-      // Save to localStorage
-      localStorage.setItem("patientDetails", JSON.stringify(patientDetails));
-      localStorage.setItem("insuranceInfo", JSON.stringify(insuranceInfo));
-      alert("Patient and insurance details saved successfully!");
+      const patientId = 1; // Replace with actual patient ID
+      await axios.patch(`http://localhost:8000/patients/${patientId}`, patientDetails);
+      await axios.patch(`http://localhost:8000/patients/${patientId}`, insuranceInfo);
+  
+      alert("Patient and insurance details updated successfully!");
       setEditMode(false); // Disable edit mode after saving
     } catch (error) {
-      console.error("Error saving patient and insurance details:", error);
-      alert("Failed to save patient and insurance details.");
+      console.error("Error updating patient and insurance details:", error);
+      alert("Failed to update patient and insurance details.");
     }
   };
 
@@ -133,7 +147,7 @@ const PatientProfile: React.FC = () => {
         <div>
           <label htmlFor="patient-date-of-birth">Date Of Birth</label>
           <input
-            type="text"
+            type="date"
             name="date_of_birth"
             id="patient-date-of-birth"
             value={patientDetails.date_of_birth  || ""}
