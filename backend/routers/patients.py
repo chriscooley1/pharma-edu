@@ -14,6 +14,15 @@ async def get_patients(session: Session = Depends(get_db)) -> list[PatientBasicI
     return session.exec(select(Patient.id, Patient.first_name, Patient.last_name, Patient.date_of_birth)).all()
 
 
+@router.get("/patients/search")
+async def search_patient(query: str, session: Session = Depends(get_db)):
+    patient = session.query(Patient).filter(Patient.last_name.ilike(f"%{query}%")).first()
+    if patient:
+        return patient
+    else:
+        raise PatientNotFound(id=0)
+
+
 @router.get("/patients/{patient_id}")
 async def get_patient(patient_id: int, session: Session = Depends(get_db)) -> Patient:
     patient: Patient | None = session.get(Patient, patient_id)

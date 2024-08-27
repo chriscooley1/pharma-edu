@@ -1,17 +1,26 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../../components/SearchBar/SearchBar";
+import axios from "axios";
 import "./NewPatient.css";
 
 const NewPatient: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleSearch = (query: string) => {
-    console.log("Searching for patient:", query);
-    // Implement search logic here, e.g., fetch patient data
+  const handleSearch = async (query: string) => {
+    try {
+      const response = await axios.get(`http://localhost:8000/patients/search`, { params: { query } });
+      const patientData = response.data;
 
-    // Navigate to the PatientProfile page
-    navigate("/patientprofile", { state: { query } });
+      if (patientData) {
+        navigate("/patientprofile", { state: { patientData } });
+      } else {
+        alert("Patient not found");
+      }
+    } catch (error) {
+      console.error("Error searching for patient:", error);
+      alert("Failed to search for patient.");
+    }
   };
 
   const goToAddPatient = () => {
@@ -21,7 +30,7 @@ const NewPatient: React.FC = () => {
   return (
     <div className="new-patient-container">
       <div className="search-bar">
-        <SearchBar placeholder="Search for a patient" onSearch={handleSearch} />
+        <SearchBar placeholder="Search for patient by last name" onSearch={handleSearch} />
       </div>
       <button
         type="button"

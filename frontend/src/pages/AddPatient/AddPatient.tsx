@@ -70,7 +70,9 @@ const AddPatient: React.FC = () => {
   const handleSave = async () => {
     try {
       const patientResponse = await axios.post("http://localhost:8000/patients", patientDetails);
-      const insuranceResponse = await axios.patch(
+      
+      // Assuming you just want to save the insurance info and don't need the response:
+      await axios.patch(
         `http://localhost:8000/patients/${patientResponse.data.patient_id}`,
         {
           insurance_name: insuranceInfo.insurance_name,

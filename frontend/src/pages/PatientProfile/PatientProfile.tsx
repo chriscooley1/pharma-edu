@@ -4,6 +4,7 @@ import "./PatientProfile.css";
 import axios from "axios";
 
 interface PatientDetails {
+  id: number;
   first_name: string;
   last_name: string;
   date_of_birth: string;
@@ -29,8 +30,9 @@ const PatientProfile: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [editMode, setEditMode] = useState(false); // Start in view mode (not editable)
+  const [editMode, setEditMode] = useState(false); 
   const [patientDetails, setPatientDetails] = useState<PatientDetails>({
+    id: 0,
     first_name: "",
     last_name: "",
     date_of_birth: "",
@@ -53,28 +55,22 @@ const PatientProfile: React.FC = () => {
   });
 
   useEffect(() => {
-    const fetchPatientDetails = async () => {
-      try {
-        const patientId = 1; // Replace with actual patient ID
-        const patientResponse = await axios.get(`http://localhost:8000/patients/${patientId}`);
-        const patientData = patientResponse.data;
-        setPatientDetails(patientData);
-  
-        // If insurance details are part of the patient data, set them as well
-        setInsuranceInfo({
-          insurance_name: patientData.insurance_name || "",
-          insurance_member_id: patientData.insurance_member_id || "",
-          insurance_group_number: patientData.insurance_group_number || "",
-          insurance_rx_bin: patientData.insurance_rx_bin || "",
-          insurance_rx_pcn: patientData.insurance_rx_pcn || "",
-        });
-      } catch (error) {
-        console.error("Error fetching patient details:", error);
-      }
-    };
-  
-    fetchPatientDetails();
-  }, []);
+    if (location.state?.patientData) {
+      const patientData = location.state.patientData;
+      setPatientDetails(patientData);
+
+      setInsuranceInfo({
+        insurance_name: patientData.insurance_name || "",
+        insurance_member_id: patientData.insurance_member_id || "",
+        insurance_group_number: patientData.insurance_group_number || "",
+        insurance_rx_bin: patientData.insurance_rx_bin || "",
+        insurance_rx_pcn: patientData.insurance_rx_pcn || "",
+      });
+    } else {
+      // Handle case when no patient data is passed (e.g., direct access to profile page)
+      // Perhaps redirect back to the search page or show a message.
+    }
+  }, [location.state]);
 
   const handlePatientChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -96,12 +92,12 @@ const PatientProfile: React.FC = () => {
 
   const handleSave = async () => {
     try {
-      const patientId = 1; // Replace with actual patient ID
+      const patientId = patientDetails.id; 
       await axios.patch(`http://localhost:8000/patients/${patientId}`, patientDetails);
       await axios.patch(`http://localhost:8000/patients/${patientId}`, insuranceInfo);
   
       alert("Patient and insurance details updated successfully!");
-      setEditMode(false); // Disable edit mode after saving
+      setEditMode(false); 
     } catch (error) {
       console.error("Error updating patient and insurance details:", error);
       alert("Failed to update patient and insurance details.");
@@ -109,7 +105,7 @@ const PatientProfile: React.FC = () => {
   };
 
   const toggleEditMode = () => {
-    setEditMode(!editMode); // Toggle edit mode
+    setEditMode(!editMode); 
   };
 
   const goToNewRx = () => {
@@ -118,7 +114,6 @@ const PatientProfile: React.FC = () => {
 
   return (
     <div className="patient-profile-container">
-      {/* <h2>Search Query: {searchQuery}</h2> */}
       <div className="pt-profile-left-side">
         <h3>Patient Name</h3>
         <h3>General Information</h3>
@@ -250,7 +245,7 @@ const PatientProfile: React.FC = () => {
       <div className="pt-profile-right-side">
         <h3>Insurance Info</h3>
         <div>
-          <label htmlFor="patient-insurance-name">Insurance Name</label>
+          <label htmlFor="patient-insurance-name">Name</label>
           <input
             type="text"
             name="insurance_name"
@@ -261,7 +256,7 @@ const PatientProfile: React.FC = () => {
           />
         </div>
         <div>
-          <label htmlFor="patient-insurance-member-id">Insurance Member ID</label>
+          <label htmlFor="patient-insurance-member-id">Member ID</label>
           <input
             type="text"
             name="insurance_member_id"
@@ -272,7 +267,7 @@ const PatientProfile: React.FC = () => {
           />
         </div>
         <div>
-          <label htmlFor="patient-insurance-group-number">Insurance Group Number</label>
+          <label htmlFor="patient-insurance-group-number">Group Number</label>
           <input
             type="text"
             name="insurance_group_number"
@@ -283,7 +278,7 @@ const PatientProfile: React.FC = () => {
           />
         </div>
         <div>
-          <label htmlFor="patient-insurance-rx-bin">Insurance Rx Bin</label>
+          <label htmlFor="patient-insurance-rx-bin">Rx Bin</label>
           <input
             type="text"
             name="insurance_rx_bin"
@@ -294,7 +289,7 @@ const PatientProfile: React.FC = () => {
           />
         </div>
         <div>
-          <label htmlFor="patient-insurance-rx-pcn">Insurance Rx Pcn</label>
+          <label htmlFor="patient-insurance-rx-pcn">Rx Pcn</label>
           <input
             type="text"
             name="insurance_rx_pcn"
