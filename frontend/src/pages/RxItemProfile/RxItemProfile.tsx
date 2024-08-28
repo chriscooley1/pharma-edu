@@ -75,10 +75,10 @@ const RxItemProfile: React.FC = () => {
     <div className="rx-item-profile-container">
       <h3>Rx Name</h3>
       <div className="button-group">
-        <button type="button" onClick={toggleEditMode}>
+        <button type="button" className="edit-button" onClick={toggleEditMode}>
           {editMode ? "Cancel" : "Edit"}
         </button>
-        <button type="button" onClick={handleSave} disabled={!editMode}>
+        <button type="button" className="save-button" onClick={handleSave} disabled={!editMode}>
           Save
         </button>
       </div>

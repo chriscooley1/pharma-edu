@@ -301,10 +301,10 @@ const PatientProfile: React.FC = () => {
         </div>
       </div>
       <div className="button-group">
-        <button type="button" onClick={toggleEditMode}>
+        <button type="button" className="edit-button" onClick={toggleEditMode}>
           {editMode ? "Cancel" : "Edit"}
         </button>
-        <button type="button" onClick={handleSave} disabled={!editMode}>
+        <button type="button" className="save-button" onClick={handleSave} disabled={!editMode}>
           Save
         </button>
       </div>
