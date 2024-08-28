@@ -113,6 +113,7 @@ class Patient(SQLModel, table=True):
     first_name: str
     last_name: str
     date_of_birth: date
+    phone_number: str
     street: str
     city: str
     state: State
