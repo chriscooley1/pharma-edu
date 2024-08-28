@@ -76,6 +76,14 @@ const DoctorProfile: React.FC = () => {
     <div className="doctor-profile-container">
       <div className="dr-main">
         <h3>Doctor Name First/Last</h3>
+        <div className="button-group">
+          <button type="button" onClick={toggleEditMode}>
+            {editMode ? "Cancel" : "Edit"}
+          </button>
+          <button type="button" onClick={handleSave} disabled={!editMode}>
+            Save
+          </button>
+        </div>
         <div>
           <label htmlFor="doctor-first-name">First Name</label>
           <input
@@ -185,15 +193,6 @@ const DoctorProfile: React.FC = () => {
             onChange={handleDoctorChange}
             readOnly={!editMode}
           />
-        </div>
-        
-        <div className="button-group">
-          <button type="button" onClick={toggleEditMode}>
-            {editMode ? "Cancel" : "Edit"}
-          </button>
-          <button type="button" onClick={handleSave} disabled={!editMode}>
-            Save
-          </button>
         </div>
       </div>
     </div>

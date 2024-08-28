@@ -73,7 +73,15 @@ const RxItemProfile: React.FC = () => {
 
   return (
     <div className="rx-item-profile-container">
-      <h3>Doctor Name First/Last</h3>
+      <h3>Rx Name</h3>
+      <div className="button-group">
+        <button type="button" onClick={toggleEditMode}>
+          {editMode ? "Cancel" : "Edit"}
+        </button>
+        <button type="button" onClick={handleSave} disabled={!editMode}>
+          Save
+        </button>
+      </div>
       <div className="rx-main">
         <div>
           <label htmlFor="rx-name">Name</label>
@@ -141,14 +149,6 @@ const RxItemProfile: React.FC = () => {
             readOnly={!editMode}
           />
         </div>
-      </div>
-      <div className="button-group">
-        <button type="button" onClick={toggleEditMode}>
-          {editMode ? "Cancel" : "Edit"}
-        </button>
-        <button type="button" onClick={handleSave} disabled={!editMode}>
-          Save
-        </button>
       </div>
     </div>
   );
