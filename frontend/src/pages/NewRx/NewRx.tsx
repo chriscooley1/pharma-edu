@@ -70,7 +70,7 @@ const NewRx: React.FC = () => {
   
       if (rxDetails.rx_number === null) {
         // If rx_number is null, create a new Prescription
-        const response = await axios.post('http://localhost:8000/prescriptions', rxDetails);
+        const response = await axios.post("http://localhost:8000/prescriptions", rxDetails);
         setRxDetails((prevDetails) => ({
           ...prevDetails,
           rx_number: response.data.rx_number, // Set the rx_number returned from the backend

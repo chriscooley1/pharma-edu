@@ -11,7 +11,6 @@ interface RxDetails {
   expiration: string;
   lot_number: string;
   dea_schedule: string;
-  drug_class: string;
 }
 
 const RxItemProfile: React.FC = () => {
@@ -27,7 +26,6 @@ const RxItemProfile: React.FC = () => {
     expiration: "",
     lot_number: "",
     dea_schedule: "",
-    drug_class: "",
   });
 
   useEffect(() => {
@@ -50,7 +48,7 @@ const RxItemProfile: React.FC = () => {
     try {
       if (rxDetails.id === null) {
         // If id is null, create a new RxItem
-        const response = await axios.post('http://localhost:8000/rx-items', rxDetails);
+        const response = await axios.post("http://localhost:8000/rx-items", rxDetails);
         setRxDetails((prevDetails) => ({
           ...prevDetails,
           id: response.data.rx_item_id, // Set the id returned from the backend
@@ -139,17 +137,6 @@ const RxItemProfile: React.FC = () => {
             name="dea_schedule"
             id="rx-dea-schedule"
             value={rxDetails.dea_schedule || ""}
-            onChange={handleRxChange}
-            readOnly={!editMode}
-          />
-        </div>
-        <div>
-          <label htmlFor="rx-drug-class">Drug Class</label>
-          <input
-            type="text"
-            name="drug_class"
-            id="rx-drug-class"
-            value={rxDetails.drug_class || ""}
             onChange={handleRxChange}
             readOnly={!editMode}
           />
