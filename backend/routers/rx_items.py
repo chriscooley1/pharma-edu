@@ -14,13 +14,13 @@ async def get_rx_items(session: Session = Depends(get_db)) -> list[RxItem]:
     return session.exec(select(RxItem)).all()
 
 
-@router.get("/rx-items/search")
-async def search_rx_items(query: str, session: Session = Depends(get_db)):
-    rx_item = session.query(RxItem).filter(RxItem.name.ilike(f"%{query}%")).first()
-    if rx_item:
-        return rx_item
-    else:
-        raise RxItemNotFound(id=0)
+@router.get("/rx-items/{id}")
+async def get_rx_item(id: int, session: Session = Depends(get_db)) -> RxItem:
+    rx_item: RxItem | None = session.get(RxItem, id)
+    if rx_item is None:
+        raise RxItemNotFound(id=id)
+
+    return rx_item
 
 
 @router.post("/rx-items")
