@@ -7,6 +7,7 @@ interface PatientDetails {
   first_name: string;
   last_name: string;
   date_of_birth: string;
+  phone_number: string;
   street: string;
   city: string;
   state: string;
@@ -30,6 +31,7 @@ const AddPatient: React.FC = () => {
     first_name: "",
     last_name: "",
     date_of_birth: "",
+    phone_number: "",
     street: "",
     city: "",
     state: "",
@@ -128,6 +130,17 @@ const AddPatient: React.FC = () => {
             name="date_of_birth"
             id="patient-date-of-birth"
             value={patientDetails.date_of_birth  || ""}
+            onChange={handlePatientChange}
+            readOnly={!editMode}
+          />
+        </div>
+        <div>
+          <label htmlFor="patient-phone-number">Phone Number</label>
+          <input
+            type="text"
+            name="phone_number"
+            id="patient-phone-number"
+            value={patientDetails.phone_number  || ""}
             onChange={handlePatientChange}
             readOnly={!editMode}
           />
