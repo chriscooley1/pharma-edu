@@ -125,6 +125,7 @@ class Patient(SQLModel, table=True):
     insurance_group_number: str | None = None
     insurance_rx_bin: str | None = None
     insurance_rx_pcn: str | None = None
+    insurance_person_code: str
 
 
 class Prescriber(SQLModel, table=True):
@@ -165,4 +166,5 @@ class RxItem(SQLModel, table=True):
     ndc: str
     expiration: date
     lot_number: str
+    dosage_form: str
     dea_schedule: str | None = None
