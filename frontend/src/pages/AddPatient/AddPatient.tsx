@@ -75,20 +75,13 @@ const AddPatient: React.FC = () => {
 
   const handleSave = async () => {
     try {
-      const patientResponse = await axios.post("http://localhost:8000/patients", patientDetails);
-      
-      // Assuming you just want to save the insurance info and don't need the response:
-      await axios.patch(
-        `http://localhost:8000/patients/${patientResponse.data.patient_id}`,
-        {
-          insurance_name: insuranceInfo.insurance_name,
-          insurance_member_id: insuranceInfo.insurance_member_id,
-          insurance_group_number: insuranceInfo.insurance_group_number,
-          insurance_rx_bin: insuranceInfo.insurance_rx_bin,
-          insurance_rx_pcn: insuranceInfo.insurance_rx_pcn,
-          insurance_person_code: insuranceInfo.insurance_person_code,
-        }
-      );
+      // Merge insuranceInfo with patientDetails for the initial POST request
+      const fullPatientDetails = {
+        ...patientDetails,
+        ...insuranceInfo, // Include insurance fields in the initial patient creation
+      };
+  
+      await axios.post("http://localhost:8000/patients", fullPatientDetails);
       
       alert("Patient and insurance details saved successfully!");
       setEditMode(false); // Disable edit mode after saving
