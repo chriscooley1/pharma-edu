@@ -4,6 +4,7 @@ import "./DoctorProfile.css";
 import axios from "axios";
 
 interface DoctorDetails {
+  id: number | null;
   first_name: string;
   last_name: string;
   prescriber_type: string;
@@ -22,6 +23,7 @@ const DoctorProfile: React.FC = () => {
 
   const [editMode, setEditMode] = useState(false);
   const [doctorDetails, setDoctorDetails] = useState<DoctorDetails>({
+    id: null,
     first_name: "",
     last_name: "",
     prescriber_type: "",

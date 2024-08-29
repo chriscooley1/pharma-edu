@@ -4,7 +4,7 @@ import "./PatientProfile.css";
 import axios from "axios";
 
 interface PatientDetails {
-  id: number;
+  id: number | null;
   first_name: string;
   last_name: string;
   date_of_birth: string;
@@ -25,6 +25,7 @@ interface InsuranceInfo {
   insurance_group_number: string;
   insurance_rx_bin: string;
   insurance_rx_pcn: string;
+  insurance_person_code: string;
 }
 
 const PatientProfile: React.FC = () => {
@@ -33,7 +34,7 @@ const PatientProfile: React.FC = () => {
 
   const [editMode, setEditMode] = useState(false); 
   const [patientDetails, setPatientDetails] = useState<PatientDetails>({
-    id: 0,
+    id: null,
     first_name: "",
     last_name: "",
     date_of_birth: "",
@@ -54,6 +55,7 @@ const PatientProfile: React.FC = () => {
     insurance_group_number: "",
     insurance_rx_bin: "",
     insurance_rx_pcn: "",
+    insurance_person_code: "",
   });
 
   useEffect(() => {
@@ -67,6 +69,7 @@ const PatientProfile: React.FC = () => {
         insurance_group_number: patientData.insurance_group_number || "",
         insurance_rx_bin: patientData.insurance_rx_bin || "",
         insurance_rx_pcn: patientData.insurance_rx_pcn || "",
+        insurance_person_code: patientData.insurance_person_code || "",
       });
     } else {
       // Handle case when no patient data is passed (e.g., direct access to profile page)
@@ -308,6 +311,17 @@ const PatientProfile: React.FC = () => {
             name="insurance_rx_pcn"
             id="patient-insurance-rx-pcn"
             value={insuranceInfo.insurance_rx_pcn  || ""}
+            onChange={handleInsuranceChange}
+            readOnly={!editMode}
+          />
+        </div>
+        <div>
+          <label htmlFor="patient-insurance-person-code">Person Code</label>
+          <input
+            type="text"
+            name="insurance_person_code"
+            id="patient-insurance-person-code"
+            value={insuranceInfo.insurance_person_code  || ""}
             onChange={handleInsuranceChange}
             readOnly={!editMode}
           />

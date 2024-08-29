@@ -4,6 +4,7 @@ import "./AddPatient.css";
 import axios from "axios";
 
 interface PatientDetails {
+  id: number | null;
   first_name: string;
   last_name: string;
   date_of_birth: string;
@@ -21,6 +22,7 @@ interface InsuranceInfo {
   insurance_group_number: string;
   insurance_rx_bin: string;
   insurance_rx_pcn: string;
+  insurance_person_code: string;
 }
 
 const AddPatient: React.FC = () => {
@@ -28,6 +30,7 @@ const AddPatient: React.FC = () => {
 
   const [editMode, setEditMode] = useState(false); // Start in view mode (not editable)
   const [patientDetails, setPatientDetails] = useState<PatientDetails>({
+    id: null,
     first_name: "",
     last_name: "",
     date_of_birth: "",
@@ -45,6 +48,7 @@ const AddPatient: React.FC = () => {
     insurance_group_number: "",
     insurance_rx_bin: "",
     insurance_rx_pcn: "",
+    insurance_person_code: "",
   });
 
   useEffect(() => {
@@ -82,6 +86,7 @@ const AddPatient: React.FC = () => {
           insurance_group_number: insuranceInfo.insurance_group_number,
           insurance_rx_bin: insuranceInfo.insurance_rx_bin,
           insurance_rx_pcn: insuranceInfo.insurance_rx_pcn,
+          insurance_person_code: insuranceInfo.insurance_person_code,
         }
       );
       
@@ -257,6 +262,17 @@ const AddPatient: React.FC = () => {
             name="insurance_rx_pcn"
             id="patient-insurance-rx-pcn"
             value={insuranceInfo.insurance_rx_pcn  || ""}
+            onChange={handleInsuranceChange}
+            readOnly={!editMode}
+          />
+        </div>
+        <div>
+          <label htmlFor="patient-insurance-person-code">Person Code</label>
+          <input
+            type="text"
+            name="insurance_person_code"
+            id="patient-insurance-person-code"
+            value={insuranceInfo.insurance_person_code  || ""}
             onChange={handleInsuranceChange}
             readOnly={!editMode}
           />

@@ -11,6 +11,7 @@ interface RxDetails {
   expiration: string;
   lot_number: string;
   dea_schedule: string;
+  dosage_form: string;
 }
 
 const RxItemProfile: React.FC = () => {
@@ -26,6 +27,7 @@ const RxItemProfile: React.FC = () => {
     expiration: "",
     lot_number: "",
     dea_schedule: "",
+    dosage_form: "",
   });
 
   useEffect(() => {
@@ -145,6 +147,17 @@ const RxItemProfile: React.FC = () => {
             name="dea_schedule"
             id="rx-dea-schedule"
             value={rxDetails.dea_schedule || ""}
+            onChange={handleRxChange}
+            readOnly={!editMode}
+          />
+        </div>
+        <div>
+          <label htmlFor="rx-dosage-form">Dosage Form</label>
+          <input
+            type="text"
+            name="dosage_form"
+            id="rx-dosage-form"
+            value={rxDetails.dosage_form || ""}
             onChange={handleRxChange}
             readOnly={!editMode}
           />
