@@ -2,6 +2,7 @@ import React from "react";
 import routes from "../../routes";
 import NavItem from "../NavItem/NavItem";
 import DixieTechLogo from "../../assets/DixieTechLogo.png";
+import ModalButtons from "../ModalButtons/ModalButtons";
 import "./Nav.css";
 
 const Nav: React.FC = () => {
@@ -19,17 +20,16 @@ const Nav: React.FC = () => {
   return (
     <nav>
       <div className="nav-logo">
-        <img
-          src={DixieTechLogo}
-          alt="Dixie Tech Logo"
-          className="small-logo"
-        />
+        <img src={DixieTechLogo} alt="Dixie Tech Logo" className="small-logo" />
       </div>
       <ul>
         {navRoutes.map((route) => (
           <NavItem key={route.path} name={route.name} path={route.path} />
         ))}
       </ul>
+      <div className="modal-buttons-container">
+        <ModalButtons />
+      </div>
     </nav>
   );
 };

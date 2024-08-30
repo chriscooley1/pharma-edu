@@ -1,42 +1,39 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../../components/SearchBar/SearchBar";
-import axios from "axios";
+
 import "./NewDr.css";
 
-const NewDr: React.FC = () => {
+interface DrProps {
+  onClose: () => void; // Add this prop to handle closing the modal
+}
+
+const NewDr: React.FC<DrProps> = ({ onClose }) => {
   const navigate = useNavigate();
 
-  const handleSearch = async (query: string) => {
-    try {
-      const response = await axios.get(`http://localhost:8000/prescribers/search`, { params: { query } }); // Updated the URL
-      const doctorData = response.data;
+  const handleSearch = (query: string) => {
+    console.log("Searching for doctor", query);
+    // Implement search logic here, e.g., fetch patient data
 
-      if (doctorData) {
-        navigate("/doctorprofile", { state: { doctorData } }); // Updated to pass the doctorData
-      } else {
-        alert("Doctor not found");
-      }
-    } catch (error) {
-      console.error("Error searching for doctor:", error);
-      alert("Failed to search for doctor.");
-    }
+    // Navigate to the PatientProfile page
+    navigate("/doctorprofile", { state: { query } });
   };
 
   const gotoDoctorProfile = () => {
     navigate("/doctorprofile");
+    onClose();
   };
 
   return (
     <div className="new-dr-container">
       <div className="search-bar">
-        <SearchBar placeholder="Search for doctor by last name" onSearch={handleSearch} />
+        <SearchBar placeholder="Search for a doctor" onSearch={handleSearch} />
         <button 
           type="button" 
           onClick={gotoDoctorProfile} 
           className="navigate-button"
         >
-          Add Doctor
+          Add New Doctor
         </button>
       </div>
     </div>

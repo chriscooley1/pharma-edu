@@ -1,44 +1,41 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../../components/SearchBar/SearchBar";
-import axios from "axios";
+
 import "./NewPatient.css";
 
-const NewPatient: React.FC = () => {
+interface PatientProps {
+  onClose: () => void; // Add this prop to handle closing the modal
+}
+
+const NewPatient: React.FC<PatientProps> = ({ onClose }) => {
   const navigate = useNavigate();
 
-  const handleSearch = async (query: string) => {
-    try {
-      const response = await axios.get(`http://localhost:8000/patients/search`, { params: { query } });
-      const patientData = response.data;
+  const handleSearch = (query: string) => {
+    console.log("Searching for patient", query);
+    // Implement search logic here, e.g., fetch patient data
 
-      if (patientData) {
-        navigate("/patientprofile", { state: { patientData } });
-      } else {
-        alert("Patient not found");
-      }
-    } catch (error) {
-      console.error("Error searching for patient:", error);
-      alert("Failed to search for patient.");
-    }
+    // Navigate to the PatientProfile page
+    navigate("/patientprofile", { state: { query } });
   };
 
-  const goToAddPatient = () => {
-    navigate("/addpatient");
+  const gotoPatientProfile = () => {
+    navigate("/patientprofile");
+    onClose();
   };
 
   return (
-    <div className="new-patient-container">
+    <div className="new-pt-container">
       <div className="search-bar">
-        <SearchBar placeholder="Search for patient by last name" onSearch={handleSearch} />
+        <SearchBar placeholder="Search for a patient" onSearch={handleSearch} />
+        <button 
+          type="button" 
+          onClick={gotoPatientProfile} 
+          className="navigate-button"
+        >
+          Add New Patient
+        </button>
       </div>
-      <button
-        type="button"
-        onClick={goToAddPatient}
-        className="navigate-button"
-      >
-        Add Patient
-      </button>
     </div>
   );
 };

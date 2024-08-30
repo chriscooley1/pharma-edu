@@ -1,46 +1,41 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import SearchBar from "../../components/SearchBar/SearchBar";
+
 import "./RxItem.css";
 
-const RxItem: React.FC = () => {
+interface RxProps {
+  onClose: () => void; // Add this prop to handle closing the modal
+}
+
+const RxItem: React.FC<RxProps> = ({ onClose }) => {
   const navigate = useNavigate();
 
-  const handleSearch = async (query: string) => {
-    try {
-      const response = await axios.get(`http://localhost:8000/rx-items/search`, {
-        params: { query }
-      });
-      const rxData = response.data;
+  const handleSearch = (query: string) => {
+    console.log("Searching for rx item", query);
+    // Implement search logic here, e.g., fetch patient data
 
-      if (rxData) {
-        navigate("/rxitemprofile", { state: { rxData } });
-      } else {
-        alert("Rx item not found");
-      }
-    } catch (error) {
-      console.error("Error searching for Rx item:", error);
-      alert("Failed to search for Rx item.");
-    }
+    // Navigate to the PatientProfile page
+    navigate("/rxitemprofile", { state: { query } });
   };
 
-  const goToNewRx = () => {
-    navigate("/newrx");
+  const gotoRxItemProfile = () => {
+    navigate("/rxitemprofile");
+    onClose();
   };
 
   return (
-    <div className="rx-item-container">
+    <div className="new-rx-item-container">
       <div className="search-bar">
-        <SearchBar placeholder="Search for an Rx item" onSearch={handleSearch} />
+        <SearchBar placeholder="Search for a rx item" onSearch={handleSearch} />
+        <button 
+          type="button" 
+          onClick={gotoRxItemProfile} 
+          className="navigate-button"
+        >
+          Add New Rx Item
+        </button>
       </div>
-      <button 
-        type="button" 
-        onClick={goToNewRx} 
-        className="navigate-button"
-      >
-        Add New Rx
-      </button>
     </div>
   );
 };
