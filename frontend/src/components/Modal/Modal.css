@@ -29,3 +29,15 @@
   font-size: 1.5rem;
   cursor: pointer;
 }
+
+.modal-buttons-container {
+  display: flex;
+  align-items: center; /* Align the buttons vertically with the nav items */
+  gap: 1rem; /* Add space between buttons */
+  flex-shrink: 0; /* Prevent the modal buttons from shrinking */
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 1rem; /* Add space between buttons */
+}

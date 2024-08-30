@@ -18,11 +18,11 @@ const Nav: React.FC = () => {
   );
 
   return (
-    <nav>
+    <nav className="nav-container">
       <div className="nav-logo">
         <img src={DixieTechLogo} alt="Dixie Tech Logo" className="small-logo" />
       </div>
-      <ul>
+      <ul className="nav-items">
         {navRoutes.map((route) => (
           <NavItem key={route.path} name={route.name} path={route.path} />
         ))}

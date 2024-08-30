@@ -4,30 +4,30 @@
   padding: 20px;
 }
 
-nav {
+.nav-container {
   display: flex;
-  justify-content: space-between; /* Ensure logo is on the right, and nav items are on the left */
+  justify-content: space-between; /* Distribute space between logo, nav items, and modal buttons */
   align-items: center;
   background-color: #2E3F59;
   border: 1px solid;
   padding: 0 20px; /* Add padding to give space on both sides */
 }
 
-nav ul {
+.nav-logo {
+  flex-shrink: 0; /* Prevent the logo from shrinking */
+}
+
+.nav-items {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
-  flex-grow: 1; /* Allows ul to take up the available space */
-  justify-content: space-around; /* Distribute items evenly */
-  align-items: center; /* Center the items vertically */
-}
-
-nav ul li {
-  display: flex;
+  justify-content: space-around; /* Space out nav items evenly */
   align-items: center;
+  flex-grow: 1; /* Allow nav items to take up available space */
 }
 
+.nav-button,
 nav ul li a {
   color: white;
   font-size: 1rem;
@@ -40,14 +40,12 @@ nav ul li a {
   display: flex;
   align-items: center; /* Center the text vertically */
   justify-content: center; /* Center the text horizontally */
+  cursor: pointer;
 }
 
+.nav-button:hover,
 nav ul li a:hover {
   background-color: #4D79A9;
   border-color: #ffffff;
   text-decoration: none;
-}
-
-.nav-logo {
-  margin-left: auto; /* Push the logo all the way to the right */
 }

@@ -21,25 +21,25 @@ const ModalButtons: React.FC = () => {
   const renderModalContent = () => {
     switch (modalType) {
       case "patient":
-        return <NewPatient onClose={closeModal}/>;
+        return <NewPatient onClose={closeModal} />;
       case "doctor":
-        return <NewDr onClose={closeModal}/>;
+        return <NewDr onClose={closeModal} />;
       case "rxItem":
-        return <RxItem onClose={closeModal}/>;
+        return <RxItem onClose={closeModal} />;
       default:
         return null;
     }
   };
 
   return (
-    <div>
-      <button type="button" onClick={() => handleClick("patient")}>
+    <div className="modal-buttons">
+      <button type="button" className="nav-button" onClick={() => handleClick("patient")}>
         New Patient
       </button>
-      <button type="button" onClick={() => handleClick("doctor")}>
+      <button type="button" className="nav-button" onClick={() => handleClick("doctor")}>
         New Doctor
       </button>
-      <button type="button" onClick={() => handleClick("rxItem")}>
+      <button type="button" className="nav-button" onClick={() => handleClick("rxItem")}>
         Rx Item
       </button>
 
