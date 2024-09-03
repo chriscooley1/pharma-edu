@@ -11,12 +11,18 @@ interface DrProps {
 const NewDr: React.FC<DrProps> = ({ onClose }) => {
   const navigate = useNavigate();
 
-  const handleSearch = (query: string) => {
-    console.log("Searching for doctor", query);
-    // Implement search logic here, e.g., fetch patient data
-
-    // Navigate to the PatientProfile page
-    navigate("/doctorprofile", { state: { query } });
+  const handleSearch = async (query: string) => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/prescribers/search?query=${encodeURIComponent(query)}`);
+      if (response.ok) {
+        const prescribers = await response.json();
+        navigate("/doctorprofile", { state: { prescribers } });
+      } else {
+        console.error("Prescriber not found");
+      }
+    } catch (error) {
+      console.error("Failed to search prescriber:", error);
+    }
   };
 
   const gotoDoctorProfile = () => {

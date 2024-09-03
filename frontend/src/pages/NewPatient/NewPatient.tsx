@@ -11,12 +11,18 @@ interface PatientProps {
 const NewPatient: React.FC<PatientProps> = ({ onClose }) => {
   const navigate = useNavigate();
 
-  const handleSearch = (query: string) => {
-    console.log("Searching for patient", query);
-    // Implement search logic here, e.g., fetch patient data
-
-    // Navigate to the PatientProfile page
-    navigate("/patientprofile", { state: { query } });
+  const handleSearch = async (query: string) => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/patients/search?query=${encodeURIComponent(query)}`);
+      if (response.ok) {
+        const patients = await response.json();
+        navigate("/patientprofile", { state: { patients } });
+      } else {
+        console.error("Patient not found");
+      }
+    } catch (error) {
+      console.error("Failed to search patient:", error);
+    }
   };
 
   const gotoPatientProfile = () => {
