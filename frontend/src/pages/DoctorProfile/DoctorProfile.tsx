@@ -81,7 +81,7 @@ const DoctorProfile: React.FC = () => {
   };
 
   return (
-    <div className="new-dr-container">
+    <div className="doctor-profile-container">
       <h3>{isEditMode ? "Edit Doctor" : "Add New Doctor"}</h3>
       <div className="button-group">
         <button type="button" className="edit-button" onClick={toggleEditMode}>
@@ -91,118 +91,120 @@ const DoctorProfile: React.FC = () => {
           Save
         </button>
       </div>
-      <div>
-        <label htmlFor="doctor-first-name">First Name</label>
-        <input
-          type="text"
-          name="first_name"
-          id="doctor-first-name"
-          value={doctorDetails.first_name || ""}
-          onChange={handleDoctorChange}
-          readOnly={!editMode}
-        />
-      </div>
-      <div>
-        <label htmlFor="doctor-last-name">Last Name</label>
-        <input
-          type="text"
-          name="last_name"
-          id="doctor-last-name"
-          value={doctorDetails.last_name || ""}
-          onChange={handleDoctorChange}
-          readOnly={!editMode}
-        />
-      </div>
-      <div>
-        <label htmlFor="doctor-prescriber-type">Prescriber Type</label>
-        <input
-          type="text"
-          name="prescriber_type"
-          id="doctor-prescriber-type"
-          value={doctorDetails.prescriber_type || ""}
-          onChange={handleDoctorChange}
-          readOnly={!editMode}
-        />
-      </div>
-      <div>
-        <label htmlFor="doctor-street">Street</label>
-        <input
-          type="text"
-          name="street"
-          id="doctor-street"
-          value={doctorDetails.street || ""}
-          onChange={handleDoctorChange}
-          readOnly={!editMode}
-        />
-      </div>
-      <div>
-        <label htmlFor="doctor-city">City</label>
-        <input
-          type="text"
-          name="city"
-          id="doctor-city"
-          value={doctorDetails.city || ""}
-          onChange={handleDoctorChange}
-          readOnly={!editMode}
-        />
-      </div>
-      <div>
-        <label htmlFor="doctor-state">State</label>
-        <input
-          type="text"
-          name="state"
-          id="doctor-state"
-          value={doctorDetails.state || ""}
-          onChange={handleDoctorChange}
-          readOnly={!editMode}
-        />
-      </div>
-      <div>
-        <label htmlFor="doctor-zipcode">Zipcode</label>
-        <input
-          type="text"
-          name="zipcode"
-          id="doctor-zipcode"
-          value={doctorDetails.zipcode || ""}
-          onChange={handleDoctorChange}
-          readOnly={!editMode}
-        />
-      </div>
-      <div>
-        <label htmlFor="doctor-contact-number">Contact Number</label>
-        <input
-          type="text"
-          name="contact_number"
-          id="doctor-contact-number"
-          value={doctorDetails.contact_number || ""}
-          onChange={handleDoctorChange}
-          readOnly={!editMode}
-        />
-      </div>
-      <div>
-        <label htmlFor="doctor-dea">DEA</label>
-        <input
-          type="text"
-          name="dea"
-          id="doctor-dea"
-          value={doctorDetails.dea || ""}
-          onChange={handleDoctorChange}
-          readOnly={!editMode}
-        />
-      </div>
-      <div>
-        <label htmlFor="doctor-npi">NPI</label>
-        <input
-          type="text"
-          name="npi"
-          id="doctor-npi"
-          value={doctorDetails.npi || ""}
-          onChange={handleDoctorChange}
-          readOnly={!editMode}
-        />
+      <div className="dr-main">
+        <div>
+          <label htmlFor="doctor-first-name">First Name</label>
+          <input
+            type="text"
+            name="first_name"
+            id="doctor-first-name"
+            value={doctorDetails.first_name || ""}
+            onChange={handleDoctorChange}
+            readOnly={!editMode}
+          />
+        </div>
+        <div>
+          <label htmlFor="doctor-last-name">Last Name</label>
+          <input
+            type="text"
+            name="last_name"
+            id="doctor-last-name"
+            value={doctorDetails.last_name || ""}
+            onChange={handleDoctorChange}
+            readOnly={!editMode}
+          />
+        </div>
+        <div>
+          <label htmlFor="doctor-prescriber-type">Prescriber Type</label>
+          <input
+            type="text"
+            name="prescriber_type"
+            id="doctor-prescriber-type"
+            value={doctorDetails.prescriber_type || ""}
+            onChange={handleDoctorChange}
+            readOnly={!editMode}
+          />
+        </div>
+        <div>
+          <label htmlFor="doctor-street">Street</label>
+          <input
+            type="text"
+            name="street"
+            id="doctor-street"
+            value={doctorDetails.street || ""}
+            onChange={handleDoctorChange}
+            readOnly={!editMode}
+          />
+        </div>
+        <div>
+          <label htmlFor="doctor-city">City</label>
+          <input
+            type="text"
+            name="city"
+            id="doctor-city"
+            value={doctorDetails.city || ""}
+            onChange={handleDoctorChange}
+            readOnly={!editMode}
+          />
+        </div>
+        <div>
+          <label htmlFor="doctor-state">State</label>
+          <input
+            type="text"
+            name="state"
+            id="doctor-state"
+            value={doctorDetails.state || ""}
+            onChange={handleDoctorChange}
+            readOnly={!editMode}
+          />
+        </div>
+        <div>
+          <label htmlFor="doctor-zipcode">Zipcode</label>
+          <input
+            type="text"
+            name="zipcode"
+            id="doctor-zipcode"
+            value={doctorDetails.zipcode || ""}
+            onChange={handleDoctorChange}
+            readOnly={!editMode}
+          />
+        </div>
+        <div>
+          <label htmlFor="doctor-contact-number">Contact Number</label>
+          <input
+            type="text"
+            name="contact_number"
+            id="doctor-contact-number"
+            value={doctorDetails.contact_number || ""}
+            onChange={handleDoctorChange}
+            readOnly={!editMode}
+          />
+        </div>
+        <div>
+          <label htmlFor="doctor-dea">DEA</label>
+          <input
+            type="text"
+            name="dea"
+            id="doctor-dea"
+            value={doctorDetails.dea || ""}
+            onChange={handleDoctorChange}
+            readOnly={!editMode}
+          />
+        </div>
+        <div>
+          <label htmlFor="doctor-npi">NPI</label>
+          <input
+            type="text"
+            name="npi"
+            id="doctor-npi"
+            value={doctorDetails.npi || ""}
+            onChange={handleDoctorChange}
+            readOnly={!editMode}
+          />
+        </div>
       </div>
     </div>
-  );
+  );  
 };
 
 export default DoctorProfile;
