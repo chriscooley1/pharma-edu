@@ -1,6 +1,5 @@
 import Home from "./pages/Home/Home";
 import NewRx from "./pages/NewRx/NewRx";
-import AddPatient from "./pages/AddPatient/AddPatient";
 import DoctorProfile from "./pages/DoctorProfile/DoctorProfile";
 import PatientProfile from "./pages/PatientProfile/PatientProfile";
 import RxItemProfile from "./pages/RxItemProfile/RxItemProfile";
@@ -19,27 +18,22 @@ const routes: PharmacyRoutes[] = [
   },
   {
     name: "New Rx",
-    path: "/newrx",
+    path: "/newrx",  // This will handle adding a new Rx Item
     component: NewRx,
   },
   {
-    name: "Add Patient",
-    path: "/addpatient",
-    component: AddPatient,
-  },
-  {
     name: "Doctor Profile",
-    path: "/doctorprofile",
+    path: "/doctorprofile/:id?",  // Handles both viewing/editing and adding a new doctor
     component: DoctorProfile,
   },
   {
     name: "Patient Profile",
-    path: "/patientprofile",
+    path: "/patientprofile/:id?",  // Handles both viewing/editing and adding a new patient
     component: PatientProfile,
   },
   {
     name: "Rx Item Profile",
-    path: "/rxitemprofile",
+    path: "/rxitemprofile/:id?",  // Handles both viewing/editing and adding a new Rx item
     component: RxItemProfile,
   },
 ];

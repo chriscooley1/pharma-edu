@@ -5,7 +5,7 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 import "./NewDr.css";
 
 interface DrProps {
-  onClose: () => void; // Add this prop to handle closing the modal
+  onClose: () => void; // Prop for closing the modal
 }
 
 const NewDr: React.FC<DrProps> = ({ onClose }) => {
@@ -16,7 +16,11 @@ const NewDr: React.FC<DrProps> = ({ onClose }) => {
       const response = await fetch(`http://127.0.0.1:8000/prescribers/search?query=${encodeURIComponent(query)}`);
       if (response.ok) {
         const prescribers = await response.json();
-        navigate("/doctorprofile", { state: { prescribers } });
+        if (prescribers.length > 0) {
+          navigate(`/doctorprofile/${prescribers[0].id}`);
+        } else {
+          console.error("Prescriber not found");
+        }
       } else {
         console.error("Prescriber not found");
       }

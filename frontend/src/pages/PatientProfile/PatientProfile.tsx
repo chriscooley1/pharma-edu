@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "./PatientProfile.css";
 import axios from "axios";
 
@@ -29,8 +29,9 @@ interface InsuranceInfo {
 }
 
 const PatientProfile: React.FC = () => {
-  const location = useLocation();
+  const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
+  const isEditMode = Boolean(id);
 
   const [editMode, setEditMode] = useState(false); 
   const [patientDetails, setPatientDetails] = useState<PatientDetails>({
@@ -59,23 +60,30 @@ const PatientProfile: React.FC = () => {
   });
 
   useEffect(() => {
-    if (location.state?.patientData) {
-      const patientData = location.state.patientData;
-      setPatientDetails(patientData);
+    const fetchPatientDetails = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8000/patients/${id}`);
+        const patientData = response.data;
+        setPatientDetails(patientData);
 
-      setInsuranceInfo({
-        insurance_name: patientData.insurance_name || "",
-        insurance_member_id: patientData.insurance_member_id || "",
-        insurance_group_number: patientData.insurance_group_number || "",
-        insurance_rx_bin: patientData.insurance_rx_bin || "",
-        insurance_rx_pcn: patientData.insurance_rx_pcn || "",
-        insurance_person_code: patientData.insurance_person_code || "",
-      });
-    } else {
-      // Handle case when no patient data is passed (e.g., direct access to profile page)
-      // Perhaps redirect back to the search page or show a message.
+        setInsuranceInfo({
+          insurance_name: patientData.insurance_name || "",
+          insurance_member_id: patientData.insurance_member_id || "",
+          insurance_group_number: patientData.insurance_group_number || "",
+          insurance_rx_bin: patientData.insurance_rx_bin || "",
+          insurance_rx_pcn: patientData.insurance_rx_pcn || "",
+          insurance_person_code: patientData.insurance_person_code || "",
+        });
+      } catch (error) {
+        console.error("Failed to fetch patient details:", error);
+        // Handle error (e.g., redirect to search page)
+      }
+    };
+
+    if (id) {
+      fetchPatientDetails();
     }
-  }, [location.state]);
+  }, [id]);
 
   const handlePatientChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -97,15 +105,17 @@ const PatientProfile: React.FC = () => {
 
   const handleSave = async () => {
     try {
-      const patientId = patientDetails.id; 
-      await axios.patch(`http://localhost:8000/patients/${patientId}`, patientDetails);
-      await axios.patch(`http://localhost:8000/patients/${patientId}`, insuranceInfo);
-  
-      alert("Patient and insurance details updated successfully!");
-      setEditMode(false); 
+      if (isEditMode) {
+        await axios.patch(`http://localhost:8000/patients/${id}`, patientDetails);
+        alert("Patient details updated successfully!");
+      } else {
+        await axios.post("http://localhost:8000/patients", patientDetails);
+        alert("Patient added successfully!");
+      }
+      navigate("/patientprofile"); // Redirect as needed
     } catch (error) {
-      console.error("Error updating patient and insurance details:", error);
-      alert("Failed to update patient and insurance details.");
+      console.error("Error saving patient details:", error);
+      alert("Failed to save patient details.");
     }
   };
 

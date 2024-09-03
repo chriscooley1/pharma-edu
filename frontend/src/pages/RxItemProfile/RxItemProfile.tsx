@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./RxItemProfile.css";
 
@@ -15,8 +15,9 @@ interface RxDetails {
 }
 
 const RxItemProfile: React.FC = () => {
-  const location = useLocation();
+  const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
+  const isEditMode = Boolean(id);
 
   const [editMode, setEditMode] = useState(false);
   const [rxDetails, setRxDetails] = useState<RxDetails>({
@@ -31,12 +32,20 @@ const RxItemProfile: React.FC = () => {
   });
 
   useEffect(() => {
-    if (location.state?.rxData) {
-      setRxDetails(location.state.rxData);
-    } else {
-      // Handle case where no data was passed, potentially fetch from backend by ID
+    const fetchRxDetails = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8000/rx-items/${id}`);
+        setRxDetails(response.data);
+      } catch (error) {
+        console.error("Failed to fetch rx details:", error);
+        // Handle error
+      }
+    };
+
+    if (id) {
+      fetchRxDetails();
     }
-  }, [location.state]);
+  }, [id]);
 
   const handleRxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -48,24 +57,17 @@ const RxItemProfile: React.FC = () => {
 
   const handleSave = async () => {
     try {
-      if (rxDetails.id === null) {
-        // If id is null, create a new RxItem
-        const response = await axios.post("http://localhost:8000/rx-items", rxDetails);
-        setRxDetails((prevDetails) => ({
-          ...prevDetails,
-          id: response.data.rx_item_id, // Set the id returned from the backend
-        }));
-        alert("Rx details saved successfully!");
-      } else {
-        // If id is set, update the existing RxItem
-        await axios.patch(`http://localhost:8000/rx-items/${rxDetails.id}`, rxDetails);
+      if (isEditMode) {
+        await axios.patch(`http://localhost:8000/rx-items/${id}`, rxDetails);
         alert("Rx details updated successfully!");
+      } else {
+        await axios.post("http://localhost:8000/rx-items", rxDetails);
+        alert("Rx item added successfully!");
       }
-      setEditMode(false);
-      navigate("/rxitemprofile");
+      navigate("/rxitemprofile"); // Redirect as needed
     } catch (error) {
-      console.error("Error saving rx details:", error);
-      alert("Failed to save rx details.");
+      console.error("Error saving Rx details:", error);
+      alert("Failed to save Rx details.");
     }
   };
 

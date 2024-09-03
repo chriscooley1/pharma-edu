@@ -16,17 +16,21 @@ const RxItem: React.FC<RxProps> = ({ onClose }) => {
       const response = await fetch(`http://127.0.0.1:8000/rx-items/search?query=${encodeURIComponent(query)}`);
       if (response.ok) {
         const rxItems = await response.json();
-        navigate("/rxitemprofile", { state: { rxItems } });
+        if (rxItems.length > 0) {
+          navigate(`/rxitemprofile/${rxItems[0].id}`);
+        } else {
+          console.error("Rx item not found");
+        }
       } else {
         console.error("Rx item not found");
       }
     } catch (error) {
-      console.error("Failed to search rx item:", error);
+      console.error("Failed to search Rx item:", error);
     }
   };
 
   const gotoRxItemProfile = () => {
-    navigate("/rxitemprofile");
+    navigate("/newrx");
     onClose();
   };
 

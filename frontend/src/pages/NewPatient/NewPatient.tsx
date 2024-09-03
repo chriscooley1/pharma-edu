@@ -16,7 +16,11 @@ const NewPatient: React.FC<PatientProps> = ({ onClose }) => {
       const response = await fetch(`http://127.0.0.1:8000/patients/search?query=${encodeURIComponent(query)}`);
       if (response.ok) {
         const patients = await response.json();
-        navigate("/patientprofile", { state: { patients } });
+        if (patients.length > 0) {
+          navigate(`/patientprofile/${patients[0].id}`);
+        } else {
+          console.error("Patient not found");
+        }
       } else {
         console.error("Patient not found");
       }
@@ -25,7 +29,7 @@ const NewPatient: React.FC<PatientProps> = ({ onClose }) => {
     }
   };
 
-  const gotoPatientProfile = () => {
+  const gotoAddPatient = () => {
     navigate("/patientprofile");
     onClose();
   };
@@ -36,7 +40,7 @@ const NewPatient: React.FC<PatientProps> = ({ onClose }) => {
         <SearchBar placeholder="Search for a patient" onSearch={handleSearch} />
         <button 
           type="button" 
-          onClick={gotoPatientProfile} 
+          onClick={gotoAddPatient} 
           className="navigate-button"
         >
           Add New Patient
