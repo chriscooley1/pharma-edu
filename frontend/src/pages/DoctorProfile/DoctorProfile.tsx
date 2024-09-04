@@ -38,7 +38,8 @@ const DoctorProfile: React.FC = () => {
   };
 
   const [doctorDetails, setDoctorDetails] = useState<DoctorDetails>(initialDoctorDetails);
-  const [editMode, setEditMode] = useState(!isEditMode); // Default to edit mode for new doctor
+  // Set initial editMode to true to enable editing by default
+  const [editMode, setEditMode] = useState(true); 
 
   useEffect(() => {
     if (isEditMode && id) {

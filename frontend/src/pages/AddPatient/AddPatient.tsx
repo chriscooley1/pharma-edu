@@ -28,7 +28,8 @@ interface InsuranceInfo {
 const AddPatient: React.FC = () => {
   const navigate = useNavigate();
 
-  const [editMode, setEditMode] = useState(false); // Start in view mode (not editable)
+  // Set initial editMode to true to enable editing by default
+  const [editMode, setEditMode] = useState(true); 
   
   // Initial empty state for patient details and insurance info
   const initialPatientDetails = {

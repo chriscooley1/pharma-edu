@@ -20,7 +20,8 @@ interface RxDetails {
 const NewRx: React.FC = () => {
   const navigate = useNavigate();
 
-  const [editMode, setEditMode] = useState(false); // Start in view mode (not editable)
+  // Set initial editMode to true to enable editing by default
+  const [editMode, setEditMode] = useState(true); 
   const [rxDetails, setRxDetails] = useState<RxDetails>({
     rx_number: null,
     patient_id: null,
