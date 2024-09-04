@@ -44,7 +44,7 @@ const NewPatient: React.FC<PatientProps> = ({ onClose }) => {
           onSearch={handleSearch}
           onSearchComplete={() => setErrorMessage("")} // Reset error message after search
         />
-        {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Error message */}
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
         <button type="button" onClick={gotoAddPatient} className="navigate-button">
           Add New Patient
         </button>

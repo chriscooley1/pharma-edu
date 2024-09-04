@@ -38,7 +38,6 @@ const RxItemProfile: React.FC = () => {
         setRxDetails(response.data);
       } catch (error) {
         console.error("Failed to fetch rx details:", error);
-        // Handle error
       }
     };
 
@@ -64,7 +63,7 @@ const RxItemProfile: React.FC = () => {
         await axios.post("http://localhost:8000/rx-items", rxDetails);
         alert("Rx item added successfully!");
       }
-      navigate("/rxitemprofile"); // Redirect as needed
+      navigate("/rxitemprofile");
     } catch (error) {
       console.error("Error saving Rx details:", error);
       alert("Failed to save Rx details.");

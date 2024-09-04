@@ -32,7 +32,7 @@ const NewRx: React.FC = () => {
     quantity: 0,
     quantity_dispensed: 0,
     refills: 0,
-    status: "pending",  // Default status to pending
+    status: "",
     tech_initials: "",
   });
 
@@ -42,7 +42,7 @@ const NewRx: React.FC = () => {
   }, []);
 
   const handleRxChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = event.target;
     setRxDetails((prevDetails) => ({
@@ -52,13 +52,11 @@ const NewRx: React.FC = () => {
               name === "rx_item_id" || 
               name === "quantity" || 
               name === "quantity_dispensed" || 
-              name === "refills" 
-        ? value === "" ? 0 : Number(value) 
-        : name === "status"
-        ? value.toLowerCase() // Ensure status is in lowercase
+              name === "refills"
+        ? value === "" ? 0 : Number(value)
         : value || "",
     }));
-  };
+  };  
 
   const handleSave = async () => {
     try {
@@ -198,14 +196,20 @@ const NewRx: React.FC = () => {
         </div>
         <div>
           <label htmlFor="rx-status">Status</label>
-          <input
-            type="text"
+          <select
             name="status"
             id="rx-status"
             value={rxDetails.status || ""}
             onChange={handleRxChange}
-            readOnly={!editMode}
-          />
+            className="status-select" // Add the class for custom styling
+          >
+            <option value="" disabled>
+              Select status
+            </option>
+            <option value="pending">Pending</option>
+            <option value="completed">Completed</option>
+            <option value="sold">Sold</option>
+          </select>
         </div>
         <div>
           <label htmlFor="rx-tech-initials">Tech Initials</label>

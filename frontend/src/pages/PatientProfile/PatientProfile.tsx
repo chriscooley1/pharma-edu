@@ -14,9 +14,6 @@ interface PatientDetails {
   state: string;
   zipcode: string;
   allergies: string;
-  rx_printed: string;
-  rx_completed: string;
-  rx_sold: string;
 }
 
 interface InsuranceInfo {
@@ -44,9 +41,6 @@ const PatientProfile: React.FC = () => {
     state: "",
     zipcode: "",
     allergies: "",
-    rx_printed: "",
-    rx_completed: "",
-    rx_sold: "",
   };
 
   const initialInsuranceInfo = {
@@ -238,39 +232,6 @@ const PatientProfile: React.FC = () => {
             name="allergies"
             id="patient-allergies"
             value={patientDetails.allergies  || ""}
-            onChange={handlePatientChange}
-            readOnly={!editMode}
-          />
-        </div>
-        <div>
-          <label htmlFor="patient-rx-printed">Rx Printed</label>
-          <input
-            type="text"
-            name="rx_printed"
-            id="patient-rx-printed"
-            value={patientDetails.rx_printed  || ""}
-            onChange={handlePatientChange}
-            readOnly={!editMode}
-          />
-        </div>
-        <div>
-          <label htmlFor="patient-rx-completed">Rx Completed</label>
-          <input
-            type="text"
-            name="rx_completed"
-            id="patient-rx-completed"
-            value={patientDetails.rx_completed  || ""}
-            onChange={handlePatientChange}
-            readOnly={!editMode}
-          />
-        </div>
-        <div>
-          <label htmlFor="patient-rx-sold">Rx Sold</label>
-          <input
-            type="text"
-            name="rx_sold"
-            id="patient-rx-sold"
-            value={patientDetails.rx_sold  || ""}
             onChange={handlePatientChange}
             readOnly={!editMode}
           />

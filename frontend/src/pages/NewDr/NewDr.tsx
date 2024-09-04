@@ -44,7 +44,7 @@ const NewDr: React.FC<DrProps> = ({ onClose }) => {
           onSearch={handleSearch}
           onSearchComplete={() => setErrorMessage("")} // Reset error message after search
         />
-        {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Error message */}
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
         <button type="button" onClick={gotoDoctorProfile} className="navigate-button">
           Add New Doctor
         </button>

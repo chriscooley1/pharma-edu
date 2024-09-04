@@ -77,7 +77,7 @@ const DoctorProfile: React.FC = () => {
         await axios.post("http://localhost:8000/prescribers", doctorDetails);
         alert("Doctor added successfully!");
       }
-      navigate("/doctorlist"); // Redirect to doctor list after saving
+      navigate("/doctorlist");
     } catch (error) {
       console.error("Error saving doctor details:", error);
       alert("Failed to save doctor details.");

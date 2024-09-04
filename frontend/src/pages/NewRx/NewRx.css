@@ -68,3 +68,23 @@
   cursor: pointer;
   transition: background-color 0.3s;
 }
+
+.status-select {
+  width: 100%; /* Make it take the full width like other inputs */
+  padding: 0.5rem; /* Add padding for a comfortable clickable area */
+  border: 1px solid #ccc; /* Border style matching other inputs */
+  border-radius: 4px; /* Rounded corners to match other inputs */
+  font-size: 1rem; /* Ensure font size is consistent with the rest of the form */
+  background-color: white; /* Background color */
+  color: #333; /* Text color */
+  transition: border-color 0.3s, box-shadow 0.3s; /* Smooth transition on focus */
+}
+
+.status-select:focus {
+  border-color: #4D79A9; /* Change border color on focus */
+  box-shadow: 0 0 5px rgba(77, 121, 169, 0.5); /* Add shadow effect on focus */
+}
+
+.status-select option {
+  padding: 10px; /* Optional: Add padding inside the dropdown options */
+}

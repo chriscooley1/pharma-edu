@@ -44,7 +44,7 @@ const RxItem: React.FC<RxProps> = ({ onClose }) => {
           onSearch={handleSearch}
           onSearchComplete={() => setErrorMessage("")} // Reset error message after search
         />
-        {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Error message */}
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
         <button type="button" onClick={gotoRxItemProfile} className="navigate-button">
           Add New Rx Item
         </button>
