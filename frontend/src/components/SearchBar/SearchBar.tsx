@@ -21,12 +21,19 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch, onSearchCo
     }
   };
 
+  const handleKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      await handleSearch();
+    }
+  };
+
   return (
     <div className="search-bar">
       <input
         type="text"
         value={searchQuery}
         onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
         placeholder={placeholder}
         className="search-input"
       />
