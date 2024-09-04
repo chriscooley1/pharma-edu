@@ -1,51 +1,52 @@
-.small-logo {
-  max-width: 200px;
-  align-self: flex-end;
-  padding: 20px;
-}
-
 .nav-container {
   display: flex;
-  justify-content: space-between; /* Distribute space between logo, nav items, and modal buttons */
   align-items: center;
   background-color: #2E3F59;
   border: 1px solid;
-  padding: 0 20px; /* Add padding to give space on both sides */
+  padding: 0 20px;
 }
 
-.nav-logo {
-  flex-shrink: 0; /* Prevent the logo from shrinking */
+.small-logo {
+  max-width: 200px;
+  padding: 20px;
 }
 
 .nav-items {
-  list-style: none;
-  padding: 0;
-  margin: 0;
   display: flex;
-  justify-content: space-around; /* Space out nav items evenly */
-  align-items: center;
-  flex-grow: 1; /* Allow nav items to take up available space */
+  flex-grow: 1; /* Make nav items take up available space */
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.nav-button,
-nav ul li a {
+.nav-items li {
+  flex: 1;
+  display: flex;
+  justify-content: center; /* Center text in each nav item */
+}
+
+.nav-items a,
+.nav-button {
   color: white;
   font-size: 1rem;
   text-decoration: none;
-  padding: 2.5rem 2rem; /* Adjusted padding for a box-like appearance */
-  border-radius: 4px;
+  padding: 3rem 5rem; /* Adjust padding for spacing */
   background-color: #2E3F59;
-  border: 1px solid white; /* Add white border around each box */
-  transition: background-color 0.3s, border-color 0.3s; /* Smooth transition on hover */
-  display: flex;
-  align-items: center; /* Center the text vertically */
-  justify-content: center; /* Center the text horizontally */
-  cursor: pointer;
+  border: 1px solid white;
+  border-radius: 4px;
+  text-align: center;
+  transition: background-color 0.3s, border-color 0.3s;
 }
 
-.nav-button:hover,
-nav ul li a:hover {
+.nav-items a:hover,
+.nav-button:hover {
   background-color: #4D79A9;
   border-color: #ffffff;
-  text-decoration: none;
+}
+
+.modal-buttons-container {
+  display: flex;
+  justify-content: space-around; /* Align modal buttons evenly */
+  gap: 1rem;
+  flex-grow: 1; /* Allow the modal buttons to share available space */
 }
