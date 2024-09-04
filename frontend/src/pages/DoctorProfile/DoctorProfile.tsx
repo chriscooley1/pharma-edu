@@ -92,10 +92,10 @@ const DoctorProfile: React.FC = () => {
     <div className="doctor-profile-container">
       <h3>{isEditMode ? "Edit Doctor" : "Add New Doctor"}</h3>
       <div className="button-group">
-        <button type="button" className="edit-button" onClick={toggleEditMode}>
+        <button type="button" className="doctor-edit-button" onClick={toggleEditMode}>
           {editMode ? "Cancel" : "Edit"}
         </button>
-        <button type="button" className="save-button" onClick={handleSave} disabled={!editMode}>
+        <button type="button" className="doctor-save-button" onClick={handleSave} disabled={!editMode}>
           Save
         </button>
       </div>
