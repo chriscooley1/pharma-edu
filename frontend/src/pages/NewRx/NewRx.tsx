@@ -101,7 +101,7 @@ const NewRx: React.FC = () => {
   };
 
   const toggleEditMode = () => {
-    setEditMode(!editMode); // Toggle edit mode
+    setEditMode(!editMode);
   };
 
   return (
@@ -217,6 +217,7 @@ const NewRx: React.FC = () => {
             readOnly={!editMode}
           />
         </div>
+        <button type="button" className="continue-to-label">Continue To Label</button>
       </div>
 
       <div className="separator"></div>
