@@ -18,12 +18,12 @@ interface DoctorDetails {
 }
 
 const DoctorProfile: React.FC = () => {
-  const { id } = useParams<{ id?: string }>();
+  const { id } = useParams<{ id?: string }>(); // id is optional for "add" mode
   const navigate = useNavigate();
   const isEditMode = Boolean(id); // Determine mode based on presence of id
 
-  const [editMode, setEditMode] = useState(!isEditMode);
-  const [doctorDetails, setDoctorDetails] = useState<DoctorDetails>({
+  // Initial state for an empty doctor profile
+  const initialDoctorDetails = {
     id: null,
     first_name: "",
     last_name: "",
@@ -35,20 +35,27 @@ const DoctorProfile: React.FC = () => {
     contact_number: "",
     dea: "",
     npi: "",
-  });
+  };
+
+  const [doctorDetails, setDoctorDetails] = useState<DoctorDetails>(initialDoctorDetails);
+  const [editMode, setEditMode] = useState(!isEditMode); // Default to edit mode for new doctor
 
   useEffect(() => {
-    if (isEditMode) {
+    if (isEditMode && id) {
+      // Fetch doctor details if in edit mode (i.e., id is present)
       const fetchDoctorDetails = async () => {
         try {
           const response = await axios.get(`http://localhost:8000/prescribers/${id}`);
           setDoctorDetails(response.data);
         } catch (error) {
           console.error("Failed to fetch doctor details:", error);
-          navigate("/doctorlist");
+          navigate("/doctorlist"); // Navigate back to the doctor list on error
         }
       };
       fetchDoctorDetails();
+    } else {
+      // Reset the form if adding a new doctor (no id present)
+      setDoctorDetails(initialDoctorDetails);
     }
   }, [id, isEditMode, navigate]);
 
@@ -69,7 +76,7 @@ const DoctorProfile: React.FC = () => {
         await axios.post("http://localhost:8000/prescribers", doctorDetails);
         alert("Doctor added successfully!");
       }
-      navigate("/doctorprofile"); // Redirect as needed
+      navigate("/doctorlist"); // Redirect to doctor list after saving
     } catch (error) {
       console.error("Error saving doctor details:", error);
       alert("Failed to save doctor details.");

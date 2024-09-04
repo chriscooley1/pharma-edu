@@ -29,7 +29,9 @@ const AddPatient: React.FC = () => {
   const navigate = useNavigate();
 
   const [editMode, setEditMode] = useState(false); // Start in view mode (not editable)
-  const [patientDetails, setPatientDetails] = useState<PatientDetails>({
+  
+  // Initial empty state for patient details and insurance info
+  const initialPatientDetails = {
     id: null,
     first_name: "",
     last_name: "",
@@ -40,20 +42,25 @@ const AddPatient: React.FC = () => {
     state: "",
     zipcode: "",
     allergies: "",
-  });
+  };
 
-  const [insuranceInfo, setInsuranceInfo] = useState<InsuranceInfo>({
+  const initialInsuranceInfo = {
     insurance_name: "",
     insurance_member_id: "",
     insurance_group_number: "",
     insurance_rx_bin: "",
     insurance_rx_pcn: "",
     insurance_person_code: "",
-  });
+  };
+
+  const [patientDetails, setPatientDetails] = useState<PatientDetails>(initialPatientDetails);
+  const [insuranceInfo, setInsuranceInfo] = useState<InsuranceInfo>(initialInsuranceInfo);
 
   useEffect(() => {
-    // Fetch existing AddPatient details from backend (if needed)
-  }, []);
+    // Reset both patient and insurance info when navigating to "Add New Patient"
+    setPatientDetails(initialPatientDetails);
+    setInsuranceInfo(initialInsuranceInfo);
+  }, []); // Empty dependency array ensures this runs only on component mount
 
   const handlePatientChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -63,9 +70,7 @@ const AddPatient: React.FC = () => {
     }));
   };
 
-  const handleInsuranceChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleInsuranceChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
     setInsuranceInfo((prevDetails) => ({
       ...prevDetails,
@@ -105,7 +110,7 @@ const AddPatient: React.FC = () => {
             type="text"
             name="first_name"
             id="patient-first-name"
-            value={patientDetails.first_name  || ""}
+            value={patientDetails.first_name || ""}
             onChange={handlePatientChange}
             readOnly={!editMode}
           />
@@ -116,7 +121,7 @@ const AddPatient: React.FC = () => {
             type="text"
             name="last_name"
             id="patient-last-name"
-            value={patientDetails.last_name  || ""}
+            value={patientDetails.last_name || ""}
             onChange={handlePatientChange}
             readOnly={!editMode}
           />
@@ -127,7 +132,7 @@ const AddPatient: React.FC = () => {
             type="date"
             name="date_of_birth"
             id="patient-date-of-birth"
-            value={patientDetails.date_of_birth  || ""}
+            value={patientDetails.date_of_birth || ""}
             onChange={handlePatientChange}
             readOnly={!editMode}
           />
@@ -138,7 +143,7 @@ const AddPatient: React.FC = () => {
             type="text"
             name="phone_number"
             id="patient-phone-number"
-            value={patientDetails.phone_number  || ""}
+            value={patientDetails.phone_number || ""}
             onChange={handlePatientChange}
             readOnly={!editMode}
           />
@@ -149,7 +154,7 @@ const AddPatient: React.FC = () => {
             type="text"
             name="street"
             id="patient-street"
-            value={patientDetails.street  || ""}
+            value={patientDetails.street || ""}
             onChange={handlePatientChange}
             readOnly={!editMode}
           />
@@ -160,7 +165,7 @@ const AddPatient: React.FC = () => {
             type="text"
             name="city"
             id="patient-city"
-            value={patientDetails.city  || ""}
+            value={patientDetails.city || ""}
             onChange={handlePatientChange}
             readOnly={!editMode}
           />
@@ -171,7 +176,7 @@ const AddPatient: React.FC = () => {
             type="text"
             name="state"
             id="patient-state"
-            value={patientDetails.state  || ""}
+            value={patientDetails.state || ""}
             onChange={handlePatientChange}
             readOnly={!editMode}
           />
@@ -182,7 +187,7 @@ const AddPatient: React.FC = () => {
             type="text"
             name="zipcode"
             id="patient-zipcode"
-            value={patientDetails.zipcode  || ""}
+            value={patientDetails.zipcode || ""}
             onChange={handlePatientChange}
             readOnly={!editMode}
           />
@@ -193,7 +198,7 @@ const AddPatient: React.FC = () => {
             type="text"
             name="allergies"
             id="patient-allergies"
-            value={patientDetails.allergies  || ""}
+            value={patientDetails.allergies || ""}
             onChange={handlePatientChange}
             readOnly={!editMode}
           />
@@ -210,7 +215,7 @@ const AddPatient: React.FC = () => {
             type="text"
             name="insurance_name"
             id="patient-insurance-name"
-            value={insuranceInfo.insurance_name  || ""}
+            value={insuranceInfo.insurance_name || ""}
             onChange={handleInsuranceChange}
             readOnly={!editMode}
           />
@@ -221,7 +226,7 @@ const AddPatient: React.FC = () => {
             type="text"
             name="insurance_member_id"
             id="patient-insurance-member-id"
-            value={insuranceInfo.insurance_member_id  || ""}
+            value={insuranceInfo.insurance_member_id || ""}
             onChange={handleInsuranceChange}
             readOnly={!editMode}
           />
@@ -232,7 +237,7 @@ const AddPatient: React.FC = () => {
             type="text"
             name="insurance_group_number"
             id="patient-insurance-group-number"
-            value={insuranceInfo.insurance_group_number  || ""}
+            value={insuranceInfo.insurance_group_number || ""}
             onChange={handleInsuranceChange}
             readOnly={!editMode}
           />
@@ -243,7 +248,7 @@ const AddPatient: React.FC = () => {
             type="text"
             name="insurance_rx_bin"
             id="patient-insurance-rx-bin"
-            value={insuranceInfo.insurance_rx_bin  || ""}
+            value={insuranceInfo.insurance_rx_bin || ""}
             onChange={handleInsuranceChange}
             readOnly={!editMode}
           />
@@ -254,7 +259,7 @@ const AddPatient: React.FC = () => {
             type="text"
             name="insurance_rx_pcn"
             id="patient-insurance-rx-pcn"
-            value={insuranceInfo.insurance_rx_pcn  || ""}
+            value={insuranceInfo.insurance_rx_pcn || ""}
             onChange={handleInsuranceChange}
             readOnly={!editMode}
           />
@@ -265,7 +270,7 @@ const AddPatient: React.FC = () => {
             type="text"
             name="insurance_person_code"
             id="patient-insurance-person-code"
-            value={insuranceInfo.insurance_person_code  || ""}
+            value={insuranceInfo.insurance_person_code || ""}
             onChange={handleInsuranceChange}
             readOnly={!editMode}
           />

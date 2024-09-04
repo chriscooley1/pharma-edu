@@ -3,8 +3,8 @@ import "./SearchBar.css";
 
 interface SearchBarProps {
   placeholder: string;
-  onSearch: (query: string) => Promise<void>; // onSearch should be asynchronous
-  onSearchComplete: () => void; // Prop to notify when search is complete
+  onSearch: (query: string) => Promise<void>;
+  onSearchComplete: () => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch, onSearchComplete }) => {
@@ -16,8 +16,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch, onSearchCo
 
   const handleSearch = async () => {
     if (searchQuery.trim()) {
-      await onSearch(searchQuery); // Execute the search
-      onSearchComplete(); // Notify parent that search is complete
+      await onSearch(searchQuery);
+      onSearchComplete();
     }
   };
 

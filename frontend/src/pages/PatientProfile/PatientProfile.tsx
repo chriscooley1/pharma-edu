@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import "./PatientProfile.css";
 import axios from "axios";
+import "./PatientProfile.css";
 
 interface PatientDetails {
   id: number | null;
@@ -33,8 +33,7 @@ const PatientProfile: React.FC = () => {
   const navigate = useNavigate();
   const isEditMode = Boolean(id);
 
-  const [editMode, setEditMode] = useState(false); 
-  const [patientDetails, setPatientDetails] = useState<PatientDetails>({
+  const initialPatientDetails = {
     id: null,
     first_name: "",
     last_name: "",
@@ -48,71 +47,83 @@ const PatientProfile: React.FC = () => {
     rx_printed: "",
     rx_completed: "",
     rx_sold: "",
-  });
+  };
 
-  const [insuranceInfo, setInsuranceInfo] = useState<InsuranceInfo>({
+  const initialInsuranceInfo = {
     insurance_name: "",
     insurance_member_id: "",
     insurance_group_number: "",
     insurance_rx_bin: "",
     insurance_rx_pcn: "",
     insurance_person_code: "",
-  });
+  };
+
+  const [patientDetails, setPatientDetails] = useState<PatientDetails>(initialPatientDetails);
+  const [insuranceInfo, setInsuranceInfo] = useState<InsuranceInfo>(initialInsuranceInfo);
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     const fetchPatientDetails = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8000/patients/${id}`);
-        const patientData = response.data;
-        setPatientDetails(patientData);
+      if (isEditMode) {
+        try {
+          const response = await axios.get(`http://localhost:8000/patients/${id}`);
+          const patientData = response.data;
 
-        setInsuranceInfo({
-          insurance_name: patientData.insurance_name || "",
-          insurance_member_id: patientData.insurance_member_id || "",
-          insurance_group_number: patientData.insurance_group_number || "",
-          insurance_rx_bin: patientData.insurance_rx_bin || "",
-          insurance_rx_pcn: patientData.insurance_rx_pcn || "",
-          insurance_person_code: patientData.insurance_person_code || "",
-        });
-      } catch (error) {
-        console.error("Failed to fetch patient details:", error);
-        // Handle error (e.g., redirect to search page)
+          setPatientDetails(patientData);
+          setInsuranceInfo({
+            insurance_name: patientData.insurance_name || "",
+            insurance_member_id: patientData.insurance_member_id || "",
+            insurance_group_number: patientData.insurance_group_number || "",
+            insurance_rx_bin: patientData.insurance_rx_bin || "",
+            insurance_rx_pcn: patientData.insurance_rx_pcn || "",
+            insurance_person_code: patientData.insurance_person_code || "",
+          });
+        } catch (error) {
+          console.error("Failed to fetch patient details:", error);
+          navigate("/patientsearch"); // Redirect if patient not found
+        }
+      } else {
+        // Reset form for new patient
+        setPatientDetails(initialPatientDetails);
+        setInsuranceInfo(initialInsuranceInfo);
       }
     };
 
-    if (id) {
-      fetchPatientDetails();
-    }
-  }, [id]);
+    fetchPatientDetails();
+  }, [id, isEditMode, navigate]);
 
   const handlePatientChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setPatientDetails((prevDetails) => ({
       ...prevDetails,
-      [name]: value,
+      [name]: value || "",
     }));
   };
 
-  const handleInsuranceChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleInsuranceChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
     setInsuranceInfo((prevDetails) => ({
       ...prevDetails,
-      [name]: value,
+      [name]: value || "",
     }));
   };
 
   const handleSave = async () => {
     try {
       if (isEditMode) {
-        await axios.patch(`http://localhost:8000/patients/${id}`, patientDetails);
+        await axios.patch(`http://localhost:8000/patients/${id}`, {
+          ...patientDetails,
+          ...insuranceInfo,
+        });
         alert("Patient details updated successfully!");
       } else {
-        await axios.post("http://localhost:8000/patients", patientDetails);
+        await axios.post("http://localhost:8000/patients", {
+          ...patientDetails,
+          ...insuranceInfo,
+        });
         alert("Patient added successfully!");
       }
-      navigate("/patientprofile"); // Redirect as needed
+      navigate("/patientprofile");
     } catch (error) {
       console.error("Error saving patient details:", error);
       alert("Failed to save patient details.");
@@ -120,7 +131,7 @@ const PatientProfile: React.FC = () => {
   };
 
   const toggleEditMode = () => {
-    setEditMode(!editMode); 
+    setEditMode(!editMode);
   };
 
   const goToNewRx = () => {
