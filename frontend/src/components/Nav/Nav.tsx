@@ -6,15 +6,9 @@ import ModalButtons from "../ModalButtons/ModalButtons";
 import "./Nav.css";
 
 const Nav: React.FC = () => {
-  // Filter out routes that shouldn't appear in the navigation bar
-  const navRoutes = routes.filter(
-    (route) =>
-      ![
-        "Add Patient",
-        "Patient Profile",
-        "Doctor Profile",
-        "Rx Item Profile",
-      ].includes(route.name)
+  // Include "Add Patient" in the nav bar for direct access
+  const navRoutes = routes.filter((route) =>
+    !["Add Patient", "Patient Profile", "Doctor Profile", "Rx Item Profile"].includes(route.name)
   );
 
   return (

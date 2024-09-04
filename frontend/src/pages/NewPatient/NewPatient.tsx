@@ -17,7 +17,7 @@ const NewPatient: React.FC<PatientProps> = ({ onClose }) => {
       if (response.ok) {
         const patients = await response.json();
         if (patients.length > 0) {
-          navigate(`/patientprofile/${patients[0].id}`);
+          navigate(`/patientprofile/${patients[0].id}`); // Navigate to PatientProfile for found patient
           onClose(); // Close modal if a valid patient is found
         } else {
           setErrorMessage("Patient not found. Please try again.");
@@ -32,7 +32,7 @@ const NewPatient: React.FC<PatientProps> = ({ onClose }) => {
   };
 
   const gotoAddPatient = () => {
-    navigate("/patientprofile");
+    navigate("/addpatient"); // Ensure this route matches the path for AddPatient.tsx
     onClose(); // Close modal when navigating to add a patient
   };
 
