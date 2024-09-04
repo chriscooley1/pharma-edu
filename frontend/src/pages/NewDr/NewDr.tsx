@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../../components/SearchBar/SearchBar";
-
 import "./NewDr.css";
 
 interface DrProps {
-  onClose: () => void; // Prop for closing the modal
+  onClose: () => void;
 }
 
 const NewDr: React.FC<DrProps> = ({ onClose }) => {
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const handleSearch = async (query: string) => {
@@ -18,31 +18,34 @@ const NewDr: React.FC<DrProps> = ({ onClose }) => {
         const prescribers = await response.json();
         if (prescribers.length > 0) {
           navigate(`/doctorprofile/${prescribers[0].id}`);
+          onClose(); // Close modal if a valid doctor is found
         } else {
-          console.error("Prescriber not found");
+          setErrorMessage("Prescriber not found. Please try again.");
         }
       } else {
-        console.error("Prescriber not found");
+        setErrorMessage("Prescriber not found. Please try again.");
       }
     } catch (error) {
       console.error("Failed to search prescriber:", error);
+      setErrorMessage("An error occurred. Please try again.");
     }
   };
 
   const gotoDoctorProfile = () => {
     navigate("/doctorprofile");
-    onClose();
+    onClose(); // Close modal when navigating to add a doctor
   };
 
   return (
     <div className="new-dr-container">
       <div className="search-bar">
-        <SearchBar placeholder="Search for a doctor" onSearch={handleSearch} />
-        <button 
-          type="button" 
-          onClick={gotoDoctorProfile} 
-          className="navigate-button"
-        >
+        <SearchBar
+          placeholder="Search for a doctor"
+          onSearch={handleSearch}
+          onSearchComplete={() => setErrorMessage("")} // Reset error message after search
+        />
+        {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Error message */}
+        <button type="button" onClick={gotoDoctorProfile} className="navigate-button">
           Add New Doctor
         </button>
       </div>
