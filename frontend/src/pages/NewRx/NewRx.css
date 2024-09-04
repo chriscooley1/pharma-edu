@@ -70,7 +70,7 @@
 }
 
 .status-select {
-  width: 100%; /* Make it take the full width like other inputs */
+  width: 75%;
   padding: 0.5rem; /* Add padding for a comfortable clickable area */
   border: 1px solid #ccc; /* Border style matching other inputs */
   border-radius: 4px; /* Rounded corners to match other inputs */

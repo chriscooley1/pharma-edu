@@ -201,7 +201,7 @@ const NewRx: React.FC = () => {
             id="rx-status"
             value={rxDetails.status || ""}
             onChange={handleRxChange}
-            className="status-select" // Add the class for custom styling
+            className="status-select"
           >
             <option value="" disabled>
               Select status
