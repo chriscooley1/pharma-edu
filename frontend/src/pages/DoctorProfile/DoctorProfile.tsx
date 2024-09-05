@@ -77,7 +77,16 @@ const DoctorProfile: React.FC = () => {
         await axios.post("http://localhost:8000/prescribers", doctorDetails);
         alert("Doctor added successfully!");
       }
-      navigate("/doctorlist");
+  
+      // Add "saved" class to the save button for visual feedback
+      const saveButton = document.querySelector(".doctor-save-button");
+      saveButton?.classList.add("saved");
+  
+      // Remove "saved" class after 3 seconds
+      setTimeout(() => {
+        saveButton?.classList.remove("saved");
+      }, 3000);
+  
     } catch (error) {
       console.error("Error saving doctor details:", error);
       alert("Failed to save doctor details.");

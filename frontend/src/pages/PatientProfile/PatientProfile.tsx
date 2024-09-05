@@ -117,6 +117,16 @@ const PatientProfile: React.FC = () => {
         });
         alert("Patient added successfully!");
       }
+  
+      // Add "saved" class to the save button for visual feedback
+      const saveButton = document.querySelector(".save-button");
+      saveButton?.classList.add("saved");
+  
+      // Remove "saved" class after 3 seconds
+      setTimeout(() => {
+        saveButton?.classList.remove("saved");
+      }, 3000);
+  
       navigate("/patientprofile");
     } catch (error) {
       console.error("Error saving patient details:", error);

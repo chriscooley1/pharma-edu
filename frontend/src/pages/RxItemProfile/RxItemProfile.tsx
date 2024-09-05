@@ -63,6 +63,16 @@ const RxItemProfile: React.FC = () => {
         await axios.post("http://localhost:8000/rx-items", rxDetails);
         alert("Rx item added successfully!");
       }
+  
+      // Add "saved" class to the save button for visual feedback
+      const saveButton = document.querySelector(".rx-save-button");
+      saveButton?.classList.add("saved");
+  
+      // Remove "saved" class after 3 seconds
+      setTimeout(() => {
+        saveButton?.classList.remove("saved");
+      }, 3000);
+  
       navigate("/rxitemprofile");
     } catch (error) {
       console.error("Error saving Rx details:", error);

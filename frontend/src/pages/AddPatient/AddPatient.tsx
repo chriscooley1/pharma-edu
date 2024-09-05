@@ -86,11 +86,21 @@ const AddPatient: React.FC = () => {
         ...patientDetails,
         ...insuranceInfo, // Include insurance fields in the initial patient creation
       };
-  
+
       await axios.post("http://localhost:8000/patients", fullPatientDetails);
-      
+
       alert("Patient and insurance details saved successfully!");
       setEditMode(false); // Disable edit mode after saving
+
+      // Add "saved" class to the save button for visual feedback
+      const saveButton = document.querySelector(".save-button");
+      saveButton?.classList.add("saved");
+
+      // Remove "saved" class after 3 seconds
+      setTimeout(() => {
+        saveButton?.classList.remove("saved");
+      }, 3000);
+
       navigate("/patientprofile"); // Redirect to the PatientProfile page after saving
     } catch (error) {
       console.error("Error saving patient and insurance details:", error);

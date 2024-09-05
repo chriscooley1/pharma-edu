@@ -38,3 +38,27 @@
 .pt-left-side {
   padding: 20px;
 }
+
+/* Default blue for Edit and Save buttons */
+.edit-button, .save-button {
+  background-color: #2E3F59;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+  margin-left: 10px;
+}
+
+/* Hover effect for the buttons */
+.edit-button:hover, .save-button:hover {
+  background-color: #4D79A9;
+}
+
+/* Success feedback after saving */
+.save-button.saved {
+  background-color: #FFC107; /* Yellow color for saved state */
+  color: white;
+}
