@@ -1,64 +1,103 @@
+/* Container for the entire profile */
 .patient-profile-container {
   display: flex;
+  flex-direction: column;
   height: calc(90vh - 60px);
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f8f8f8;
 }
 
+/* Row for Patient Name, Edit, and Save buttons */
+.pt-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Style for Patient Name header spanning across */
+.pt-header-row h3 {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+/* Button container next to Patient Name */
+.pt-header-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-right: 1rem;
+}
+
+/* Section for the left and right side of form */
+.pt-content {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* Left and right side sections for patient and insurance info */
 .pt-profile-left-side,
 .pt-profile-right-side {
-  flex: 1; /* Each side takes up equal space */
-  padding: 0 2rem;
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: white;
 }
 
+/* Divider between general info and insurance info */
 .separator {
   width: 1px;
   background-color: #ccc;
+  margin: 0 20px;
 }
 
+/* Form styling */
 .pt-profile-left-side div,
 .pt-profile-right-side div {
-  display: flex; /* Align items horizontally */
-  align-items: center; /* Center the label and input vertically */
-  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
 .pt-profile-left-side label,
 .pt-profile-right-side label {
-  margin-right: 1rem; /* Space between the label and the input */
-  width: 150px; /* Set a fixed width for labels */
-  text-align: right; /* Align label text to the right for better spacing */
+  width: 150px;
+  text-align: right;
+  margin-right: 1rem;
 }
 
 .pt-profile-left-side input,
 .pt-profile-right-side input {
-  flex-grow: 1; /* Allow input to take up the remaining space */
+  width: 100%;
   padding: 0.5rem;
   border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-.pt-profile-left-side {
-  padding: 20px;
-}
-
-/* Default blue for Edit and Save buttons */
-.edit-button, .save-button {
-  background-color: #2E3F59;
-  color: white;
+button {
+  padding: 0.5rem 1rem;
   border: none;
   border-radius: 4px;
-  cursor: pointer;
-  padding: 0.5rem 1rem;
   font-size: 1rem;
+  cursor: pointer;
+  background-color: #2E3F59;
+  color: white;
   transition: background-color 0.3s;
-  margin-left: 10px;
 }
 
-/* Hover effect for the buttons */
-.edit-button:hover, .save-button:hover {
+button:hover {
   background-color: #4D79A9;
 }
 
-/* Success feedback after saving */
-.save-button.saved {
-  background-color: #FFC107; /* Yellow color for saved state */
+/* Save button for when it is saved */
+button.save-button.saved {
+  background-color: #FFC107; /* Yellow feedback */
   color: white;
 }
