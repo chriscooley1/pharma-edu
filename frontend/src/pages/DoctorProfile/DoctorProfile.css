@@ -2,46 +2,57 @@
   display: flex;
   flex-direction: column;
   padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f8f8f8;
+  margin-top: 20px;
+}
+
+.doctor-profile-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.button-group {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  gap: 10px;
+}
+
+.dr-main {
+  margin-top: 50px; /* Ensure fields move down to avoid being covered */
 }
 
 .dr-main div {
-  display: flex; /* Align items horizontally */
-  align-items: center; /* Center the label and input vertically */
-  margin-bottom: 1rem; /* Space between rows */
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
 .dr-main label {
-  margin-right: 1rem; /* Space between the label and the input */
-  width: 100px; /* Set a fixed width for labels */
-  text-align: right; /* Align the label text to the right */
+  width: 100px;
+  text-align: right;
+  margin-right: 1rem;
 }
 
 .dr-main input {
-  flex-grow: 1; /* Allow the input to take up the remaining space */
+  flex-grow: 1;
   padding: 0.5rem;
   border: 1px solid #ccc;
 }
 
-/* Default blue for Edit and Save buttons */
 .doctor-edit-button, .doctor-save-button {
+  padding: 0.5rem 1rem;
   background-color: #2E3F59;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  transition: background-color 0.3s;
-  margin-left: 10px;
 }
 
-/* Hover effect for the buttons */
 .doctor-edit-button:hover, .doctor-save-button:hover {
   background-color: #4D79A9;
-}
-
-/* Success feedback after saving */
-.doctor-save-button.saved {
-  background-color: #FFC107; /* Yellow color for saved state */
-  color: white;
 }

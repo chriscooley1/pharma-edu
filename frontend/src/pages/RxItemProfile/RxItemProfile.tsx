@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./RxItemProfile.css";
 
@@ -15,11 +15,10 @@ interface RxDetails {
 }
 
 const RxItemProfile: React.FC = () => {
-  const { id } = useParams<{ id?: string }>();
-  const navigate = useNavigate();
-  const isEditMode = Boolean(id);
+  const { id } = useParams<{ id?: string }>(); // Fetch the 'id' from the URL params
+  const isEditMode = Boolean(id); // Check if we are in edit mode by the presence of 'id'
 
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState(isEditMode); // Default editMode based on the presence of 'id'
   const [rxDetails, setRxDetails] = useState<RxDetails>({
     id: null,
     name: "",
@@ -32,19 +31,18 @@ const RxItemProfile: React.FC = () => {
   });
 
   useEffect(() => {
-    const fetchRxDetails = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8000/rx-items/${id}`);
-        setRxDetails(response.data);
-      } catch (error) {
-        console.error("Failed to fetch rx details:", error);
-      }
-    };
-
-    if (id) {
+    if (isEditMode && id) {
+      const fetchRxDetails = async () => {
+        try {
+          const response = await axios.get(`http://localhost:8000/rx-items/${id}`);
+          setRxDetails(response.data); // Populate the form with Rx details when in edit mode
+        } catch (error) {
+          console.error("Failed to fetch Rx details:", error);
+        }
+      };
       fetchRxDetails();
     }
-  }, [id]);
+  }, [id, isEditMode]);
 
   const handleRxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -63,17 +61,15 @@ const RxItemProfile: React.FC = () => {
         await axios.post("http://localhost:8000/rx-items", rxDetails);
         alert("Rx item added successfully!");
       }
-  
+
       // Add "saved" class to the save button for visual feedback
       const saveButton = document.querySelector(".rx-save-button");
       saveButton?.classList.add("saved");
-  
+
       // Remove "saved" class after 3 seconds
       setTimeout(() => {
         saveButton?.classList.remove("saved");
       }, 3000);
-  
-      navigate("/rxitemprofile");
     } catch (error) {
       console.error("Error saving Rx details:", error);
       alert("Failed to save Rx details.");
@@ -86,92 +82,94 @@ const RxItemProfile: React.FC = () => {
 
   return (
     <div className="rx-item-profile-container">
-      <h3>Rx Name</h3>
-      <div className="button-group">
-        <button type="button" className="rx-edit-button" onClick={toggleEditMode}>
-          {editMode ? "Cancel" : "Edit"}
-        </button>
-        <button type="button" className="rx-save-button" onClick={handleSave} disabled={!editMode}>
-          Save
-        </button>
-      </div>
-      <div className="rx-main">
-        <div>
-          <label htmlFor="rx-name">Name</label>
-          <input
-            type="text"
-            name="name"
-            id="rx-name"
-            value={rxDetails.name || ""}
-            onChange={handleRxChange}
-            readOnly={!editMode}
-          />
+      <h3>{isEditMode ? "Edit Rx Item" : "Add New Rx Item"}</h3>
+      <div className="rx-item-content">
+        <div className="button-group">
+          <button type="button" className="rx-edit-button" onClick={toggleEditMode}>
+            {editMode ? "Cancel" : "Edit"}
+          </button>
+          <button type="button" className="rx-save-button" onClick={handleSave} disabled={!editMode}>
+            Save
+          </button>
         </div>
-        <div>
-          <label htmlFor="rx-strength">Strength</label>
-          <input
-            type="text"
-            name="strength"
-            id="rx-strength"
-            value={rxDetails.strength || ""}
-            onChange={handleRxChange}
-            readOnly={!editMode}
-          />
-        </div>
-        <div>
-          <label htmlFor="rx-ndc">NDC</label>
-          <input
-            type="text"
-            name="ndc"
-            id="rx-ndc"
-            value={rxDetails.ndc || ""}
-            onChange={handleRxChange}
-            readOnly={!editMode}
-          />
-        </div>
-        <div>
-          <label htmlFor="rx-expiration">Expiration</label>
-          <input
-            type="date"
-            name="expiration"
-            id="rx-expiration"
-            value={rxDetails.expiration || ""}
-            onChange={handleRxChange}
-            readOnly={!editMode}
-          />
-        </div>
-        <div>
-          <label htmlFor="rx-lot-number">Lot Number</label>
-          <input
-            type="text"
-            name="lot_number"
-            id="rx-lot-number"
-            value={rxDetails.lot_number || ""}
-            onChange={handleRxChange}
-            readOnly={!editMode}
-          />
-        </div>
-        <div>
-          <label htmlFor="rx-dea-schedule">DEA Schedule</label>
-          <input
-            type="text"
-            name="dea_schedule"
-            id="rx-dea-schedule"
-            value={rxDetails.dea_schedule || ""}
-            onChange={handleRxChange}
-            readOnly={!editMode}
-          />
-        </div>
-        <div>
-          <label htmlFor="rx-dosage-form">Dosage Form</label>
-          <input
-            type="text"
-            name="dosage_form"
-            id="rx-dosage-form"
-            value={rxDetails.dosage_form || ""}
-            onChange={handleRxChange}
-            readOnly={!editMode}
-          />
+        <div className="rx-main">
+          <div>
+            <label htmlFor="rx-name">Name</label>
+            <input
+              type="text"
+              name="name"
+              id="rx-name"
+              value={rxDetails.name || ""}
+              onChange={handleRxChange}
+              readOnly={!editMode}
+            />
+          </div>
+          <div>
+            <label htmlFor="rx-strength">Strength</label>
+            <input
+              type="text"
+              name="strength"
+              id="rx-strength"
+              value={rxDetails.strength || ""}
+              onChange={handleRxChange}
+              readOnly={!editMode}
+            />
+          </div>
+          <div>
+            <label htmlFor="rx-ndc">NDC</label>
+            <input
+              type="text"
+              name="ndc"
+              id="rx-ndc"
+              value={rxDetails.ndc || ""}
+              onChange={handleRxChange}
+              readOnly={!editMode}
+            />
+          </div>
+          <div>
+            <label htmlFor="rx-expiration">Expiration</label>
+            <input
+              type="date"
+              name="expiration"
+              id="rx-expiration"
+              value={rxDetails.expiration || ""}
+              onChange={handleRxChange}
+              readOnly={!editMode}
+            />
+          </div>
+          <div>
+            <label htmlFor="rx-lot-number">Lot Number</label>
+            <input
+              type="text"
+              name="lot_number"
+              id="rx-lot-number"
+              value={rxDetails.lot_number || ""}
+              onChange={handleRxChange}
+              readOnly={!editMode}
+            />
+          </div>
+          <div>
+            <label htmlFor="rx-dea-schedule">DEA Schedule</label>
+            <input
+              type="text"
+              name="dea_schedule"
+              id="rx-dea-schedule"
+              value={rxDetails.dea_schedule || ""}
+              onChange={handleRxChange}
+              readOnly={!editMode}
+            />
+          </div>
+          <div>
+            <label htmlFor="rx-dosage-form">Dosage Form</label>
+            <input
+              type="text"
+              name="dosage_form"
+              id="rx-dosage-form"
+              value={rxDetails.dosage_form || ""}
+              onChange={handleRxChange}
+              readOnly={!editMode}
+            />
+          </div>
         </div>
       </div>
     </div>
