@@ -3,23 +3,12 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./RxItemProfile.css";
 
-interface RxDetails {
-  id: number | null;
-  name: string;
-  strength: string;
-  ndc: string;
-  expiration: string;
-  lot_number: string;
-  dea_schedule: string;
-  dosage_form: string;
-}
-
 const RxItemProfile: React.FC = () => {
-  const { id } = useParams<{ id?: string }>(); // Fetch the 'id' from the URL params
-  const isEditMode = Boolean(id); // Check if we are in edit mode by the presence of 'id'
+  const { id } = useParams<{ id?: string }>();
+  const isEditMode = Boolean(id);
 
-  const [editMode, setEditMode] = useState(isEditMode); // Default editMode based on the presence of 'id'
-  const [rxDetails, setRxDetails] = useState<RxDetails>({
+  const [editMode, setEditMode] = useState(isEditMode);
+  const [rxDetails, setRxDetails] = useState({
     id: null,
     name: "",
     strength: "",
@@ -31,24 +20,18 @@ const RxItemProfile: React.FC = () => {
   });
 
   useEffect(() => {
-    if (isEditMode && id) {
-      const fetchRxDetails = async () => {
-        try {
-          const response = await axios.get(`http://localhost:8000/rx-items/${id}`);
-          setRxDetails(response.data); // Populate the form with Rx details when in edit mode
-        } catch (error) {
-          console.error("Failed to fetch Rx details:", error);
-        }
-      };
-      fetchRxDetails();
+    if (id) {
+      axios.get(`http://localhost:8000/rx-items/${id}`).then((response) => {
+        setRxDetails(response.data);
+      });
     }
-  }, [id, isEditMode]);
+  }, [id]);
 
   const handleRxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setRxDetails((prevDetails) => ({
       ...prevDetails,
-      [name]: value || "", // Ensure no undefined values
+      [name]: value,
     }));
   };
 
@@ -61,15 +44,6 @@ const RxItemProfile: React.FC = () => {
         await axios.post("http://localhost:8000/rx-items", rxDetails);
         alert("Rx item added successfully!");
       }
-
-      // Add "saved" class to the save button for visual feedback
-      const saveButton = document.querySelector(".rx-save-button");
-      saveButton?.classList.add("saved");
-
-      // Remove "saved" class after 3 seconds
-      setTimeout(() => {
-        saveButton?.classList.remove("saved");
-      }, 3000);
     } catch (error) {
       console.error("Error saving Rx details:", error);
       alert("Failed to save Rx details.");
@@ -82,17 +56,21 @@ const RxItemProfile: React.FC = () => {
 
   return (
     <div className="rx-item-profile-container">
-      <h3>{isEditMode ? "Edit Rx Item" : "Add New Rx Item"}</h3>
-      <div className="rx-item-content">
-        <div className="button-group">
-          <button type="button" className="rx-edit-button" onClick={toggleEditMode}>
+      {/* Header row for Rx Item, Edit, and Save buttons */}
+      <div className="header-row">
+        <h3>{isEditMode ? "Edit Rx Item" : "Add New Rx Item"}</h3>
+        <div className="header-buttons">
+          <button type="button" className="edit-button" onClick={toggleEditMode}>
             {editMode ? "Cancel" : "Edit"}
           </button>
-          <button type="button" className="rx-save-button" onClick={handleSave} disabled={!editMode}>
+          <button type="button" className="save-button" onClick={handleSave} disabled={!editMode}>
             Save
           </button>
         </div>
-        <div className="rx-main">
+      </div>
+
+      <div className="content">
+        <div className="form-section">
           <div>
             <label htmlFor="rx-name">Name</label>
             <input

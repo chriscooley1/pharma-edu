@@ -1,3 +1,4 @@
+/* Container for the entire profile */
 .doctor-profile-container {
   display: flex;
   flex-direction: column;
@@ -8,51 +9,72 @@
   margin-top: 20px;
 }
 
-.doctor-profile-content {
-  position: relative;
+/* Header row for Title, Edit, and Save buttons */
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Title styling */
+.header-row h3 {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+/* Button container next to Title */
+.header-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Form styling */
+.form-section {
   display: flex;
   flex-direction: column;
 }
 
-.button-group {
-  position: absolute;
-  top: 0;
-  right: 0;
+.form-section div {
   display: flex;
-  gap: 10px;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
-.dr-main {
-  margin-top: 50px; /* Ensure fields move down to avoid being covered */
-}
-
-.dr-main div {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.dr-main label {
-  width: 100px;
+.form-section label {
+  width: 150px;
   text-align: right;
   margin-right: 1rem;
 }
 
-.dr-main input {
+.form-section input {
   flex-grow: 1;
   padding: 0.5rem;
   border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-.doctor-edit-button, .doctor-save-button {
+/* Button styling */
+button {
   padding: 0.5rem 1rem;
-  background-color: #2E3F59;
-  color: white;
   border: none;
   border-radius: 4px;
+  font-size: 1rem;
   cursor: pointer;
+  background-color: #2E3F59;
+  color: white;
+  transition: background-color 0.3s;
 }
 
-.doctor-edit-button:hover, .doctor-save-button:hover {
+button:hover {
   background-color: #4D79A9;
+}
+
+button.save-button.saved {
+  background-color: #FFC107;
+  color: white;
 }

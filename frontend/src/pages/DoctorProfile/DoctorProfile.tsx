@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./DoctorProfile.css";
 
 const DoctorProfile: React.FC = () => {
-  const { id } = useParams<{ id?: string }>(); 
-  const navigate = useNavigate();
+  const { id } = useParams<{ id?: string }>();
   const isEditMode = Boolean(id);
 
   const initialDoctorDetails = {
@@ -23,9 +22,8 @@ const DoctorProfile: React.FC = () => {
   };
 
   const [doctorDetails, setDoctorDetails] = useState(initialDoctorDetails);
-  const [editMode, setEditMode] = useState(true); 
+  const [editMode, setEditMode] = useState(true);
 
-  // Fetch the doctor details if we are in edit mode
   useEffect(() => {
     if (isEditMode && id) {
       const fetchDoctorDetails = async () => {
@@ -34,15 +32,13 @@ const DoctorProfile: React.FC = () => {
           setDoctorDetails(response.data);
         } catch (error) {
           console.error("Failed to fetch doctor details:", error);
-          navigate("/doctorlist");
         }
       };
       fetchDoctorDetails();
     } else {
-      // If no ID is passed, this is "add mode," so reset the form
       setDoctorDetails(initialDoctorDetails);
     }
-  }, [id, isEditMode, navigate]);
+  }, [id, isEditMode]);
 
   const handleDoctorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -55,11 +51,9 @@ const DoctorProfile: React.FC = () => {
   const handleSave = async () => {
     try {
       if (isEditMode) {
-        // Update existing doctor
         await axios.patch(`http://localhost:8000/prescribers/${id}`, doctorDetails);
         alert("Doctor details updated successfully!");
       } else {
-        // Add new doctor
         await axios.post("http://localhost:8000/prescribers", doctorDetails);
         alert("Doctor added successfully!");
       }
@@ -76,17 +70,21 @@ const DoctorProfile: React.FC = () => {
 
   return (
     <div className="doctor-profile-container">
-      <h3>{isEditMode ? "Edit Doctor" : "Add New Doctor"}</h3>
-      <div className="doctor-profile-content">
-        <div className="button-group">
-          <button className="doctor-edit-button" onClick={toggleEditMode}>
+      {/* Header row for Doctor Name, Edit, and Save buttons */}
+      <div className="header-row">
+        <h3>{isEditMode ? "Edit Doctor" : "Add New Doctor"}</h3>
+        <div className="header-buttons">
+          <button type="button" className="edit-button" onClick={toggleEditMode}>
             {editMode ? "Cancel" : "Edit"}
           </button>
-          <button className="doctor-save-button" onClick={handleSave} disabled={!editMode}>
+          <button type="button" className="save-button" onClick={handleSave} disabled={!editMode}>
             Save
           </button>
         </div>
-        <div className="dr-main">
+      </div>
+
+      <div className="content">
+        <div className="form-section">
           <div>
             <label htmlFor="doctor-first-name">First Name</label>
             <input
