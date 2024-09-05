@@ -32,7 +32,7 @@ const RxItem: React.FC<RxProps> = ({ onClose }) => {
   };
 
   const gotoRxItemProfile = () => {
-    navigate("/newrx");
+    navigate("/rxitemprofile");
     onClose(); // Close modal when navigating to add Rx item
   };
 
