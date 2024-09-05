@@ -20,7 +20,6 @@ interface RxDetails {
 const NewRx: React.FC = () => {
   const navigate = useNavigate();
 
-  // Set initial editMode to true to enable editing by default
   const [editMode, setEditMode] = useState(true); 
   const [rxDetails, setRxDetails] = useState<RxDetails>({
     rx_number: null,
@@ -56,11 +55,10 @@ const NewRx: React.FC = () => {
         ? value === "" ? 0 : Number(value)
         : value || "",
     }));
-  };  
+  };
 
   const handleSave = async () => {
     try {
-      // Ensure the patient exists
       const patientResponse = await axios.get(`http://localhost:8000/patients/${rxDetails.patient_id}`);
       if (!patientResponse.data) {
         alert("Patient does not exist. Please create the patient first.");
@@ -68,33 +66,20 @@ const NewRx: React.FC = () => {
       }
   
       if (rxDetails.rx_number === null) {
-        // If rx_number is null, create a new Prescription
         const response = await axios.post("http://localhost:8000/prescriptions", rxDetails);
         setRxDetails((prevDetails) => ({
           ...prevDetails,
-          rx_number: response.data.rx_number, // Set the rx_number returned from the backend
+          rx_number: response.data.rx_number,
         }));
         alert("Prescription details saved successfully!");
       } else {
-        // If rx_number is set, update the existing Prescription
         await axios.patch(`http://localhost:8000/prescriptions/${rxDetails.rx_number}`, rxDetails);
         alert("Prescription details updated successfully!");
       }
       setEditMode(false);
       navigate("/newrx");
     } catch (err) {
-      if (axios.isAxiosError(err)) {
-        console.error("Error saving prescription details:", err.message);
-        if (err.response) {
-          console.error("Response status:", err.response.status);
-          console.error("Response data:", err.response.data); // Log the error response
-          if (err.response.data.detail) {
-            console.error("Validation details:", err.response.data.detail);
-          }
-        }
-      } else {
-        console.error("Unexpected error:", err);
-      }
+      console.error("Error saving prescription details:", err);
       alert("Failed to save prescription details.");
     }
   };
@@ -105,7 +90,16 @@ const NewRx: React.FC = () => {
 
   return (
     <div className="new-rx-container">
+      {/* Left side for Rx details */}
       <div className="new-rx-left-side">
+        <div className="button-group">
+          <button type="button" className="edit-button" onClick={toggleEditMode}>
+            {editMode ? "Cancel" : "Edit"}
+          </button>
+          <button type="button" className="save-button" onClick={handleSave} disabled={!editMode}>
+            Save
+          </button>
+        </div>
         <div>
           <label htmlFor="rx-patient-id">Patient ID</label>
           <input
@@ -203,9 +197,7 @@ const NewRx: React.FC = () => {
             onChange={handleRxChange}
             className="status-select"
           >
-            <option value="" disabled>
-              Select status
-            </option>
+            <option value="" disabled>Select status</option>
             <option value="pending">Pending</option>
             <option value="completed">Completed</option>
             <option value="sold">Sold</option>
@@ -225,18 +217,12 @@ const NewRx: React.FC = () => {
         <button type="button" className="continue-to-label">Continue To Label</button>
       </div>
 
+      {/* Separator */}
       <div className="separator"></div>
 
+      {/* Right side - scan image */}
       <div className="scan-image">
         <h3>Scan Image</h3>
-      </div>
-      <div className="button-group">
-        <button type="button" className="edit-button" onClick={toggleEditMode}>
-          {editMode ? "Cancel" : "Edit"}
-        </button>
-        <button type="button" className="save-button" onClick={handleSave} disabled={!editMode}>
-          Save
-        </button>
       </div>
     </div>
   );
