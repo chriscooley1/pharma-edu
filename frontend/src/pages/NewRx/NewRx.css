@@ -1,43 +1,97 @@
+/* Container for the entire NewRx form */
 .new-rx-container {
   display: flex;
+  flex-direction: column;
   height: calc(90vh - 60px);
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f8f8f8;
+  overflow-y: auto; /* Allow scrolling for larger content */
 }
 
+/* Header row for New Rx, Edit, and Save buttons */
+.rx-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Title styling */
+.rx-header-row h3 {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+/* Button container next to the title */
+.rx-header-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Content layout for the left and right sides */
+.new-rx-content {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* Left side for input fields */
 .new-rx-left-side {
-  flex: 1; /* Half of the width */
-  padding: 20px;
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: white;
+  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  position: relative;
-  padding-top: 70px; /* Add padding to push the fields down */
 }
 
+/* Keep the input fields aligned and spaced properly */
 .new-rx-left-side div {
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 10px;
 }
 
 .new-rx-left-side label {
-  margin-right: 1rem;
   width: 150px;
   text-align: right;
+  margin-right: 10px;
 }
 
 .new-rx-left-side input,
 .new-rx-left-side select,
 .new-rx-left-side textarea {
+  width: calc(100% - 160px); /* Aligns the input with labels */
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+/* Make the textarea resizable vertically only */
+.directions-textarea {
   flex-grow: 1;
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+  resize: vertical; /* Allow only vertical resizing */
+  min-height: 100px; /* Set a minimum height */
+  width: calc(100% - 160px); /* Align with the other input fields */
 }
 
-/* Continue to Label button at the bottom */
+/* Ensure the button stays at the bottom but doesn't stretch */
 .continue-to-label {
-  align-self: flex-end;
-  margin-top: auto;
+  align-self: flex-end; /* Align to the right side of the form */
+  margin-top: 20px; /* Add space above the button */
   padding: 0.5rem 1rem;
   font-size: 1rem;
   color: white;
@@ -52,35 +106,28 @@
   background-color: #4D79A9;
 }
 
-/* Separator between left side (form) and right side (scan image) */
-.separator {
-  width: 1px;
-  background-color: #ccc;
-  margin: 0 20px;
-}
-
-/* Right side for scan image, centered */
+/* Right side for scan image */
 .scan-image {
   flex: 1;
   display: flex;
-  justify-content: center; /* Horizontally center */
-  align-items: center; /* Vertically center */
+  justify-content: center;
+  align-items: center;
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 20px;
   background-color: white;
 }
 
-/* Button group at the top-right */
-.button-group {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  display: flex;
-  gap: 10px;
+/* Separator between left and right sections */
+.separator {
+  width: 1px;
+  background-color: #ccc;
+  margin: 0 20px;
 }
 
-.edit-button, .save-button {
+/* Button group styles for Edit and Save */
+.edit-button,
+.save-button {
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 4px;
@@ -91,11 +138,12 @@
   transition: background-color 0.3s;
 }
 
-.edit-button:hover, .save-button:hover {
+.edit-button:hover,
+.save-button:hover {
   background-color: #4D79A9;
 }
 
-/* Success feedback after saving */
+/* Save button feedback */
 .save-button.saved {
   background-color: #FFC107;
   color: white;

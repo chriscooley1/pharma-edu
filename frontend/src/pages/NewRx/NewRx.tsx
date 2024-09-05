@@ -20,7 +20,7 @@ interface RxDetails {
 const NewRx: React.FC = () => {
   const navigate = useNavigate();
 
-  const [editMode, setEditMode] = useState(true); 
+  const [editMode, setEditMode] = useState(true);
   const [rxDetails, setRxDetails] = useState<RxDetails>({
     rx_number: null,
     patient_id: null,
@@ -46,14 +46,14 @@ const NewRx: React.FC = () => {
     const { name, value } = event.target;
     setRxDetails((prevDetails) => ({
       ...prevDetails,
-      [name]: name === "rx_number" || 
-              name === "patient_id" || 
-              name === "rx_item_id" || 
-              name === "quantity" || 
-              name === "quantity_dispensed" || 
-              name === "refills"
-        ? value === "" ? 0 : Number(value)
-        : value || "",
+      [name]: name === "rx_number" ||
+        name === "patient_id" ||
+        name === "rx_item_id" ||
+        name === "quantity" ||
+        name === "quantity_dispensed" ||
+        name === "refills"
+          ? value === "" ? 0 : Number(value)
+          : value || "",
     }));
   };
 
@@ -64,7 +64,7 @@ const NewRx: React.FC = () => {
         alert("Patient does not exist. Please create the patient first.");
         return;
       }
-  
+
       if (rxDetails.rx_number === null) {
         const response = await axios.post("http://localhost:8000/prescriptions", rxDetails);
         setRxDetails((prevDetails) => ({
@@ -90,9 +90,10 @@ const NewRx: React.FC = () => {
 
   return (
     <div className="new-rx-container">
-      {/* Left side for Rx details */}
-      <div className="new-rx-left-side">
-        <div className="button-group">
+      {/* Header row for title, edit, and save buttons */}
+      <div className="rx-header-row">
+        <h3>New Prescription</h3>
+        <div className="rx-header-buttons">
           <button type="button" className="edit-button" onClick={toggleEditMode}>
             {editMode ? "Cancel" : "Edit"}
           </button>
@@ -100,129 +101,141 @@ const NewRx: React.FC = () => {
             Save
           </button>
         </div>
-        <div>
-          <label htmlFor="rx-patient-id">Patient ID</label>
-          <input
-            type="number"
-            name="patient_id"
-            id="rx-patient-id"
-            value={rxDetails.patient_id !== null ? rxDetails.patient_id : ""}
-            onChange={handleRxChange}
-            readOnly={!editMode}
-          />
-        </div>
-        <div>
-          <label htmlFor="rx-prescriber-id">Prescriber ID</label>
-          <input
-            type="number"
-            name="prescriber_id"
-            id="rx-prescriber-id"
-            value={rxDetails.prescriber_id !== null ? rxDetails.prescriber_id : ""}
-            onChange={handleRxChange}
-            readOnly={!editMode}
-          />
-        </div>
-        <div>
-          <label htmlFor="rx-prescribed-date">Prescribed Date</label>
-          <input
-            type="date"
-            name="prescribed_date"
-            id="rx-prescribed-date"
-            value={rxDetails.prescribed_date}
-            onChange={handleRxChange}
-            readOnly={!editMode}
-          />
-        </div>
-        <div>
-          <label htmlFor="rx-item-id">Rx Item ID</label>
-          <input
-            type="number"
-            name="rx_item_id"
-            id="rx-item-id"
-            value={rxDetails.rx_item_id !== 0 ? rxDetails.rx_item_id : ""}
-            onChange={handleRxChange}
-            readOnly={!editMode}
-          />
-        </div>
-        <div>
-          <label htmlFor="rx-directions">Directions</label>
-          <textarea
-            name="directions"
-            id="rx-directions"
-            value={rxDetails.directions || ""}
-            onChange={handleRxChange}
-            className="directions-textarea"
-            readOnly={!editMode}
-          />
-        </div>
-        <div>
-          <label htmlFor="rx-quantity">Quantity</label>
-          <input
-            type="number"
-            name="quantity"
-            id="rx-quantity"
-            value={rxDetails.quantity !== 0 ? rxDetails.quantity : ""}
-            onChange={handleRxChange}
-            readOnly={!editMode}
-          />
-        </div>
-        <div>
-          <label htmlFor="rx-quantity-dispensed">Quantity Dispensed</label>
-          <input
-            type="number"
-            name="quantity_dispensed"
-            id="rx-quantity-dispensed"
-            value={rxDetails.quantity_dispensed !== 0 ? rxDetails.quantity_dispensed : ""}
-            onChange={handleRxChange}
-            readOnly={!editMode}
-          />
-        </div>
-        <div>
-          <label htmlFor="rx-refills">Refills</label>
-          <input
-            type="number"
-            name="refills"
-            id="rx-refills"
-            value={rxDetails.refills !== 0 ? rxDetails.refills : ""}
-            onChange={handleRxChange}
-            readOnly={!editMode}
-          />
-        </div>
-        <div>
-          <label htmlFor="rx-status">Status</label>
-          <select
-            name="status"
-            id="rx-status"
-            value={rxDetails.status || ""}
-            onChange={handleRxChange}
-            className="status-select"
-          >
-            <option value="" disabled>Select status</option>
-            <option value="pending">Pending</option>
-            <option value="completed">Completed</option>
-            <option value="sold">Sold</option>
-          </select>
-        </div>
-        <div>
-          <label htmlFor="rx-tech-initials">Tech Initials</label>
-          <input
-            type="text"
-            name="tech_initials"
-            id="rx-tech-initials"
-            value={rxDetails.tech_initials || ""}
-            onChange={handleRxChange}
-            readOnly={!editMode}
-          />
-        </div>
-        <button type="button" className="continue-to-label">Continue To Label</button>
       </div>
 
-      {/* Separator */}
-      <div className="separator"></div>
+      {/* Left side for Rx details */}
+      <div className="new-rx-content">
+        <div className="new-rx-left-side">
+          <div>
+            <label htmlFor="rx-patient-id">Patient ID</label>
+            <input
+              type="number"
+              name="patient_id"
+              id="rx-patient-id"
+              value={rxDetails.patient_id !== null ? rxDetails.patient_id : ""}
+              onChange={handleRxChange}
+              readOnly={!editMode}
+            />
+          </div>
+          <div>
+            <label htmlFor="rx-prescriber-id">Prescriber ID</label>
+            <input
+              type="number"
+              name="prescriber_id"
+              id="rx-prescriber-id"
+              value={rxDetails.prescriber_id !== null ? rxDetails.prescriber_id : ""}
+              onChange={handleRxChange}
+              readOnly={!editMode}
+            />
+          </div>
+          <div>
+            <label htmlFor="rx-prescribed-date">Prescribed Date</label>
+            <input
+              type="date"
+              name="prescribed_date"
+              id="rx-prescribed-date"
+              value={rxDetails.prescribed_date}
+              onChange={handleRxChange}
+              readOnly={!editMode}
+            />
+          </div>
+          <div>
+            <label htmlFor="rx-item-id">Rx Item ID</label>
+            <input
+              type="number"
+              name="rx_item_id"
+              id="rx-item-id"
+              value={rxDetails.rx_item_id !== 0 ? rxDetails.rx_item_id : ""}
+              onChange={handleRxChange}
+              readOnly={!editMode}
+            />
+          </div>
+          <div>
+            <label htmlFor="rx-directions">Directions</label>
+            <textarea
+              name="directions"
+              id="rx-directions"
+              value={rxDetails.directions || ""}
+              onChange={handleRxChange}
+              className="directions-textarea"
+              readOnly={!editMode}
+            />
+          </div>
+          <div>
+            <label htmlFor="rx-quantity">Quantity</label>
+            <input
+              type="number"
+              name="quantity"
+              id="rx-quantity"
+              value={rxDetails.quantity !== 0 ? rxDetails.quantity : ""}
+              onChange={handleRxChange}
+              readOnly={!editMode}
+            />
+          </div>
+          <div>
+            <label htmlFor="rx-quantity-dispensed">Quantity Dispensed</label>
+            <input
+              type="number"
+              name="quantity_dispensed"
+              id="rx-quantity-dispensed"
+              value={rxDetails.quantity_dispensed !== 0 ? rxDetails.quantity_dispensed : ""}
+              onChange={handleRxChange}
+              readOnly={!editMode}
+            />
+          </div>
+          <div>
+            <label htmlFor="rx-refills">Refills</label>
+            <input
+              type="number"
+              name="refills"
+              id="rx-refills"
+              value={rxDetails.refills !== 0 ? rxDetails.refills : ""}
+              onChange={handleRxChange}
+              readOnly={!editMode}
+            />
+          </div>
+          <div>
+            <label htmlFor="rx-status">Status</label>
+            <select
+              name="status"
+              id="rx-status"
+              value={rxDetails.status || ""}
+              onChange={handleRxChange}
+              className="status-select"
+            >
+              <option value="" disabled>
+                Select status
+              </option>
+              <option value="pending">Pending</option>
+              <option value="completed">Completed</option>
+              <option value="sold">Sold</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="rx-tech-initials">Tech Initials</label>
+            <input
+              type="text"
+              name="tech_initials"
+              id="rx-tech-initials"
+              value={rxDetails.tech_initials || ""}
+              onChange={handleRxChange}
+              readOnly={!editMode}
+            />
+          </div>
 
-      {/* Right side - scan image */}
-      <div className="scan-image">
-        <h3>Scan Image</h3>
+          {/* Moved Continue To Label button to the right */}
+          <button type="button" className="continue-to-label">
+            Continue To Label
+          </button>
+        </div>
+
+        {/* Separator */}
+        <div className="separator"></div>
+
+        {/* Right side - scan image */}
+        <div className="scan-image">
+          <h3>Scan Image</h3>
+        </div>
       </div>
     </div>
   );
