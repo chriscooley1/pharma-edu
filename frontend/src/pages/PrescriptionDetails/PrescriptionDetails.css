@@ -1,5 +1,5 @@
 /* Container for the entire NewRx form */
-.new-rx-container {
+.prescription-details-container {
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -13,7 +13,7 @@
 }
 
 /* Header row for New Rx, Edit, and Save buttons */
-.rx-header-row {
+.prescription-header-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -23,7 +23,7 @@
 }
 
 /* Title styling */
-.rx-header-row h3 {
+.prescription-header-row h3 {
   flex-grow: 1;
   text-align: center;
   font-size: 1.5rem;
@@ -31,20 +31,20 @@
 }
 
 /* Button container next to the title */
-.rx-header-buttons {
+.prescription-header-buttons {
   display: flex;
   gap: 1rem;
 }
 
 /* Content layout for the left and right sides */
-.new-rx-content {
+.prescription-details-content {
   display: flex;
   justify-content: space-between;
   gap: 20px;
 }
 
 /* Left side for input fields */
-.new-rx-left-side {
+.prescription-details-left-side {
   flex: 1;
   padding: 10px;
   border: 1px solid #ccc;
@@ -56,21 +56,21 @@
 }
 
 /* Keep the input fields aligned and spaced properly */
-.new-rx-left-side div {
+.prescription-details-left-side div {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
 }
 
-.new-rx-left-side label {
+.prescription-details-left-side label {
   width: 150px;
   text-align: right;
   margin-right: 10px;
 }
 
-.new-rx-left-side input,
-.new-rx-left-side select,
-.new-rx-left-side textarea {
+.prescription-details-left-side input,
+.prescription-details-left-side select,
+.prescription-details-left-side textarea {
   width: calc(100% - 160px); /* Aligns the input with labels */
   padding: 0.5rem;
   border: 1px solid #ccc;

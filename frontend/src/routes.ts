@@ -1,5 +1,5 @@
 import Home from "./pages/Home/Home";
-import NewRx from "./pages/NewRx/NewRx";
+import PrescriptionDetails from "./pages/PrescriptionDetails/PrescriptionDetails";
 import DoctorProfile from "./pages/DoctorProfile/DoctorProfile";
 import PatientProfile from "./pages/PatientProfile/PatientProfile";
 import RxItemProfile from "./pages/RxItemProfile/RxItemProfile";
@@ -20,7 +20,7 @@ const routes: PharmacyRoutes[] = [
   {
     name: "New Rx",
     path: "/newrx/:id?",
-    component: NewRx,
+    component: PrescriptionDetails,
   },
   {
     name: "Doctor Profile",

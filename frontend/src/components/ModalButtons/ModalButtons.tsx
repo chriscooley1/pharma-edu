@@ -3,7 +3,7 @@ import Modal from "../Modal/Modal";
 import NewPatient from "../../pages/NewPatient/NewPatient";
 import NewDr from "../../pages/NewDr/NewDr";
 import RxItem from "../../pages/RxItem/RxItem";
-import NewPrescription from "../../pages/NewPrescription/NewPrescription"; // Import NewPrescription
+import NewPrescription from "../../pages/NewRx/NewRx";
 
 const ModalButtons: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,14 +21,14 @@ const ModalButtons: React.FC = () => {
 
   const renderModalContent = () => {
     switch (modalType) {
+      case "prescription":
+        return <NewPrescription onClose={closeModal} />;
       case "patient":
         return <NewPatient onClose={closeModal} />;
       case "doctor":
         return <NewDr onClose={closeModal} />;
       case "rxItem":
         return <RxItem onClose={closeModal} />;
-      case "prescription":
-        return <NewPrescription onClose={closeModal} />; // Show New Prescription search modal
       default:
         return null;
     }
@@ -36,6 +36,9 @@ const ModalButtons: React.FC = () => {
 
   return (
     <div className="modal-buttons">
+      <button type="button" className="nav-button" onClick={() => handleClick("prescription")}>
+        New Prescription
+      </button>
       <button type="button" className="nav-button" onClick={() => handleClick("patient")}>
         New Patient
       </button>
@@ -44,9 +47,6 @@ const ModalButtons: React.FC = () => {
       </button>
       <button type="button" className="nav-button" onClick={() => handleClick("rxItem")}>
         Rx Item
-      </button>
-      <button type="button" className="nav-button" onClick={() => handleClick("prescription")}>
-        New Prescription
       </button>
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>

@@ -6,9 +6,8 @@ import ModalButtons from "../ModalButtons/ModalButtons";
 import "./Nav.css";
 
 const Nav: React.FC = () => {
-  // Include "Add Patient" in the nav bar for direct access
   const navRoutes = routes.filter((route) =>
-    !["Add Patient", "Patient Profile", "Doctor Profile", "Rx Item Profile"].includes(route.name)
+    !["Add Patient", "Patient Profile", "Doctor Profile", "Rx Item Profile", "New Rx"].includes(route.name)
   );
 
   return (
