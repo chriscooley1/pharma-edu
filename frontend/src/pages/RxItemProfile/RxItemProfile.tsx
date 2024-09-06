@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./RxItemProfile.css";
 
 const RxItemProfile: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
-  const navigate = useNavigate();
   const isEditMode = Boolean(id);
 
   const [editMode, setEditMode] = useState(isEditMode);
