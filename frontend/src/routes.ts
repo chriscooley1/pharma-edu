@@ -19,7 +19,7 @@ const routes: PharmacyRoutes[] = [
   },
   {
     name: "New Rx",
-    path: "/newrx",
+    path: "/newrx/:id?",
     component: NewRx,
   },
   {

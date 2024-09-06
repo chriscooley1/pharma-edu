@@ -26,6 +26,16 @@ async def get_prescriptions(session: Session = Depends(get_db)) -> list[Prescrip
                                     prescriptions)
 
 
+@router.get("/prescription/search", tags=["Prescriptions"])
+async def search_prescriptions(query: str, session: Session = Depends(get_db)):
+    prescriptions = session.exec(
+        select(Prescription).where(Prescription.name.ilike(f"%{query}%"))
+    ).all()
+    if not prescriptions:
+        raise PrescriptionNotFound(id=0)
+    return prescriptions
+
+
 @router.get("/prescriptions/{prescription_id}", tags=["Prescriptions"])
 async def get_prescription(prescription_id: int, session: Session = Depends(get_db)) -> Prescription:
     prescription: Prescription | None = session.get(Prescription, prescription_id)

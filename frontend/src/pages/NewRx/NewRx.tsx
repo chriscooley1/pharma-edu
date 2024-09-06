@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./NewRx.css";
 
@@ -18,9 +18,8 @@ interface RxDetails {
 }
 
 const NewRx: React.FC = () => {
-  const navigate = useNavigate();
-
-  const [editMode, setEditMode] = useState(true);
+  const { id } = useParams<{ id?: string }>(); // Use id from params to load an existing prescription
+  const [editMode, setEditMode] = useState(!id); // Start in edit mode for new prescriptions
   const [rxDetails, setRxDetails] = useState<RxDetails>({
     rx_number: null,
     patient_id: null,
@@ -36,9 +35,14 @@ const NewRx: React.FC = () => {
   });
 
   useEffect(() => {
-    // Fetch existing RxItem details from backend (if needed)
-    // Example: axios.get(`/prescriptions/${rx_number}`).then(response => setRxDetails(response.data));
-  }, []);
+    if (id) {
+      // Fetch prescription details if an id exists
+      axios.get(`http://localhost:8000/prescriptions/${id}`).then((response) => {
+        setRxDetails(response.data);
+        setEditMode(false); // Set edit mode to false for existing prescriptions
+      });
+    }
+  }, [id]);
 
   const handleRxChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -65,19 +69,16 @@ const NewRx: React.FC = () => {
         return;
       }
 
-      if (rxDetails.rx_number === null) {
-        const response = await axios.post("http://localhost:8000/prescriptions", rxDetails);
-        setRxDetails((prevDetails) => ({
-          ...prevDetails,
-          rx_number: response.data.rx_number,
-        }));
-        alert("Prescription details saved successfully!");
+      if (!id) {
+        // Create a new prescription if there is no id
+        await axios.post("http://localhost:8000/prescriptions", rxDetails);
+        alert("Prescription created successfully!");
       } else {
-        await axios.patch(`http://localhost:8000/prescriptions/${rxDetails.rx_number}`, rxDetails);
-        alert("Prescription details updated successfully!");
+        // Update the existing prescription
+        await axios.patch(`http://localhost:8000/prescriptions/${id}`, rxDetails);
+        alert("Prescription updated successfully!");
       }
-      setEditMode(false);
-      navigate("/newrx");
+      setEditMode(false); // After saving, switch back to view mode
     } catch (err) {
       console.error("Error saving prescription details:", err);
       alert("Failed to save prescription details.");
@@ -92,7 +93,7 @@ const NewRx: React.FC = () => {
     <div className="new-rx-container">
       {/* Header row for title, edit, and save buttons */}
       <div className="rx-header-row">
-        <h3>New Prescription</h3>
+        <h3>{id ? "Edit Prescription" : "New Prescription"}</h3>
         <div className="rx-header-buttons">
           <button type="button" className="edit-button" onClick={toggleEditMode}>
             {editMode ? "Cancel" : "Edit"}
@@ -201,7 +202,7 @@ const NewRx: React.FC = () => {
               id="rx-status"
               value={rxDetails.status || ""}
               onChange={handleRxChange}
-              className="status-select"
+              disabled={!editMode}
             >
               <option value="" disabled>
                 Select status
