@@ -2,12 +2,14 @@
 .new-rx-container {
   display: flex;
   flex-direction: column;
-  height: calc(90vh - 60px);
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #f8f8f8;
-  overflow-y: auto; /* Allow scrolling for larger content */
+  height: 100vh; /* Full height of the viewport */
+  max-height: 100vh; /* Prevent overflowing beyond the viewport */
+  box-sizing: border-box; /* Ensure padding is included in the height */
+  overflow-y: auto; /* Allow scrolling */
 }
 
 /* Header row for New Rx, Edit, and Save buttons */
