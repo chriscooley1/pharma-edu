@@ -75,10 +75,6 @@ const RxItemProfile: React.FC = () => {
     setEditMode(!editMode);
   };
 
-  const gotoNewRxItem = () => {
-    resetForm();
-    navigate("/rxitemprofile");
-  };
 
   return (
     <div className="rx-item-profile-container">
@@ -91,9 +87,6 @@ const RxItemProfile: React.FC = () => {
           </button>
           <button type="button" className="save-button" onClick={handleSave} disabled={!editMode}>
             Save
-          </button>
-          <button type="button" className="new-rx-item-button" onClick={gotoNewRxItem}>
-            Add New Rx Item
           </button>
         </div>
       </div>
