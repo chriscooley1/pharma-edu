@@ -13,21 +13,21 @@ const NewRx: React.FC<RxProps> = ({ onClose }) => {
   const handleSearch = async (query: string) => {
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/prescriptions/search?query=${encodeURIComponent(query)}`
+        `http://127.0.0.1:8000/prescription/search?query=${encodeURIComponent(query)}`
       );
       if (response.ok) {
-        const newRx = await response.json();
-        if (newRx.length > 0) {
-          navigate(`/newrx/${newRx[0].id}`);
-          onClose(); // Close modal if a valid rx is found
+        const prescriptions = await response.json();
+        if (prescriptions.length > 0) {
+          navigate(`/newrx/${prescriptions[0].rx_number}`);  // Navigate to the first result
+          onClose();  // Close modal if a valid prescription is found
         } else {
-          setErrorMessage("Rx not found. Please try again.");
+          setErrorMessage("Prescription not found. Please try again.");
         }
       } else {
-        setErrorMessage("Rx not found. Please try again.");
+        setErrorMessage("Prescription not found. Please try again.");
       }
     } catch (error) {
-      console.error("Failed to search rx:", error);
+      console.error("Failed to search prescription:", error);
       setErrorMessage("An error occurred. Please try again.");
     }
   };

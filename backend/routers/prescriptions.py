@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends
 from sqlmodel import Session, select
+from sqlalchemy import or_, cast, String
 
 from exceptions import PrescriptionNotFound
 from database import get_db
-from models import Prescription
+from models import Prescription, Patient
 from schemas import (
     PrescriptionBasicInfo,
     PrescriptionCreateRequest,
@@ -28,12 +29,32 @@ async def get_prescriptions(session: Session = Depends(get_db)) -> list[Prescrip
 
 @router.get("/prescription/search", tags=["Prescriptions"])
 async def search_prescriptions(query: str, session: Session = Depends(get_db)):
+    # Query across the rx_number (converted to string) and patient's first/last name
     prescriptions = session.exec(
-        select(Prescription).where(Prescription.name.ilike(f"%{query}%"))
+        select(Prescription)
+        .join(Patient)  # Assuming Prescription has a relationship to Patient
+        .where(
+            or_(
+                cast(Prescription.rx_number, String).ilike(f"%{query}%"),  # Convert rx_number to string
+                Patient.first_name.ilike(f"%{query}%"),  # Search by patient's first name
+                Patient.last_name.ilike(f"%{query}%")  # Search by patient's last name
+            )
+        )
     ).all()
+
     if not prescriptions:
         raise PrescriptionNotFound(id=0)
-    return prescriptions
+
+    # Return a structured response for the frontend
+    return [
+        PrescriptionBasicInfo(
+            rx_number=prescription.rx_number,
+            first_name=prescription.patient.first_name,
+            last_name=prescription.patient.last_name,
+            date_of_birth=prescription.patient.date_of_birth
+        )
+        for prescription in prescriptions
+    ]
 
 
 @router.get("/prescriptions/{prescription_id}", tags=["Prescriptions"])
