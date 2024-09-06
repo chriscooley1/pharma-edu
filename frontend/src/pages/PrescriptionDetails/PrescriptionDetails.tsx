@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams} from "react-router-dom";
 import axios from "axios";
 import "./PrescriptionDetails.css";
 
-interface PrescriptionDetails {
+interface PrescriptionDetailsState {
   rx_number: number | null;
   patient_id: number | null;
   prescriber_id: number | null;
@@ -19,8 +19,8 @@ interface PrescriptionDetails {
 
 const PrescriptionDetails: React.FC = () => {
   const { id } = useParams<{ id?: string }>(); // Use id from params to load an existing prescription
-  const [editMode, setEditMode] = useState(!id); // Start in edit mode for prescription detail
-  const [PrescriptionDetails, setPrescriptionDetails] = useState<PrescriptionDetails>({
+  const [editMode, setEditMode] = useState(!id); // Start in edit mode if there is no id
+  const [prescriptionDetails, setPrescriptionDetails] = useState<PrescriptionDetailsState>({
     rx_number: null,
     patient_id: null,
     prescriber_id: null,
@@ -39,18 +39,41 @@ const PrescriptionDetails: React.FC = () => {
       // Fetch prescription details if an id exists
       axios.get(`http://localhost:8000/prescriptions/${id}`).then((response) => {
         setPrescriptionDetails(response.data);
-        setEditMode(false); // Set edit mode to false for existing prescriptions
+        setEditMode(false); // Disable edit mode if an existing prescription is being viewed
       });
+    } else {
+      // Reset form for new prescriptions
+      resetForm();
     }
   }, [id]);
 
+  // Reset form for a new prescription
+  const resetForm = () => {
+    setPrescriptionDetails({
+      rx_number: null,
+      patient_id: null,
+      prescriber_id: null,
+      prescribed_date: "",
+      rx_item_id: 0,
+      directions: "",
+      quantity: 0,
+      quantity_dispensed: 0,
+      refills: 0,
+      status: "",
+      tech_initials: "",
+    });
+    setEditMode(true); // Enable edit mode when resetting for a new prescription
+  };
+
+  // Handle form changes
   const handlePrescriptionDetailsChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = event.target;
     setPrescriptionDetails((prevDetails) => ({
       ...prevDetails,
-      [name]: name === "rx_number" ||
+      [name]:
+        name === "rx_number" ||
         name === "patient_id" ||
         name === "rx_item_id" ||
         name === "quantity" ||
@@ -61,9 +84,10 @@ const PrescriptionDetails: React.FC = () => {
     }));
   };
 
+  // Save or update the prescription
   const handleSave = async () => {
     try {
-      const patientResponse = await axios.get(`http://localhost:8000/patients/${PrescriptionDetails.patient_id}`);
+      const patientResponse = await axios.get(`http://localhost:8000/patients/${prescriptionDetails.patient_id}`);
       if (!patientResponse.data) {
         alert("Patient does not exist. Please create the patient first.");
         return;
@@ -71,14 +95,14 @@ const PrescriptionDetails: React.FC = () => {
 
       if (!id) {
         // Create a new prescription if there is no id
-        await axios.post("http://localhost:8000/prescriptions", PrescriptionDetails);
+        await axios.post("http://localhost:8000/prescriptions", prescriptionDetails);
         alert("Prescription created successfully!");
       } else {
         // Update the existing prescription
-        await axios.patch(`http://localhost:8000/prescriptions/${id}`, PrescriptionDetails);
+        await axios.patch(`http://localhost:8000/prescriptions/${id}`, prescriptionDetails);
         alert("Prescription updated successfully!");
       }
-      setEditMode(false); // After saving, switch back to view mode
+      setEditMode(false); // Switch back to view mode after saving
     } catch (err) {
       console.error("Error saving prescription details:", err);
       alert("Failed to save prescription details.");
@@ -91,7 +115,6 @@ const PrescriptionDetails: React.FC = () => {
 
   return (
     <div className="prescription-details-container">
-      {/* Header row for title, edit, and save buttons */}
       <div className="prescription-header-row">
         <h3>{id ? "Edit Prescription" : "New Prescription"}</h3>
         <div className="prescription-header-buttons">
@@ -107,13 +130,14 @@ const PrescriptionDetails: React.FC = () => {
       {/* Left side for Prescription details */}
       <div className="prescription-details-content">
         <div className="prescription-details-left-side">
+          {/* Patient ID */}
           <div>
             <label htmlFor="prescription-patient-id">Patient ID</label>
             <input
               type="number"
               name="patient_id"
               id="prescription-patient-id"
-              value={PrescriptionDetails.patient_id !== null ? PrescriptionDetails.patient_id : ""}
+              value={prescriptionDetails.patient_id !== null ? prescriptionDetails.patient_id : ""}
               onChange={handlePrescriptionDetailsChange}
               readOnly={!editMode}
             />
@@ -124,7 +148,7 @@ const PrescriptionDetails: React.FC = () => {
               type="number"
               name="prescriber_id"
               id="prescription-prescriber-id"
-              value={PrescriptionDetails.prescriber_id !== null ? PrescriptionDetails.prescriber_id : ""}
+              value={prescriptionDetails.prescriber_id !== null ? prescriptionDetails.prescriber_id : ""}
               onChange={handlePrescriptionDetailsChange}
               readOnly={!editMode}
             />
@@ -135,7 +159,7 @@ const PrescriptionDetails: React.FC = () => {
               type="date"
               name="prescribed_date"
               id="prescription-prescribed-date"
-              value={PrescriptionDetails.prescribed_date}
+              value={prescriptionDetails.prescribed_date}
               onChange={handlePrescriptionDetailsChange}
               readOnly={!editMode}
             />
@@ -146,7 +170,7 @@ const PrescriptionDetails: React.FC = () => {
               type="number"
               name="rx_item_id"
               id="rx-item-id"
-              value={PrescriptionDetails.rx_item_id !== 0 ? PrescriptionDetails.rx_item_id : ""}
+              value={prescriptionDetails.rx_item_id !== 0 ? prescriptionDetails.rx_item_id : ""}
               onChange={handlePrescriptionDetailsChange}
               readOnly={!editMode}
             />
@@ -156,7 +180,7 @@ const PrescriptionDetails: React.FC = () => {
             <textarea
               name="directions"
               id="prescription-directions"
-              value={PrescriptionDetails.directions || ""}
+              value={prescriptionDetails.directions || ""}
               onChange={handlePrescriptionDetailsChange}
               className="directions-textarea"
               readOnly={!editMode}
@@ -168,7 +192,7 @@ const PrescriptionDetails: React.FC = () => {
               type="number"
               name="quantity"
               id="prescription-quantity"
-              value={PrescriptionDetails.quantity !== 0 ? PrescriptionDetails.quantity : ""}
+              value={prescriptionDetails.quantity !== 0 ? prescriptionDetails.quantity : ""}
               onChange={handlePrescriptionDetailsChange}
               readOnly={!editMode}
             />
@@ -179,7 +203,7 @@ const PrescriptionDetails: React.FC = () => {
               type="number"
               name="quantity_dispensed"
               id="prescription-quantity-dispensed"
-              value={PrescriptionDetails.quantity_dispensed !== 0 ? PrescriptionDetails.quantity_dispensed : ""}
+              value={prescriptionDetails.quantity_dispensed !== 0 ? prescriptionDetails.quantity_dispensed : ""}
               onChange={handlePrescriptionDetailsChange}
               readOnly={!editMode}
             />
@@ -190,7 +214,7 @@ const PrescriptionDetails: React.FC = () => {
               type="number"
               name="refills"
               id="prescription-refills"
-              value={PrescriptionDetails.refills !== 0 ? PrescriptionDetails.refills : ""}
+              value={prescriptionDetails.refills !== 0 ? prescriptionDetails.refills : ""}
               onChange={handlePrescriptionDetailsChange}
               readOnly={!editMode}
             />
@@ -200,7 +224,7 @@ const PrescriptionDetails: React.FC = () => {
             <select
               name="status"
               id="prescription-status"
-              value={PrescriptionDetails.status || ""}
+              value={prescriptionDetails.status || ""}
               onChange={handlePrescriptionDetailsChange}
               disabled={!editMode}
             >
@@ -218,7 +242,7 @@ const PrescriptionDetails: React.FC = () => {
               type="text"
               name="tech_initials"
               id="prescription-tech-initials"
-              value={PrescriptionDetails.tech_initials || ""}
+              value={prescriptionDetails.tech_initials || ""}
               onChange={handlePrescriptionDetailsChange}
               readOnly={!editMode}
             />

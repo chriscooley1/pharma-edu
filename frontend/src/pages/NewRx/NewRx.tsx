@@ -10,6 +10,7 @@ const NewRx: React.FC<RxProps> = ({ onClose }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
+  // Handle searching for existing prescriptions
   const handleSearch = async (query: string) => {
     try {
       const response = await fetch(
@@ -32,8 +33,9 @@ const NewRx: React.FC<RxProps> = ({ onClose }) => {
     }
   };
 
+  // Handle clicking on "Add New Prescription"
   const gotoNewRx = () => {
-    navigate("/newrx"); // Navigate to NewRx creation form
+    navigate("/newrx"); // Navigate to NewRx creation form (this ensures the form is cleared)
     onClose(); // Close modal when navigating to add a new rx
   };
 
@@ -41,13 +43,13 @@ const NewRx: React.FC<RxProps> = ({ onClose }) => {
     <div className="new-rx-container">
       <div className="search-bar">
         <SearchBar
-          placeholder="Search for a rx"
+          placeholder="Search for a prescription"
           onSearch={handleSearch}
-          onSearchComplete={() => setErrorMessage("")}
+          onSearchComplete={() => setErrorMessage("")} // Reset error message after search
         />
         {errorMessage && <p className="error-message">{errorMessage}</p>}
         <button type="button" onClick={gotoNewRx} className="navigate-button">
-          Add New Rx
+          Add New Prescription
         </button>
       </div>
     </div>
