@@ -3,11 +3,13 @@ from sqlmodel import Session, select
 
 from database import get_db
 from exceptions import PatientNotFound
-from models import Patient
+from models import Patient, Prescription
 from schemas import (
     PatientBasicInfo,
+    PatientDetailedInfo,
     PatientCreateRequest,
     PatientCreateResponse,
+    PatientRxHistoryItem,
     PatientUpdateRequest
 )
 
@@ -35,7 +37,25 @@ async def get_patient(patient_id: int, session: Session = Depends(get_db)) -> Pa
     if patient is None:
         raise PatientNotFound(id=patient_id)
 
-    return patient
+    def convert_to_prescription_history(prescription: Prescription) -> PatientRxHistoryItem:
+        return PatientRxHistoryItem(
+            rx_number=prescription.rx_number,
+            prescriber_id=prescription.prescriber_id,
+            prescriber_first_name=prescription.prescriber.first_name,
+            prescriber_last_name=prescription.prescriber.last_name,
+            prescriber_type=prescription.prescriber.prescriber_type,
+            prescribed_date=prescription.prescribed_date,
+            prescription_status=prescription.status,
+            rx_item_name=prescription.rx_item.name,
+            rx_item_strength=prescription.rx_item.strength,
+            quantity=prescription.quantity,
+            refills=prescription.refills,
+            directions=prescription.directions,
+        )
+
+    detailed_info = patient.model_dump(exclude=['prescriptions'])
+    detailed_info["prescriptions"] = map(convert_to_prescription_history, patient.prescriptions)
+    return PatientDetailedInfo(**detailed_info)
 
 
 @router.post("/patients", tags=["Patients"])
