@@ -9,6 +9,15 @@
   background-color: #f8f8f8;
 }
 
+.pt-profile-right-side {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: white;
+  position: relative; /* Add this to enable absolute positioning for the button */
+}
+
 /* Row for Patient Name, Edit, and Save buttons */
 .pt-header-row {
   display: flex;
@@ -100,4 +109,25 @@ button:hover {
 button.save-button.saved {
   background-color: #FFC107; /* Yellow feedback */
   color: white;
+}
+
+.new-rx-button-container {
+  position: absolute; /* Absolute positioning inside the container */
+  bottom: 10px; /* Distance from the bottom */
+  right: 10px; /* Distance from the right */
+}
+
+.new-rx-navigate-button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  color: white;
+  background-color: #2E3F59;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.new-rx-navigate-button:hover {
+  background-color: #4D79A9;
 }

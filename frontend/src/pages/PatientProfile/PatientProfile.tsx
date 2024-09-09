@@ -332,13 +332,11 @@ const PatientProfile: React.FC = () => {
               readOnly={!editMode}
             />
           </div>
-          <button 
-            type="button"
-            onClick={goToNewRx}
-            className="navigate-button"
-          >
-            New Rx
-          </button>
+          <div className="new-rx-button-container">
+            <button type="button" onClick={goToNewRx} className="new-rx-navigate-button">
+              New Rx
+            </button>
+          </div>
         </div>
       </div>
     </div>
