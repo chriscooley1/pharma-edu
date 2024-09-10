@@ -31,7 +31,7 @@ const RxItemProfile: React.FC = () => {
     }
   }, [id]);
 
-  const titleWithID = rxDetails.id ? `Rx Item ID: ${rxDetails.id} - ${rxDetails.name}` : `Rx Item: ${rxDetails.name}`;
+  const title = isEditMode && rxDetails.id ? `Rx Item ID: ${rxDetails.id} - ${rxDetails.name}` : "Add New Rx Item"; // Conditional title
 
   // Reset the form for a new Rx item
   const resetForm = () => {
@@ -76,11 +76,10 @@ const RxItemProfile: React.FC = () => {
     setEditMode(!editMode);
   };
 
-
   return (
     <div className="rx-item-profile-container">
       <div className="header-row">
-        <h3>{titleWithID}</h3> {/* Show Rx Item ID and Name */}
+        <h3>{title}</h3> {/* Conditionally display "Add New Rx Item" or "Rx Item ID: ..." */}
         <div className="header-buttons">
           <button type="button" className="edit-button" onClick={toggleEditMode}>
             {editMode ? "Cancel" : "Edit"}

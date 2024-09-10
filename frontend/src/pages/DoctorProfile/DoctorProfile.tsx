@@ -22,7 +22,7 @@ const DoctorProfile: React.FC = () => {
   };
 
   const [doctorDetails, setDoctorDetails] = useState(initialDoctorDetails);
-  const [editMode, setEditMode] = useState(true);
+  const [editMode, setEditMode] = useState(isEditMode);
 
   useEffect(() => {
     if (isEditMode && id) {
@@ -41,7 +41,7 @@ const DoctorProfile: React.FC = () => {
   }, [id, isEditMode]);
 
   const fullName = `${doctorDetails.first_name} ${doctorDetails.last_name}`;
-  const fullNameWithID = doctorDetails.id ? `Doctor ID: ${doctorDetails.id} - ${fullName}` : fullName;
+  const title = isEditMode && doctorDetails.id ? `Doctor ID: ${doctorDetails.id} - ${fullName}` : "New Doctor"; // Conditional title
 
   const handleDoctorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -74,7 +74,7 @@ const DoctorProfile: React.FC = () => {
   return (
     <div className="doctor-profile-container">
       <div className="header-row">
-        <h3>{fullNameWithID}</h3> {/* Show Doctor ID and Full Name */}
+        <h3>{title}</h3> {/* Conditionally display "New Doctor" or "Doctor ID: ..." */}
         <div className="header-buttons">
           <button type="button" className="edit-button" onClick={toggleEditMode}>
             {editMode ? "Cancel" : "Edit"}
