@@ -77,9 +77,8 @@ const RxItemProfile: React.FC = () => {
 
   return (
     <div className="rx-item-profile-container">
-      {/* Header row for Rx Item, Edit, and Save buttons */}
       <div className="header-row">
-        <h3>{isEditMode ? "Edit Rx Item" : "Add New Rx Item"}</h3>
+        <h3>{`Rx Item: ${rxDetails.name}`}</h3> {/* Display Rx Item Name */}
         <div className="header-buttons">
           <button type="button" className="edit-button" onClick={toggleEditMode}>
             {editMode ? "Cancel" : "Edit"}

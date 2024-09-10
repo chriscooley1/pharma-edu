@@ -113,10 +113,14 @@ const PrescriptionDetails: React.FC = () => {
     setEditMode(!editMode);
   };
 
+  const prescriptionTitle = prescriptionDetails.rx_number
+    ? `Prescription: ${prescriptionDetails.rx_number}`
+    : "New Prescription";
+
   return (
     <div className="prescription-details-container">
       <div className="prescription-header-row">
-        <h3>{id ? "Edit Prescription" : "New Prescription"}</h3>
+        <h3>{prescriptionTitle}</h3> {/* Display Rx Number or 'New Prescription' */}
         <div className="prescription-header-buttons">
           <button type="button" className="edit-button" onClick={toggleEditMode}>
             {editMode ? "Cancel" : "Edit"}
