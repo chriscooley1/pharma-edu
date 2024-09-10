@@ -17,6 +17,12 @@ interface PrescriptionDetailsState {
   tech_initials: string;
 }
 
+interface PatientDetails {
+  id: number | null;
+  first_name: string;
+  last_name: string;
+}
+
 const PrescriptionDetails: React.FC = () => {
   const { id } = useParams<{ id?: string }>(); // Use id from params to load an existing prescription
   const [editMode, setEditMode] = useState(!id); // Start in edit mode if there is no id
@@ -34,6 +40,12 @@ const PrescriptionDetails: React.FC = () => {
     tech_initials: "",
   });
 
+  const [patientDetails, setPatientDetails] = useState<PatientDetails>({
+    id: null,
+    first_name: "",
+    last_name: "",
+  });
+
   useEffect(() => {
     if (id) {
       // Fetch prescription details if an id exists
@@ -42,10 +54,23 @@ const PrescriptionDetails: React.FC = () => {
         setEditMode(false); // Disable edit mode if an existing prescription is being viewed
       });
     } else {
-      // Reset form for new prescriptions
-      resetForm();
+      resetForm(); // Reset form for new prescription
     }
   }, [id]);
+
+  useEffect(() => {
+    if (prescriptionDetails.patient_id) {
+      // Fetch patient details based on patient ID
+      axios
+        .get(`http://localhost:8000/patients/${prescriptionDetails.patient_id}`)
+        .then((response) => {
+          setPatientDetails(response.data);
+        })
+        .catch((error) => {
+          console.error("Failed to fetch patient details:", error);
+        });
+    }
+  }, [prescriptionDetails.patient_id]);
 
   // Reset form for a new prescription
   const resetForm = () => {
@@ -87,9 +112,8 @@ const PrescriptionDetails: React.FC = () => {
   // Save or update the prescription
   const handleSave = async () => {
     try {
-      const patientResponse = await axios.get(`http://localhost:8000/patients/${prescriptionDetails.patient_id}`);
-      if (!patientResponse.data) {
-        alert("Patient does not exist. Please create the patient first.");
+      if (!prescriptionDetails.patient_id) {
+        alert("Please enter a valid patient ID.");
         return;
       }
 
@@ -113,14 +137,14 @@ const PrescriptionDetails: React.FC = () => {
     setEditMode(!editMode);
   };
 
-  const prescriptionTitle = prescriptionDetails.rx_number
-    ? `Prescription: ${prescriptionDetails.rx_number}`
+  const prescriptionTitle = prescriptionDetails.patient_id
+    ? `Patient ID: ${prescriptionDetails.patient_id} - ${patientDetails.first_name} ${patientDetails.last_name}`
     : "New Prescription";
 
   return (
     <div className="prescription-details-container">
       <div className="prescription-header-row">
-        <h3>{prescriptionTitle}</h3> {/* Display Rx Number or 'New Prescription' */}
+        <h3>{prescriptionTitle}</h3> {/* Display Patient ID and Name */}
         <div className="prescription-header-buttons">
           <button type="button" className="edit-button" onClick={toggleEditMode}>
             {editMode ? "Cancel" : "Edit"}

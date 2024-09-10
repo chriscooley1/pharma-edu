@@ -87,6 +87,7 @@ const PatientProfile: React.FC = () => {
   }, [id, isEditMode, navigate]);
 
   const fullName = `${patientDetails.first_name} ${patientDetails.last_name}`;
+  const fullNameWithID = patientDetails.id ? `Patient ID: ${patientDetails.id} - ${fullName}` : fullName;
 
   const handlePatientChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -147,7 +148,7 @@ const PatientProfile: React.FC = () => {
   return (
     <div className="patient-profile-container">
       <div className="pt-header-row">
-        <h3>{fullName}</h3> {/* Use the full name as the title */}
+        <h3>{fullNameWithID}</h3> {/* Show Patient ID and Full Name */}
         <div className="pt-header-buttons">
           <button type="button" className="edit-button" onClick={toggleEditMode}>
             {editMode ? "Cancel" : "Edit"}

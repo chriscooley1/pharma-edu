@@ -41,6 +41,7 @@ const DoctorProfile: React.FC = () => {
   }, [id, isEditMode]);
 
   const fullName = `${doctorDetails.first_name} ${doctorDetails.last_name}`;
+  const fullNameWithID = doctorDetails.id ? `Doctor ID: ${doctorDetails.id} - ${fullName}` : fullName;
 
   const handleDoctorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -73,7 +74,7 @@ const DoctorProfile: React.FC = () => {
   return (
     <div className="doctor-profile-container">
       <div className="header-row">
-        <h3>{fullName}</h3> {/* Display Doctor's Full Name */}
+        <h3>{fullNameWithID}</h3> {/* Show Doctor ID and Full Name */}
         <div className="header-buttons">
           <button type="button" className="edit-button" onClick={toggleEditMode}>
             {editMode ? "Cancel" : "Edit"}

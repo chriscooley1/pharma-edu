@@ -31,6 +31,8 @@ const RxItemProfile: React.FC = () => {
     }
   }, [id]);
 
+  const titleWithID = rxDetails.id ? `Rx Item ID: ${rxDetails.id} - ${rxDetails.name}` : `Rx Item: ${rxDetails.name}`;
+
   // Reset the form for a new Rx item
   const resetForm = () => {
     setRxDetails({
@@ -78,7 +80,7 @@ const RxItemProfile: React.FC = () => {
   return (
     <div className="rx-item-profile-container">
       <div className="header-row">
-        <h3>{`Rx Item: ${rxDetails.name}`}</h3> {/* Display Rx Item Name */}
+        <h3>{titleWithID}</h3> {/* Show Rx Item ID and Name */}
         <div className="header-buttons">
           <button type="button" className="edit-button" onClick={toggleEditMode}>
             {editMode ? "Cancel" : "Edit"}
