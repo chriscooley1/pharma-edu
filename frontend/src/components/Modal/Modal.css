@@ -36,9 +36,9 @@
 
 .modal-buttons-container {
   display: flex;
-  align-items: center; /* Align the buttons vertically with the nav items */
-  gap: 1rem; /* Add space between buttons */
-  flex-shrink: 0; /* Prevent the modal buttons from shrinking */
+  justify-content: space-around; /* Align modal buttons evenly */
+  gap: 1rem;
+  flex-grow: 1; /* Allow the modal buttons to share available space */
 }
 
 .modal-buttons {

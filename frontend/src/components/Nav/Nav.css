@@ -8,19 +8,23 @@
 
 .small-logo {
   max-width: 225px;
+  margin-right: 20px; /* Add some margin between the logo and the buttons */
 }
 
 .nav-items {
   display: flex;
+  flex-grow: 1;
   list-style: none;
   margin: 0;
   padding: 0;
+  justify-content: space-between; /* Ensures even distribution */
 }
 
 .nav-items li {
   display: flex;
-  justify-content: center; /* Center text in each nav item */
-  margin: 0 10px; /* Add some margin between each item */
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1; /* Ensure buttons grow equally */
 }
 
 .nav-items a,
@@ -28,23 +32,18 @@
   color: white;
   font-size: 1rem;
   text-decoration: none;
-  padding: 3rem 5rem; /* Adjust padding for spacing */
+  padding: 3rem 5rem; /* Consistent padding for all buttons */
   background-color: #2E3F59;
   border: 1px solid white;
   border-radius: 4px;
   text-align: center;
   transition: background-color 0.3s, border-color 0.3s;
+  display: inline-block;
+  flex-grow: 1; /* Ensure even width across all buttons */
 }
 
 .nav-items a:hover,
 .nav-button:hover {
   background-color: #4D79A9;
   border-color: #ffffff;
-}
-
-.modal-buttons-container {
-  display: flex;
-  justify-content: space-around; /* Align modal buttons evenly */
-  gap: 1rem;
-  flex-grow: 1; /* Allow the modal buttons to share available space */
 }

@@ -37,13 +37,13 @@ const ModalButtons: React.FC = () => {
   return (
     <div className="modal-buttons">
       <button type="button" className="nav-button" onClick={() => handleClick("prescription")}>
-        New Prescription
+        Prescription
       </button>
       <button type="button" className="nav-button" onClick={() => handleClick("patient")}>
-        New Patient
+        Patient
       </button>
       <button type="button" className="nav-button" onClick={() => handleClick("doctor")}>
-        New Doctor
+        Doctor
       </button>
       <button type="button" className="nav-button" onClick={() => handleClick("rxItem")}>
         Rx Item
