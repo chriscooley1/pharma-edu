@@ -43,7 +43,7 @@ const NewRx: React.FC<RxProps> = ({ onClose }) => {
     <div className="new-rx-container">
       <div className="search-bar">
         <SearchBar
-          placeholder="Search for a prescription"
+          placeholder="Search for prescription"
           onSearch={handleSearch}
           onSearchComplete={() => setErrorMessage("")} // Reset error message after search
         />

@@ -2,12 +2,36 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* Center the logo vertically */
-  height: 100vh; /* Make sure the container takes up the full viewport height */
+  justify-content: flex-start; /* Adjust the logo's alignment */
+  padding-top: 100px; /* Reduce padding to move the logo closer to the nav */
+  height: 100vh;
   background-color: #2E3F59;
 }
 
 .logo-image {
-  margin-bottom: 150px;
-  width: 800px; /* Adjust this value to make the logo smaller */
+  width: 600px; /* Make the logo larger */
+  margin-bottom: 20px; /* Adjust the spacing below the logo */
+}
+
+.auth-buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Space between the buttons */
+  align-items: center;
+}
+
+.auth-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.2rem;
+  color: white;
+  background-color: #2E3F59;
+  border: 1px solid white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.auth-button:hover {
+  background-color: #4D79A9;
+  border-color: #ffffff;
 }
