@@ -3,13 +3,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start; /* Adjust the logo's alignment */
-  padding-top: 100px; /* Reduce padding to move the logo closer to the nav */
+  padding-top: 50px; /* Reduce padding to move the logo closer to the nav */
   height: 100vh;
   background-color: #2E3F59;
 }
 
 .logo-image {
-  width: 600px; /* Make the logo larger */
+  width: 800px; /* Make the logo larger */
   margin-bottom: 20px; /* Adjust the spacing below the logo */
 }
 
