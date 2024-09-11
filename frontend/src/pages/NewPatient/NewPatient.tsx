@@ -17,7 +17,7 @@ const NewPatient: React.FC<PatientProps> = ({ onClose }) => {
       if (response.ok) {
         const patients = await response.json();
         if (patients.length > 0) {
-          navigate(`/patientprofile/${patients[0].id}`); // Navigate to PatientProfile for found patient
+          navigate(`/patientprofile/${patients[0].id}`);
           onClose(); // Close modal if a valid patient is found
         } else {
           setErrorMessage("Patient not found. Please try again.");
@@ -32,19 +32,29 @@ const NewPatient: React.FC<PatientProps> = ({ onClose }) => {
   };
 
   const gotoAddPatient = () => {
-    navigate("/addpatient"); // Ensure this route matches the path for AddPatient.tsx
-    onClose(); // Close modal when navigating to add a patient
+    navigate("/addpatient");
+    onClose();
+  };
+
+  const viewAllPatients = () => {
+    navigate("/patients");
+    onClose();
   };
 
   return (
     <div className="new-pt-container">
-      <div className="search-bar">
+      <div className="search-bar-container">
         <SearchBar
           placeholder="Search for a patient"
           onSearch={handleSearch}
-          onSearchComplete={() => setErrorMessage("")} // Reset error message after search
+          onSearchComplete={() => setErrorMessage("")}
         />
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
+      </div>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      <div className="button-group">
+        <button type="button" onClick={viewAllPatients} className="view-navigate-button">
+          View All Patients
+        </button>
         <button type="button" onClick={gotoAddPatient} className="navigate-button">
           Add New Patient
         </button>

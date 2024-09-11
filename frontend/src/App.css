@@ -149,3 +149,8 @@ button.save-button.saved {
   background-color: #FFC107;
   color: white;
 }
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}

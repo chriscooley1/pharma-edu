@@ -1,6 +1,5 @@
-.new-patient-container {
+.new-pt-container {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 2rem;
+  padding: 1rem;
 }

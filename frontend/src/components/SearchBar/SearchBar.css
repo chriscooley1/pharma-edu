@@ -1,7 +1,8 @@
-.search-bar {
+.search-bar-container {
   display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
+  align-items: center; /* Align input and button in a row */
+  justify-content: center;
+  margin-bottom: 1.5rem; /* Margin below the search bar */
 }
 
 .search-input {
@@ -25,4 +26,8 @@
 
 .search-button:hover {
   background-color: #4D79A9;
+}
+
+.search-bar input, .search-bar button {
+  margin-bottom: 1rem;
 }

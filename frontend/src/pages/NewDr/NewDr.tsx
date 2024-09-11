@@ -30,21 +30,31 @@ const NewDr: React.FC<DrProps> = ({ onClose }) => {
     }
   };
 
-  const gotoDoctorProfile = () => {
+  const gotoAddDoctor = () => {
     navigate("/doctorprofile");
-    onClose(); // Close modal when navigating to add a doctor
+    onClose();
+  };
+
+  const viewAllDoctors = () => {
+    navigate("/doctors");
+    onClose();
   };
 
   return (
     <div className="new-dr-container">
-      <div className="search-bar">
+      <div className="search-bar-container">
         <SearchBar
           placeholder="Search for a doctor"
           onSearch={handleSearch}
-          onSearchComplete={() => setErrorMessage("")} // Reset error message after search
+          onSearchComplete={() => setErrorMessage("")}
         />
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
-        <button type="button" onClick={gotoDoctorProfile} className="navigate-button">
+      </div>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      <div className="button-group">
+        <button type="button" onClick={viewAllDoctors} className="view-navigate-button">
+          View All Doctors
+        </button>
+        <button type="button" onClick={gotoAddDoctor} className="navigate-button">
           Add New Doctor
         </button>
       </div>

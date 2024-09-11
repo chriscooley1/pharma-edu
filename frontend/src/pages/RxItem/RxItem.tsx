@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import "./RxItem.css";
 
-interface RxProps {
+interface RxItemProps {
   onClose: () => void;
 }
 
-const RxItem: React.FC<RxProps> = ({ onClose }) => {
+const RxItem: React.FC<RxItemProps> = ({ onClose }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ const RxItem: React.FC<RxProps> = ({ onClose }) => {
         const rxItems = await response.json();
         if (rxItems.length > 0) {
           navigate(`/rxitemprofile/${rxItems[0].id}`);
-          onClose(); // Close modal if a valid Rx item is found
+          onClose(); 
         } else {
           setErrorMessage("Rx item not found. Please try again.");
         }
@@ -31,21 +31,31 @@ const RxItem: React.FC<RxProps> = ({ onClose }) => {
     }
   };
 
-  const gotoRxItemProfile = () => {
-    navigate("/rxitemprofile"); // Reset and navigate to new Rx item creation
-    onClose(); // Close modal when navigating to add Rx item
+  const gotoNewRxItem = () => {
+    navigate("/rxitemprofile");
+    onClose();
+  };
+
+  const viewAllRxItems = () => {
+    navigate("/rx-items");
+    onClose();
   };
 
   return (
     <div className="new-rx-item-container">
-      <div className="search-bar">
+      <div className="search-bar-container">
         <SearchBar
-          placeholder="Search for an Rx item"
+          placeholder="Search for Rx item"
           onSearch={handleSearch}
-          onSearchComplete={() => setErrorMessage("")} // Reset error message after search
+          onSearchComplete={() => setErrorMessage("")}
         />
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
-        <button type="button" onClick={gotoRxItemProfile} className="navigate-button">
+      </div>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      <div className="button-group">
+        <button type="button" onClick={viewAllRxItems} className="view-navigate-button">
+          View All Rx Items
+        </button>
+        <button type="button" onClick={gotoNewRxItem} className="navigate-button">
           Add New Rx Item
         </button>
       </div>
