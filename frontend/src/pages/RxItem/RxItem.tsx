@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../../components/SearchBar/SearchBar";
-import "./RxItem.css";
 
 interface RxItemProps {
   onClose: () => void;

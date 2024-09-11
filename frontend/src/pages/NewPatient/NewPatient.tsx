@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../../components/SearchBar/SearchBar";
-import "./NewPatient.css";
 
 interface PatientProps {
   onClose: () => void;
