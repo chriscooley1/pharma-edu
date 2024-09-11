@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import "./DoctorsList.css";
 
 const DoctorsList: React.FC = () => {
   const [doctors, setDoctors] = useState([]);
@@ -19,7 +20,7 @@ const DoctorsList: React.FC = () => {
   }, []);
 
   return (
-    <div className="doctors-list-container">
+    <div className="dr-list-container">
       <h2>All Doctors</h2>
       <ul>
         {doctors.map((doctor: any) => (

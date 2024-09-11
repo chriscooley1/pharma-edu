@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import "./PrescriptionsList.css";
 
 const PrescriptionsList: React.FC = () => {
   const [prescriptions, setPrescriptions] = useState([]);
@@ -19,7 +20,7 @@ const PrescriptionsList: React.FC = () => {
   }, []);
 
   return (
-    <div className="prescriptions-list-container">
+    <div className="rx-list-container">
       <h2>All Prescriptions</h2>
       <ul>
         {prescriptions.map((prescription: any) => (
