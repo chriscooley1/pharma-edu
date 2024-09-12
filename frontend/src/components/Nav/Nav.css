@@ -1,45 +1,37 @@
 .nav-container {
   display: flex;
   align-items: center;
+  justify-content: space-between; /* Distribute logo, nav items, and modal buttons */
   background-color: #2E3F59;
   border: 1px solid;
   padding: 0 20px;
 }
 
 .small-logo {
-  max-width: 225px;
-  margin-right: 20px; /* Add some margin between the logo and the buttons */
+  max-width: 150px;
+  margin-right: 20px;
 }
 
 .nav-items {
   display: flex;
   flex-grow: 1;
-  list-style: none;
+  justify-content: center; /* Center the navigation items */
   margin: 0;
   padding: 0;
-  justify-content: space-between; /* Ensures even distribution */
+  list-style: none; /* Remove default list styles */
 }
 
 .nav-items li {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1; /* Ensure buttons grow equally */
+  /* margin-left: 100px; */
 }
 
 .nav-items a,
 .nav-button {
   color: white;
-  font-size: 1rem;
   text-decoration: none;
-  padding: 3rem 5rem; /* Consistent padding for all buttons */
-  background-color: #2E3F59;
+  padding: 2rem 3rem;
   border: 1px solid white;
-  border-radius: 4px;
-  text-align: center;
-  transition: background-color 0.3s, border-color 0.3s;
-  display: inline-block;
-  flex-grow: 1; /* Ensure even width across all buttons */
 }
 
 .nav-items a:hover,
