@@ -51,10 +51,10 @@ const NewPatient: React.FC<PatientProps> = ({ onClose }) => {
       </div>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       <div className="button-group">
-        <button type="button" onClick={viewAllPatients} className="view-navigate-button">
+        <button type="button" onClick={viewAllPatients} className="action-button">
           View All Patients
         </button>
-        <button type="button" onClick={gotoAddPatient} className="navigate-button">
+        <button type="button" onClick={gotoAddPatient} className="action-button">
           Add New Patient
         </button>
       </div>

@@ -51,10 +51,10 @@ const RxItem: React.FC<RxItemProps> = ({ onClose }) => {
       </div>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       <div className="button-group">
-        <button type="button" onClick={viewAllRxItems} className="view-navigate-button">
+        <button type="button" onClick={viewAllRxItems} className="action-button">
           View All Rx Items
         </button>
-        <button type="button" onClick={gotoNewRxItem} className="navigate-button">
+        <button type="button" onClick={gotoNewRxItem} className="action-button">
           Add New Rx Item
         </button>
       </div>
