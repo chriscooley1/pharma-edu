@@ -46,6 +46,8 @@
 
 /* List item text */
 .rx-items-list-items li a {
+  display: flex;
+  flex-direction: column;
   color: #2E3F59;
   text-decoration: none;
   font-size: 1.2rem;
@@ -86,8 +88,15 @@
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s;
+  text-decoration: none;
 }
 
 .rx-items-pagination-button:hover {
   background-color: #4D79A9;
+}
+
+.rx-item-details {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-top: 0.25rem;
 }

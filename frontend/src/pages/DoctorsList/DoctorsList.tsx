@@ -3,13 +3,20 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "./DoctorsList.css";
 
+interface Doctor {
+  prescriber_id: number;
+  first_name: string;
+  last_name: string;
+  prescriber_type: string;
+}
+
 const DoctorsList: React.FC = () => {
-  const [doctors, setDoctors] = useState([]);
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
 
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/doctors");
+        const response = await axios.get<Doctor[]>("http://localhost:8000/prescribers");
         setDoctors(response.data);
       } catch (error) {
         console.error("Failed to fetch doctors:", error);
@@ -21,12 +28,13 @@ const DoctorsList: React.FC = () => {
 
   return (
     <div className="dr-list-container">
-      <h2>All Doctors</h2>
-      <ul>
-        {doctors.map((doctor: any) => (
-          <li key={doctor.id}>
-            <Link to={`/doctorprofile/${doctor.id}`}>
-              {doctor.first_name} {doctor.last_name}
+      <h2 className="dr-list-title">All Doctors</h2>
+      <ul className="dr-list-items">
+        {doctors.map((doctor) => (
+          <li key={doctor.prescriber_id}>
+            <Link to={`/doctorprofile/${doctor.prescriber_id}`}>
+              {doctor.last_name}, {doctor.first_name}
+              <span className="dr-type">{doctor.prescriber_type}</span>
             </Link>
           </li>
         ))}

@@ -27,9 +27,6 @@
 }
 
 .rx-list-items li {
-  display: flex;
-  justify-content: space-between; /* Align content to the left and right */
-  align-items: center; /* Vertically center the content */
   background-color: white; /* White background for the list item */
   padding: 1rem 1.5rem;
   margin-bottom: 1rem;
@@ -50,12 +47,19 @@
   text-decoration: none;
   font-size: 1.2rem;
   font-weight: 500;
-  flex-grow: 1; /* Ensure text takes up available space */
+  display: flex;
+  justify-content: space-between; /* Align content to the left and right */
+  align-items: center; /* Vertically center the content */
   transition: color 0.3s;
 }
 
 .rx-list-items li a:hover {
   color: #4D79A9;
+}
+
+.rx-dob {
+  font-size: 1rem;
+  color: #6c757d;
 }
 
 /* Add a subtle icon or arrow at the end */

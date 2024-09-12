@@ -19,55 +19,40 @@
   padding-bottom: 0.5rem;
 }
 
-/* List itself */
-.pt-list-items {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+/* Remove the existing .pt-list-items styles */
+
+/* Patient cards container */
+.pt-list-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
 }
 
-.pt-list-items li {
-  display: flex;
-  justify-content: space-between; /* Align content to the left and right */
-  align-items: center; /* Vertically center the content */
-  background-color: white; /* White background for the list item */
-  padding: 1rem 1.5rem;
-  margin-bottom: 1rem;
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05); /* Light shadow for depth */
-  transition: box-shadow 0.3s, background-color 0.3s;
-}
-
-/* List item hover effect */
-.pt-list-items li:hover {
-  background-color: #eef4fc; /* Light blue background on hover */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* List item text */
-.pt-list-items li a {
-  color: #2E3F59;
+/* Individual patient card */
+.pt-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s, transform 0.3s;
   text-decoration: none;
+  color: #2E3F59;
+}
+
+.pt-card:hover {
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+}
+
+.pt-card h3 {
   font-size: 1.2rem;
-  font-weight: 500;
-  flex-grow: 1; /* Ensure text takes up available space */
-  transition: color 0.3s;
+  margin-bottom: 0.5rem;
+  color: #2E3F59;
 }
 
-.pt-list-items li a:hover {
+.pt-card p {
+  font-size: 1rem;
   color: #4D79A9;
-}
-
-/* Add a subtle icon or arrow at the end */
-.pt-list-items li::after {
-  content: '→'; /* Right arrow */
-  font-size: 1.5rem;
-  color: #4D79A9;
-  transition: transform 0.3s;
-}
-
-.pt-list-items li:hover::after {
-  transform: translateX(5px); /* Slightly move the arrow on hover */
 }
 
 /* Pagination or additional action buttons */
