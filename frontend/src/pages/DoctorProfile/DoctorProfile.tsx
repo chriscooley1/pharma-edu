@@ -5,7 +5,7 @@ import "./DoctorProfile.css";
 
 const DoctorProfile: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
-  const isEditMode = Boolean(id);
+  const isNewDoctor = !id;
 
   const initialDoctorDetails = {
     id: null,
@@ -22,10 +22,10 @@ const DoctorProfile: React.FC = () => {
   };
 
   const [doctorDetails, setDoctorDetails] = useState(initialDoctorDetails);
-  const [editMode, setEditMode] = useState(isEditMode);
+  const [editMode, setEditMode] = useState(isNewDoctor);
 
   useEffect(() => {
-    if (isEditMode && id) {
+    if (!isNewDoctor && id) {
       const fetchDoctorDetails = async () => {
         try {
           const response = await axios.get(`http://localhost:8000/prescribers/${id}`);
@@ -37,11 +37,12 @@ const DoctorProfile: React.FC = () => {
       fetchDoctorDetails();
     } else {
       setDoctorDetails(initialDoctorDetails);
+      setEditMode(true);
     }
-  }, [id, isEditMode]);
+  }, [id, isNewDoctor]);
 
   const fullName = `${doctorDetails.first_name} ${doctorDetails.last_name}`;
-  const title = isEditMode && doctorDetails.id ? `Doctor ID: ${doctorDetails.id} - ${fullName}` : "New Doctor"; // Conditional title
+  const title = !isNewDoctor && doctorDetails.id ? `Doctor ID: ${doctorDetails.id} - ${fullName}` : "New Doctor";
 
   const handleDoctorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -53,7 +54,7 @@ const DoctorProfile: React.FC = () => {
 
   const handleSave = async () => {
     try {
-      if (isEditMode) {
+      if (!isNewDoctor) {
         await axios.patch(`http://localhost:8000/prescribers/${id}`, doctorDetails);
         alert("Doctor details updated successfully!");
       } else {
@@ -74,7 +75,7 @@ const DoctorProfile: React.FC = () => {
   return (
     <div className="doctor-profile-container">
       <div className="header-row">
-        <h3>{title}</h3> {/* Conditionally display "New Doctor" or "Doctor ID: ..." */}
+        <h3>{title}</h3>
         <div className="header-buttons">
           <button type="button" className="edit-button" onClick={toggleEditMode}>
             {editMode ? "Cancel" : "Edit"}
