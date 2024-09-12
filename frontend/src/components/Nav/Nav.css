@@ -1,10 +1,9 @@
 .nav-container {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Distribute logo, nav items, and modal buttons */
   background-color: #2E3F59;
   border: 1px solid;
-  padding: 0 20px;
+  padding: 10px 20px;
 }
 
 .small-logo {
@@ -15,10 +14,9 @@
 .nav-items {
   display: flex;
   flex-grow: 1;
-  justify-content: center; /* Center the navigation items */
+  justify-content: flex-end;
   margin: 0;
-  padding: 0;
-  list-style: none; /* Remove default list styles */
+  margin-right: 20px;
 }
 
 .nav-items li {
