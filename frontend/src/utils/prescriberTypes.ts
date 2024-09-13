@@ -15,5 +15,6 @@ export enum PrescriberType {
 
 export const prescriberTypeOptions = Object.entries(PrescriberType).map(([key, value]) => ({
   value: key,
-  label: value
+  label: key, // Change this to use the key (abbreviation) as the label
+  fullName: value // Keep the full name for reference if needed
 }));
