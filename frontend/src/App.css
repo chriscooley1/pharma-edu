@@ -121,12 +121,23 @@ h3 {
 }
 
 /* Input styling with max-width */
-.form-section input {
-  flex-grow: 1;
-  padding: 0.5rem;
+.form-section input,
+.form-section select {
+  flex: 1;
+  padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  max-width: 600px; /* Increased the input field width */
+  font-size: 16px;
+}
+
+.form-section select {
+  width: 214px; /* Adjust this value to match the width of your input fields */
+}
+
+.form-section input:read-only,
+.form-section select:disabled {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
 }
 
 /* Button styling */

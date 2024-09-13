@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { deaScheduleOptions } from "../../utils/deaSchedules";
 import "./RxItemProfile.css";
 
 const RxItemProfile: React.FC = () => {
@@ -54,7 +55,7 @@ const RxItemProfile: React.FC = () => {
     setEditMode(true); // Enable edit mode when resetting for a new Rx item
   };
 
-  const handleRxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleRxChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
     setRxDetails((prevDetails) => ({
       ...prevDetails,
@@ -156,14 +157,20 @@ const RxItemProfile: React.FC = () => {
           </div>
           <div>
             <label htmlFor="rx-dea-schedule">DEA Schedule</label>
-            <input
-              type="text"
+            <select
               name="dea_schedule"
               id="rx-dea-schedule"
               value={rxDetails.dea_schedule || ""}
               onChange={handleRxChange}
-              readOnly={!editMode}
-            />
+              disabled={!editMode}
+            >
+              <option value="">Select DEA Schedule</option>
+              {deaScheduleOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
           </div>
           <div>
             <label htmlFor="rx-dosage-form">Dosage Form</label>
