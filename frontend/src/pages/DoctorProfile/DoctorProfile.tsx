@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { stateOptions } from "../../utils/stateOptions";
+import { prescriberTypeOptions } from "../../utils/prescriberTypes";
 import "./DoctorProfile.css";
 
 const DoctorProfile: React.FC = () => {
@@ -44,7 +46,7 @@ const DoctorProfile: React.FC = () => {
   const fullName = `${doctorDetails.first_name} ${doctorDetails.last_name}`;
   const title = !isNewDoctor && doctorDetails.id ? `Doctor ID: ${doctorDetails.id} - ${fullName}` : "New Doctor";
 
-  const handleDoctorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDoctorChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
     setDoctorDetails((prevDetails) => ({
       ...prevDetails,
@@ -112,14 +114,21 @@ const DoctorProfile: React.FC = () => {
           </div>
           <div>
             <label htmlFor="doctor-prescriber-type">Prescriber Type</label>
-            <input
-              type="text"
+            <select
               name="prescriber_type"
               id="doctor-prescriber-type"
+              className="prescriber-type-dropdown"
               value={doctorDetails.prescriber_type || ""}
               onChange={handleDoctorChange}
-              readOnly={!editMode}
-            />
+              disabled={!editMode}
+            >
+              <option value="">Select a prescriber type</option>
+              {prescriberTypeOptions.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
           </div>
           <div>
             <label htmlFor="doctor-street">Street</label>
@@ -145,14 +154,21 @@ const DoctorProfile: React.FC = () => {
           </div>
           <div>
             <label htmlFor="doctor-state">State</label>
-            <input
-              type="text"
+            <select
               name="state"
               id="doctor-state"
+              className="state-dropdown"
               value={doctorDetails.state || ""}
               onChange={handleDoctorChange}
-              readOnly={!editMode}
-            />
+              disabled={!editMode}
+            >
+              <option value="">Select a state</option>
+              {stateOptions.map((state) => (
+                <option key={state} value={state}>
+                  {state}
+                </option>
+              ))}
+            </select>
           </div>
           <div>
             <label htmlFor="doctor-zipcode">Zipcode</label>

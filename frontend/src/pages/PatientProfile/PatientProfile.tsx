@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./PatientProfile.css";
+import { stateOptions } from "../../utils/stateOptions";
 
 interface PatientDetails {
   id: number | null;
@@ -89,7 +90,7 @@ const PatientProfile: React.FC = () => {
   const fullName = `${patientDetails.first_name} ${patientDetails.last_name}`;
   const fullNameWithID = patientDetails.id ? `Patient ID: ${patientDetails.id} - ${fullName}` : fullName;
 
-  const handlePatientChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePatientChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
     setPatientDetails((prevDetails) => ({
       ...prevDetails,
@@ -231,14 +232,20 @@ const PatientProfile: React.FC = () => {
           </div>
           <div>
             <label htmlFor="patient-state">State</label>
-            <input
-              type="text"
+            <select
               name="state"
               id="patient-state"
               value={patientDetails.state || ""}
               onChange={handlePatientChange}
-              readOnly={!editMode}
-            />
+              disabled={!editMode}
+            >
+              <option value="">Select a state</option>
+              {stateOptions.map((state) => (
+                <option key={state} value={state}>
+                  {state}
+                </option>
+              ))}
+            </select>
           </div>
           <div>
             <label htmlFor="patient-zipcode">Zipcode</label>

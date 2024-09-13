@@ -101,3 +101,16 @@ button.save-button.saved {
   background-color: #FFC107; /* Yellow feedback */
   color: white;
 }
+
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+select:disabled {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}

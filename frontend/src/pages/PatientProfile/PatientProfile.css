@@ -131,3 +131,16 @@ button.save-button.saved {
 .new-rx-navigate-button:hover {
   background-color: #4D79A9;
 }
+
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+select:disabled {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
