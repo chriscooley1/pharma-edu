@@ -4,9 +4,9 @@
   flex-direction: column;
   height: calc(90vh - 60px);
   padding: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  background-color: #f8f8f8;
+  background-color: var(--background-color);
 }
 
 /* Header row for Patient Name, Edit, and Save buttons */
@@ -16,7 +16,7 @@
   align-items: center;
   margin-bottom: 20px;
   padding: 10px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid var(--border-color);
 }
 
 /* Style for Patient Name header spanning across */
@@ -25,6 +25,7 @@
   text-align: center;
   font-size: 1.5rem;
   margin: 0;
+  color: var(--text-color);
 }
 
 /* Button container next to Patient Name */
@@ -46,15 +47,15 @@
 .pt-profile-right-side {
   flex: 1;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  background-color: white;
+  background-color: var(--card-background-color);
 }
 
 /* Divider between general info and insurance info */
 .separator {
   width: 1px;
-  background-color: #ccc;
+  background-color: var(--border-color);
   margin: 0 20px;
 }
 
@@ -71,14 +72,17 @@
   width: 150px;
   text-align: right;
   margin-right: 1rem;
+  color: var(--text-color);
 }
 
 .pt-profile-left-side input,
 .pt-profile-right-side input {
   width: 100%;
   padding: 0.5rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
+  background-color: var(--input-background-color);
+  color: var(--text-color);
 }
 
 button {
@@ -87,30 +91,32 @@ button {
   border-radius: 4px;
   font-size: 1rem;
   cursor: pointer;
-  background-color: #2E3F59;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--button-text-color);
   transition: background-color 0.3s;
 }
 
 button:hover {
-  background-color: #4D79A9;
+  background-color: var(--secondary-color);
 }
 
 /* Save button for when it is saved */
 button.save-button.saved {
-  background-color: #FFC107; /* Yellow feedback */
-  color: white;
+  background-color: var(--success-color);
+  color: var(--button-text-color);
 }
 
 select {
   width: 100%;
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   font-size: 16px;
+  background-color: var(--input-background-color);
+  color: var(--text-color);
 }
 
 select:disabled {
-  background-color: #f0f0f0;
+  background-color: var(--disabled-background-color);
   cursor: not-allowed;
 }

@@ -3,19 +3,19 @@
   max-width: 1200px; /* Set max width for the content */
   margin: 0 auto; /* Center the container */
   padding: 2rem; /* Add some padding around the list */
-  background-color: #f5f5f5; /* Light background for contrast */
+  background-color: var(--background-color); /* Light background for contrast */
   border-radius: 10px; /* Rounded corners for a modern look */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  box-shadow: 0px 4px 8px var(--shadow-color); /* Subtle shadow for depth */
 }
 
 /* Title for the list page */
 .pt-list-title {
   font-size: 2rem;
   font-weight: bold;
-  color: #2E3F59;
+  color: var(--primary-color);
   text-align: center;
   margin-bottom: 1.5rem;
-  border-bottom: 2px solid #2E3F59;
+  border-bottom: 2px solid var(--primary-color);
   padding-bottom: 0.5rem;
 }
 
@@ -30,29 +30,29 @@
 
 /* Individual patient card */
 .pt-card {
-  background-color: white;
+  background-color: var(--card-background-color);
   border-radius: 8px;
   padding: 1.5rem;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 2px 4px var(--shadow-color);
   transition: box-shadow 0.3s, transform 0.3s;
   text-decoration: none;
-  color: #2E3F59;
+  color: var(--text-color);
 }
 
 .pt-card:hover {
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 4px 8px var(--shadow-color);
   transform: translateY(-5px);
 }
 
 .pt-card h3 {
   font-size: 1.2rem;
   margin-bottom: 0.5rem;
-  color: #2E3F59;
+  color: var(--primary-color);
 }
 
 .pt-card p {
   font-size: 1rem;
-  color: #4D79A9;
+  color: var(--secondary-color);
 }
 
 /* Pagination or additional action buttons */
@@ -65,8 +65,8 @@
 .pt-pagination-button {
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
-  color: white;
-  background-color: #2E3F59;
+  color: var(--button-text-color);
+  background-color: var(--primary-color);
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -74,5 +74,5 @@
 }
 
 .pt-pagination-button:hover {
-  background-color: #4D79A9;
+  background-color: var(--secondary-color);
 }

@@ -3,19 +3,19 @@
   max-width: 1200px; /* Set max width for the content */
   margin: 0 auto; /* Center the container */
   padding: 2rem; /* Add some padding around the list */
-  background-color: #f5f5f5; /* Light background for contrast */
+  background-color: var(--background-color); /* Light background for contrast */
   border-radius: 10px; /* Rounded corners for a modern look */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  box-shadow: 0px 4px 8px var(--shadow-color); /* Subtle shadow for depth */
 }
 
 /* Title for the list page */
 .rx-list-title {
   font-size: 2rem;
   font-weight: bold;
-  color: #2E3F59;
+  color: var(--primary-color); /* Primary color */
   text-align: center;
   margin-bottom: 1.5rem;
-  border-bottom: 2px solid #2E3F59;
+  border-bottom: 2px solid var(--primary-color); /* Primary color */
   padding-bottom: 0.5rem;
 }
 
@@ -27,23 +27,23 @@
 }
 
 .rx-list-items li {
-  background-color: white; /* White background for the list item */
+  background-color: var(--card-background-color); /* Card background color */
   padding: 1rem 1.5rem;
   margin-bottom: 1rem;
   border-radius: 8px; /* Rounded corners */
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05); /* Light shadow for depth */
+  box-shadow: 0px 2px 4px var(--shadow-color); /* Light shadow for depth */
   transition: box-shadow 0.3s, background-color 0.3s;
 }
 
 /* List item hover effect */
 .rx-list-items li:hover {
-  background-color: #eef4fc; /* Light blue background on hover */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: var(--hover-color); /* Light blue background on hover */
+  box-shadow: 0px 4px 8px var(--shadow-color);
 }
 
 /* List item text */
 .rx-list-items li a {
-  color: #2E3F59;
+  color: var(--text-color); /* Text color */
   text-decoration: none;
   font-size: 1.2rem;
   font-weight: 500;
@@ -54,19 +54,19 @@
 }
 
 .rx-list-items li a:hover {
-  color: #4D79A9;
+  color: var(--secondary-color); /* Secondary color */
 }
 
 .rx-dob {
   font-size: 1rem;
-  color: #6c757d;
+  color: var(--muted-text-color); /* Muted text color */
 }
 
 /* Add a subtle icon or arrow at the end */
 .rx-list-items li::after {
   content: '→'; /* Right arrow */
   font-size: 1.5rem;
-  color: #4D79A9;
+  color: var(--secondary-color); /* Secondary color */
   transition: transform 0.3s;
 }
 
@@ -84,8 +84,8 @@
 .rx-pagination-button {
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
-  color: white;
-  background-color: #2E3F59;
+  color: var(--button-text-color); /* Button text color */
+  background-color: var(--primary-color); /* Primary color */
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -93,5 +93,5 @@
 }
 
 .rx-pagination-button:hover {
-  background-color: #4D79A9;
+  background-color: var(--secondary-color); /* Secondary color */
 }
