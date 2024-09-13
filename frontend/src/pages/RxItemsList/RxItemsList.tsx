@@ -4,7 +4,7 @@ import axios from "axios";
 import "./RxItemsList.css";
 
 interface RxItem {
-  rx_item_id: number;
+  id: number;
   name: string;
   strength: string;
   dosage_form: string;
@@ -31,8 +31,8 @@ const RxItemsList: React.FC = () => {
       <h2 className="rx-items-list-title">All Rx Items</h2>
       <ul className="rx-items-list-items">
         {rxItems.map((rxItem) => (
-          <li key={rxItem.rx_item_id}>
-            <Link to={`/rxitemprofile/${rxItem.rx_item_id}`} className="rx-item-link">
+          <li key={rxItem.id}>
+            <Link to={`/rxitemprofile/${rxItem.id}`} className="rx-item-link">
               <div className="rx-item-name">{rxItem.name}</div>
               <div className="rx-item-details">
                 <span>Strength: {rxItem.strength}</span>

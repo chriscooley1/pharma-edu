@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./RxItemProfile.css";
 
 const RxItemProfile: React.FC = () => {
-  const { id } = useParams<{ id?: string }>();
-  const isEditMode = Boolean(id);
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const isNewItem = id === undefined;
 
-  const [editMode, setEditMode] = useState(isEditMode);
+  const [editMode, setEditMode] = useState(isNewItem);
   const [rxDetails, setRxDetails] = useState({
     id: null,
     name: "",
@@ -19,19 +20,24 @@ const RxItemProfile: React.FC = () => {
     dosage_form: "",
   });
 
-  // Fetch Rx Item details if editing an existing item
   useEffect(() => {
-    if (id) {
-      axios.get(`http://localhost:8000/rx-items/${id}`).then((response) => {
-        setRxDetails(response.data);
-        setEditMode(false); // Disable edit mode if an existing item is loaded
-      });
+    if (isNewItem) {
+      resetForm();
     } else {
-      resetForm(); // Reset form for a new Rx item
+      axios.get(`http://localhost:8000/rx-items/${id}`)
+        .then((response) => {
+          setRxDetails(response.data);
+          setEditMode(false);
+        })
+        .catch(error => {
+          console.error("Error fetching Rx item:", error);
+          alert("Failed to fetch Rx item details.");
+          navigate("/rx-items"); // Redirect to the list page if there's an error
+        });
     }
-  }, [id]);
+  }, [id, isNewItem, navigate]);
 
-  const title = isEditMode && rxDetails.id ? `Rx Item ID: ${rxDetails.id} - ${rxDetails.name}` : "Add New Rx Item"; // Conditional title
+  const title = isNewItem ? "Add New Rx Item" : `Edit Rx Item: ${rxDetails.name}`; // Conditional title
 
   // Reset the form for a new Rx item
   const resetForm = () => {
@@ -58,14 +64,15 @@ const RxItemProfile: React.FC = () => {
 
   const handleSave = async () => {
     try {
-      if (isEditMode) {
-        await axios.patch(`http://localhost:8000/rx-items/${id}`, rxDetails);
-        alert("Rx item updated successfully!");
-      } else {
+      if (isNewItem) {
         await axios.post("http://localhost:8000/rx-items", rxDetails);
         alert("Rx item added successfully!");
+      } else {
+        await axios.patch(`http://localhost:8000/rx-items/${id}`, rxDetails);
+        alert("Rx item updated successfully!");
       }
       setEditMode(false);
+      if (isNewItem) navigate(`/rxitemprofile/${rxDetails.id}`);
     } catch (error) {
       console.error("Error saving Rx details:", error);
       alert("Failed to save Rx details.");
