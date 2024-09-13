@@ -4,7 +4,7 @@ import axios from "axios";
 import "./DoctorsList.css";
 
 interface Doctor {
-  prescriber_id: number;
+  id: number;
   first_name: string;
   last_name: string;
   prescriber_type: string;
@@ -31,8 +31,8 @@ const DoctorsList: React.FC = () => {
       <h2 className="dr-list-title">All Doctors</h2>
       <ul className="dr-list-items">
         {doctors.map((doctor) => (
-          <li key={doctor.prescriber_id}>
-            <Link to={`/doctorprofile/${doctor.prescriber_id}`}>
+          <li key={doctor.id}>
+            <Link to={`/doctorprofile/${doctor.id}`}>
               {doctor.last_name}, {doctor.first_name}
               <span className="dr-type">{doctor.prescriber_type}</span>
             </Link>

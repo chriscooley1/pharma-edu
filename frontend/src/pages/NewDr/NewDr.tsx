@@ -16,8 +16,8 @@ const NewDr: React.FC<DrProps> = ({ onClose }) => {
       if (response.ok) {
         const prescribers = await response.json();
         if (prescribers.length > 0) {
-          navigate(`/doctorprofile/${prescribers[0].id}`);
-          onClose(); // Close modal if a valid doctor is found
+          navigate(`/doctorprofile/${prescribers[0].prescriber_id}`);
+          onClose();
         } else {
           setErrorMessage("Prescriber not found. Please try again.");
         }
