@@ -76,10 +76,10 @@ const DoctorProfile: React.FC = () => {
 
   return (
     <div className="doctor-profile-container">
-      <div className="header-row">
+      <div className="doctor-header-row">
         <h3>{title}</h3>
-        <div className="header-buttons">
-          <button type="button" className="edit-button" onClick={toggleEditMode}>
+        <div className="doctor-header-buttons">
+          <button type="button" onClick={toggleEditMode}>
             {editMode ? "Cancel" : "Edit"}
           </button>
           <button type="button" className="save-button" onClick={handleSave} disabled={!editMode}>
@@ -88,8 +88,8 @@ const DoctorProfile: React.FC = () => {
         </div>
       </div>
 
-      <div className="content">
-        <div className="form-section">
+      <div className="doctor-content">
+        <div className="doctor-form-section">
           <div>
             <label htmlFor="doctor-first-name">First Name</label>
             <input
