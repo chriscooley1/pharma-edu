@@ -3,6 +3,7 @@ import routes from "../../routes";
 import NavItem from "../NavItem/NavItem";
 import DixieTechLogo from "../../assets/DixieTechLogo.png";
 import ModalButtons from "../ModalButtons/ModalButtons";
+import ThemeToggle from "../ThemeToggle";
 import "./Nav.css";
 
 // Define a set of route names you want to exclude for readability
@@ -33,6 +34,9 @@ const Nav: React.FC = () => {
       </ul>
       <div className="modal-buttons-container">
         <ModalButtons />
+      </div>
+      <div className="theme-toggle-container">
+        <ThemeToggle />
       </div>
     </nav>
   );
