@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { ThemeContext, ThemeContextType } from "../../ThemeContext"; // Import ThemeContextType
 import "./SearchBar.css";
 
 interface SearchBarProps {
@@ -9,6 +10,7 @@ interface SearchBarProps {
 
 const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch, onSearchComplete }) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const { isDarkMode } = useContext(ThemeContext) as ThemeContextType; // Type assertion
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -28,7 +30,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onSearch, onSearchCo
   };
 
   return (
-    <div className="search-bar">
+    <div className={`search-bar ${isDarkMode ? "dark-mode" : ""}`}>
       <input
         type="text"
         value={searchQuery}

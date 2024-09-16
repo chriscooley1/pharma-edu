@@ -11,23 +11,40 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   margin-right: 0.5rem;
+  background-color: var(--input-bg, white);
+  color: var(--text-color, black);
+  border-color: var(--border-color, #ccc);
 }
 
 .search-button {
   padding: 0.5rem 1rem;
   font-size: 1rem;
   color: white;
-  background-color: #2E3F59;
+  background-color: var(--button-bg, #2E3F59);
   border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
+  color: var(--button-text, white);
 }
 
 .search-button:hover {
-  background-color: #4D79A9;
+  background-color: var(--button-hover-bg, #4D79A9);
 }
 
 .search-bar input, .search-bar button {
   margin-bottom: 1rem;
+}
+
+/* Add these new styles for dark mode */
+.dark-mode .search-input {
+  --input-bg: #1E2A3A;
+  --text-color: white;
+  --border-color: #4D79A9;
+}
+
+.dark-mode .search-button {
+  --button-bg: #4D79A9;
+  --button-text: white;
+  --button-hover-bg: #6B9FD3;
 }

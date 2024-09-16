@@ -1,4 +1,5 @@
-import React, { ReactNode, useEffect, useRef } from "react";
+import React, { ReactNode, useEffect, useRef, useContext } from "react";
+import { ThemeContext, ThemeContextType } from "../../ThemeContext"; // Import ThemeContextType
 import "./Modal.css";
 
 interface ModalProps {
@@ -9,6 +10,7 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   const modalRef = useRef<HTMLDivElement>(null);
+  const { isDarkMode } = useContext(ThemeContext) as ThemeContextType; // Assert the type
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -31,8 +33,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content" ref={modalRef}>
+    <div className={`modal-overlay ${isDarkMode ? "dark-mode" : ""}`}>
+      <div className={`modal-content ${isDarkMode ? "dark-mode" : ""}`} ref={modalRef}>
         <button type="button" className="modal-close-button" onClick={onClose}>
           &times;
         </button>

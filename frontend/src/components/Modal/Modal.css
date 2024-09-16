@@ -4,7 +4,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--modal-overlay-bg, rgba(0, 0, 0, 0.5));
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,11 +21,13 @@
   font-size: 1.5rem;
   cursor: pointer;
   z-index: 1001; /* Ensure it stays above other elements */
+  color: var(--text-color, black);
 }
 
 /* Adjust the modal content to ensure proper spacing */
 .modal-content {
-  background: white;
+  background: var(--modal-bg, white);
+  color: var(--text-color, black);
   padding: 20px;
   padding-top: 40px;
   border-radius: 8px;
@@ -41,4 +43,14 @@
 .modal-buttons {
   display: flex;
   gap: 1rem; /* Add space between buttons */
+}
+
+/* Add these new styles for dark mode */
+.dark-mode .modal-overlay {
+  --modal-overlay-bg: rgba(0, 0, 0, 0.7);
+}
+
+.dark-mode .modal-content {
+  --modal-bg: #2E3F59;
+  --text-color: white;
 }

@@ -1,14 +1,14 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 type Theme = "light" | "dark";
 
-const ThemeContext = createContext<{
+export interface ThemeContextType {
+  isDarkMode: boolean;
   theme: Theme;
   toggleTheme: () => void;
-}>({
-  theme: "light",
-  toggleTheme: () => {},
-});
+}
+
+export const ThemeContext = React.createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>("light");
@@ -17,12 +17,14 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
 
+  const isDarkMode = theme === "dark";
+
   useEffect(() => {
     document.body.setAttribute("data-theme", theme);
   }, [theme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, isDarkMode }}>
       {children}
     </ThemeContext.Provider>
   );
