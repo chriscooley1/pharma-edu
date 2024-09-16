@@ -1,21 +1,21 @@
 /* Container for the list page */
 .rx-items-list-container {
-  max-width: 1200px; /* Set max width for the content */
-  margin: 0 auto; /* Center the container */
-  padding: 2rem; /* Add some padding around the list */
-  background-color: var(--background-color); /* Light background for contrast */
-  border-radius: 10px; /* Rounded corners for a modern look */
-  box-shadow: 0px 4px 8px var(--shadow-color); /* Subtle shadow for depth */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: var(--background-color);
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px var(--shadow-color);
 }
 
 /* Title for the list page */
 .rx-items-list-title {
   font-size: 2rem;
   font-weight: bold;
-  color: var(--primary-color);
+  color: var(--text-color);
   text-align: center;
   margin-bottom: 1.5rem;
-  border-bottom: 2px solid var(--primary-color);
+  border-bottom: 2px solid var(--border-color);
   padding-bottom: 0.5rem;
 }
 
@@ -28,19 +28,19 @@
 
 .rx-items-list-items li {
   display: flex;
-  justify-content: space-between; /* Align content to the left and right */
-  align-items: center; /* Vertically center the content */
-  background-color: var(--card-background-color); /* White background for the list item */
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--card-background-color);
   padding: 1rem 1.5rem;
   margin-bottom: 1rem;
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0px 2px 4px var(--shadow-color); /* Light shadow for depth */
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px var(--shadow-color);
   transition: box-shadow 0.3s, background-color 0.3s;
 }
 
 /* List item hover effect */
 .rx-items-list-items li:hover {
-  background-color: var(--hover-color); /* Light blue background on hover */
+  background-color: var(--hover-color);
   box-shadow: 0px 4px 8px var(--shadow-color);
 }
 
@@ -52,24 +52,24 @@
   text-decoration: none;
   font-size: 1.2rem;
   font-weight: 500;
-  flex-grow: 1; /* Ensure text takes up available space */
+  flex-grow: 1;
   transition: color 0.3s;
 }
 
 .rx-items-list-items li a:hover {
-  color: var(--secondary-color);
+  color: var(--primary-color);
 }
 
 /* Add a subtle icon or arrow at the end */
 .rx-items-list-items li::after {
-  content: '→'; /* Right arrow */
+  content: '→';
   font-size: 1.5rem;
-  color: var(--secondary-color);
+  color: var(--primary-color);
   transition: transform 0.3s;
 }
 
 .rx-items-list-items li:hover::after {
-  transform: translateX(5px); /* Slightly move the arrow on hover */
+  transform: translateX(5px);
 }
 
 /* Pagination or additional action buttons */
@@ -99,4 +99,8 @@
   font-size: 0.9rem;
   color: var(--muted-text-color);
   margin-top: 0.25rem;
+}
+
+.rx-item-name {
+  color: var(--text-color);
 }
