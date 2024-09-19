@@ -1,15 +1,22 @@
 #!/bin/bash
-#
-#set -ex
-#
-export $(grep -v '^#' ../.env | xargs)
 
-# Clear records
-psql $DATABASE_URL -f delete_records.sql
+set -x  # Enable debug mode
 
-# Insert
-psql $DATABASE_URL -f insert_patients.sql
-psql $DATABASE_URL -f insert_prescribers.sql
-psql $DATABASE_URL -f insert_rxitems.sql
-psql $DATABASE_URL -f insert_prescriptions.sql
+DATABASE_URL="postgresql://postgres:postgres@db:5432/pharma-db"
+
+# Change to the directory containing the script
+cd "$(dirname "$0")"
+
+# Execute all SQL files within a single transaction
+psql $DATABASE_URL << EOF
+BEGIN;
+
+\i delete_records.sql
+\i insert_patients.sql
+\i insert_prescribers.sql
+\i insert_rxitems.sql
+\i insert_prescriptions.sql
+
+COMMIT;
+EOF
 
