@@ -23,4 +23,3 @@ git clone https://github.com/yourusername/pharma-edu.git
 cd pharma-edu/frontend
 npm install
 npm run build
-
